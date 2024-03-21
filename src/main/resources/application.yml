@@ -1,0 +1,44 @@
+spring:
+  springdoc:
+    packages-to-scan: com.colabear754.springdoc_example.controllers
+    default-consumes-media-type: application/json;charset=UTF-8
+    default-produces-media-type: application/json;charset=UTF-8
+    swagger-ui:
+      path: /
+      disable-swagger-default-url: true
+      display-request-duration: true
+      operations-sorter: alpha
+  profiles:
+    include: secret
+  jwt:
+    secret: "a5QYHHQnPLrDJeE7a2ULfDKpYW5J3hqxKuOq2C2t3GQGmydWsD6yM2oy0O4EaS9iUVoC0dBtqzr7VfKDm3wBqD3CYHJcx9Rn6EGYqXSEYyNr4F94mBJTVjQxguXb1r92u4WIF5C9vfmy0Wv7m1WkJf2n2etE1C6lVRLAFOkPKrdNcLl2jrBoYwTLz8YwgwUEjFgL6o7RrCHH2S8L1X06GvpmmVMSS2pW2CpB5jK7nCryOXkNmJr2L5B52fPfk0kWv3qVjzWbH3LpyhKo5n0ocjGKzLPmym3PErXfEKrL5ftN7J0Cq3CNEyNmUgq6LPz8RnrBB4Xq1zmR6OYkGkw8hOGAlym37GEI5mWRfPHXvkMY4q5nXaSwCk9Z0OhYmOfjW7lp54PwH9zUe"
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/test
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace
+
+#import
+imp:
+  api:
+    key: 1214568003855217
+    secretkey: FjppssOC9xMlthflfab4e7tgk4Zz5oC48uF8jslkqRifVi2WNkPnxqTRm8djxhwhNpaZCrIBn4uBO6MO
