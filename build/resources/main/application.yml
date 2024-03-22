@@ -1,9 +1,21 @@
 spring:
   datasource:
-    url: jdbc:h2:tcp://localhost/~/test
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
+    url: jdbc:mysql://127.0.0.1:3306/test
+    username: root
+    password: lee2030!
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    open-in-view: true
+    hibernate:
+      ddl-auto: create
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      use-new-id-generator-mappings: false
+    show-sql: true
+    properties:
+      hibernate.format_sql: true
+      dialect: org.hibernate.dialect.MySQL8InnoDBDialect
   springdoc:
     packages-to-scan: com.colabear754.springdoc_example.controllers
     default-consumes-media-type: application/json;charset=UTF-8
@@ -24,13 +36,6 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
-  jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
-    hibernate:
-      ddl-auto: create
-    properties:
-      hibernate:
-        format_sql: true
 logging:
   level:
     org.hibernate.SQL: debug

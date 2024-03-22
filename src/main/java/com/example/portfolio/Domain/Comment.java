@@ -3,6 +3,7 @@ package com.example.portfolio.Domain;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "comments")
 public class Comment {
 
     @Id
