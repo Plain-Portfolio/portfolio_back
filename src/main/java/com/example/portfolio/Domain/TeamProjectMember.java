@@ -3,7 +3,7 @@ package com.example.portfolio.Domain;
 import jakarta.persistence.*;
 
 @Entity
-public class TeamProjectMember {
+public class TeamProjectMember11 {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
