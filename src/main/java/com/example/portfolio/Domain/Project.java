@@ -21,6 +21,9 @@ public class Project {
 
     private Boolean isTeamProject;
 
+    @ManyToOne
+    private User user;
+
     @JsonIgnore
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<ProjectCategory> projectCategories = new ArrayList<>();
