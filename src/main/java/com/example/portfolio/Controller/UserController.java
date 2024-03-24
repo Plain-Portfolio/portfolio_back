@@ -1,35 +1,74 @@
 package com.example.portfolio.Controller;
 
-import io.swagger.v3.oas.annotations.Hidden;
+import com.example.portfolio.DTO.LoginDto;
+import com.example.portfolio.DTO.SignUpDto;
+import com.example.portfolio.Domain.User;
+import com.example.portfolio.Exception.Global.HTTP_INTERNAL_SERVER_ERROR;
+import com.example.portfolio.Exception.User.EMAIL_IS_DUPLICATED;
+import com.example.portfolio.Exception.User.EMAIL_IS_VALID;
+import com.example.portfolio.Repository.UserRepository;
+import com.example.portfolio.Service.UserService;
+import com.example.portfolio.response.LoginResponse;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.ErrorResponse;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @Controller
-@Tag(name = "예제 API", description = "Swagger 테스트용 API")
+@Tag(name = "유저 API", description = "유저 API입니다")
 @RequestMapping("/user")
 public class UserController {
 
+    @Autowired
+    UserService userService;
 
-    @Operation(summary = "문자열 반복", description = "파라미터로 받은 문자열을 2번 반복합니다.")
-    @Parameter(name = "str", description = "2번 반복할 문자열")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = String.class))),
-            @ApiResponse(responseCode = "401", description = "중복된 이메일입니다.", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @Autowired
+    UserRepository userRepository;
+
+
+    @Operation(summary = "회원가입")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공",
+                    content = {@Content(schema = @Schema(implementation = User.class))}),
+            @ApiResponse(responseCode = "401", description = "[[닉네임 || 이메일]]이 중복되었습니다",
+                    content = {@Content(schema = @Schema(implementation = EMAIL_IS_DUPLICATED.class))}),
+
+            @ApiResponse(responseCode = "403", description = "[[비밀번호, 닉네임, 이메일]] 유효성 검사에 실패하였습니다.",
+                    content = {@Content(schema = @Schema(implementation = EMAIL_IS_VALID.class))}),
+            @ApiResponse(responseCode = "500", description = "서버 에러",
+                    content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
     })
-    @GetMapping("/returnStr")
-    public String returnStr(@RequestParam String str) {
-        return str + "\n" + str;
+    @PostMapping("/signup")
+    public ResponseEntity<?> signup (@RequestBody SignUpDto signUpDto) {
+        System.out.println(signUpDto);
+        User user = userService.signUp(signUpDto);
+        return ResponseEntity.ok(user);
     }
+
+    @Operation(summary = "로그인")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공",
+                    content = {@Content(schema = @Schema(implementation = User.class))}),
+            @ApiResponse(responseCode = "401", description = "[[닉네임 || 이메일]]이 중복되었습니다",
+                    content = {@Content(schema = @Schema(implementation = EMAIL_IS_DUPLICATED.class))}),
+
+            @ApiResponse(responseCode = "403", description = "[[비밀번호, 닉네임, 이메일]] 유효성 검사에 실패하였습니다.",
+                    content = {@Content(schema = @Schema(implementation = EMAIL_IS_VALID.class))}),
+            @ApiResponse(responseCode = "500", description = "서버 에러",
+                    content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
+    })
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> login (@RequestBody LoginDto loginDto) throws Exception {
+        LoginResponse loginResponse = userService.login(loginDto);
+        return ResponseEntity.ok(loginResponse);
+    }
+
 }
