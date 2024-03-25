@@ -3,11 +3,13 @@ package com.example.portfolio.DTO.Project;
 import com.example.portfolio.Domain.ProjectCategory;
 import com.example.portfolio.Domain.ProjectImg;
 import com.example.portfolio.Domain.TeamProjectMember;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 public class CreateProjectDto {
     private String title;
 

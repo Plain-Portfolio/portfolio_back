@@ -1,11 +1,11 @@
 package com.example.portfolio.Service;
 
 import com.example.portfolio.Common.ErrorCode;
+import com.example.portfolio.DTO.Project.CreateProjectDto;
+import com.example.portfolio.DTO.Project.UpdateProjectDto;
 import com.example.portfolio.Domain.Comment;
 import com.example.portfolio.Domain.Project;
 import com.example.portfolio.Domain.User;
-import com.example.portfolio.Dto.project.CreateProjectDto;
-import com.example.portfolio.Dto.project.UpdateProjectDto;
 import com.example.portfolio.Exception.Global.UserApplicationException;
 import com.example.portfolio.Repository.CommentRepository;
 import com.example.portfolio.Repository.ProjectRepository;

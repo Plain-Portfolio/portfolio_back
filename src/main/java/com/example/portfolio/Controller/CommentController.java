@@ -1,10 +1,10 @@
 package com.example.portfolio.Controller;
 
+import com.example.portfolio.DTO.Comment.CreateCommentDto;
+import com.example.portfolio.DTO.Comment.UpdateCommentDto;
 import com.example.portfolio.Domain.Comment;
 import com.example.portfolio.Domain.Project;
 import com.example.portfolio.Domain.User;
-import com.example.portfolio.Dto.Comment.CreateCommentDto;
-import com.example.portfolio.Dto.Comment.UpdateCommentDto;
 import com.example.portfolio.Exception.Global.HTTP_INTERNAL_SERVER_ERROR;
 import com.example.portfolio.JWT.JwtTokenProvider;
 import com.example.portfolio.Service.CommentService;

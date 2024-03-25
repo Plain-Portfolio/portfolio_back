@@ -4,9 +4,9 @@ import jdk.dynalink.linker.LinkerServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-@Controller
-public class LikeController {
-
-    @Autowired
-    LinkerServices likeService;
-}
+//@Controller
+//public class LikeController {
+//
+//    @Autowired
+//    LinkerServices likeService;
+//}

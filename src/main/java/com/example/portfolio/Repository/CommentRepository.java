@@ -1,7 +1,6 @@
 package com.example.portfolio.Repository;
 
 import com.example.portfolio.Domain.Comment;
-import com.example.portfolio.Dto.Comment.CreateCommentDto;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;

@@ -1,7 +1,7 @@
 package com.example.portfolio.Controller;
 
-import com.example.portfolio.Dto.User.LoginDto;
-import com.example.portfolio.Dto.User.SignUpDto;
+import com.example.portfolio.DTO.User.LoginDto;
+import com.example.portfolio.DTO.User.SignUpDto;
 import com.example.portfolio.Domain.User;
 import com.example.portfolio.Exception.Global.HTTP_INTERNAL_SERVER_ERROR;
 import com.example.portfolio.Exception.User.EMAIL_IS_DUPLICATED;
@@ -54,7 +54,7 @@ public class UserController {
     @Operation(summary = "로그인")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공",
-                    content = {@Content(schema = @Schema(implementation = User.class))}),
+                    content = {@Content(schema = @Schema(implementation = LoginResponse.class))}),
             @ApiResponse(responseCode = "401", description = "[[닉네임 || 이메일]]이 중복되었습니다",
                     content = {@Content(schema = @Schema(implementation = EMAIL_IS_DUPLICATED.class))}),
 

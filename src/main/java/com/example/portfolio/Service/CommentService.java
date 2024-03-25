@@ -1,10 +1,10 @@
 package com.example.portfolio.Service;
 
+import com.example.portfolio.DTO.Comment.CreateCommentDto;
+import com.example.portfolio.DTO.Comment.UpdateCommentDto;
 import com.example.portfolio.Domain.Comment;
 import com.example.portfolio.Domain.Project;
 import com.example.portfolio.Domain.User;
-import com.example.portfolio.Dto.Comment.CreateCommentDto;
-import com.example.portfolio.Dto.Comment.UpdateCommentDto;
 import com.example.portfolio.Repository.CommentRepository;
 import com.example.portfolio.Repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;

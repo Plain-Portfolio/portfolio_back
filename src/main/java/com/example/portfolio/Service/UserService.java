@@ -1,8 +1,8 @@
 package com.example.portfolio.Service;
 
 import com.example.portfolio.Common.ErrorCode;
-import com.example.portfolio.Dto.User.LoginDto;
-import com.example.portfolio.Dto.User.SignUpDto;
+import com.example.portfolio.DTO.User.LoginDto;
+import com.example.portfolio.DTO.User.SignUpDto;
 import com.example.portfolio.Domain.User;
 import com.example.portfolio.Exception.Global.UserApplicationException;
 import com.example.portfolio.JWT.JwtTokenProvider;

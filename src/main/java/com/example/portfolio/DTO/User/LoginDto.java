@@ -1,4 +1,4 @@
-package com.example.portfolio.Dto.User;
+package com.example.portfolio.DTO.User;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

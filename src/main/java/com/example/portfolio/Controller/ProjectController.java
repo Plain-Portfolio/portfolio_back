@@ -1,10 +1,10 @@
 package com.example.portfolio.Controller;
 
+import com.example.portfolio.DTO.Project.CreateProjectDto;
+import com.example.portfolio.DTO.Project.UpdateProjectDto;
 import com.example.portfolio.Domain.Comment;
 import com.example.portfolio.Domain.Project;
 import com.example.portfolio.Domain.User;
-import com.example.portfolio.Dto.project.CreateProjectDto;
-import com.example.portfolio.Dto.project.UpdateProjectDto;
 import com.example.portfolio.Exception.Global.HTTP_INTERNAL_SERVER_ERROR;
 import com.example.portfolio.Exception.User.EMAIL_IS_DUPLICATED;
 import com.example.portfolio.Exception.User.EMAIL_IS_VALID;
