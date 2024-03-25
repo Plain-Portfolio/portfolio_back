@@ -5,6 +5,7 @@ import com.example.portfolio.Domain.Comment;
 import com.example.portfolio.Domain.Project;
 import com.example.portfolio.Domain.User;
 import com.example.portfolio.Dto.project.CreateProjectDto;
+import com.example.portfolio.Dto.project.UpdateProjectDto;
 import com.example.portfolio.Exception.Global.UserApplicationException;
 import com.example.portfolio.Repository.CommentRepository;
 import com.example.portfolio.Repository.ProjectRepository;
@@ -68,8 +69,6 @@ public class ProjectService {
         project.setIsTeamProject(createProjectDto.getIsTeamProject());
         project.setOwner(findUser);
         projectRepository.save(project);
-//        project.setTitle(createProjectDto.getTitle());
-//        project.setTitle(createProjectDto.getTitle());
 
         return project;
     }
@@ -87,5 +86,14 @@ public class ProjectService {
     public List<Project> getProjectList (String userId) {
         List<Project> projects = projectRepository.findProjectByUserId(userId);
         return projects;
+    }
+
+    public Project updateProject (UpdateProjectDto updateProjectDto) {
+        Project findProject = projectRepository.findProjectById(updateProjectDto.getId());
+        findProject.setTitle(updateProjectDto.getTitle());
+        findProject.setDescription(updateProjectDto.getDescription());
+        findProject.setGithubLink(updateProjectDto.getGithubLink());
+        findProject.setIsTeamProject(updateProjectDto.getIsTeamProject());
+        return findProject;
     }
 }

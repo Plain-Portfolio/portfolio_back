@@ -4,6 +4,7 @@ import com.example.portfolio.Domain.Comment;
 import com.example.portfolio.Domain.Project;
 import com.example.portfolio.Domain.User;
 import com.example.portfolio.Dto.Comment.CreateCommentDto;
+import com.example.portfolio.Dto.Comment.UpdateCommentDto;
 import com.example.portfolio.Repository.CommentRepository;
 import com.example.portfolio.Repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,13 @@ public class CommentService {
         comment.setUser(user);
         Project findProject = projectRepository.findProjectById(createCommentDto.getProjectId());
         comment.setProject(findProject);
+        commentRepository.save(comment);
+        return comment;
+    }
+
+    public Comment updateComment (User user, UpdateCommentDto updateCommentDto) {
+        Comment comment = commentRepository.findCommentByCommentId(updateCommentDto.getCommentId());
+        comment.setContext(updateCommentDto.getContext());
         commentRepository.save(comment);
         return comment;
     }

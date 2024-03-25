@@ -4,6 +4,7 @@ import com.example.portfolio.Domain.Comment;
 import com.example.portfolio.Domain.Project;
 import com.example.portfolio.Domain.User;
 import com.example.portfolio.Dto.project.CreateProjectDto;
+import com.example.portfolio.Dto.project.UpdateProjectDto;
 import com.example.portfolio.Exception.Global.HTTP_INTERNAL_SERVER_ERROR;
 import com.example.portfolio.Exception.User.EMAIL_IS_DUPLICATED;
 import com.example.portfolio.Exception.User.EMAIL_IS_VALID;
@@ -35,20 +36,6 @@ public class ProjectController {
     @Autowired
     JwtTokenProvider jwtTokenProvider;
 
-    @Operation(summary = "프로젝트 생성")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "성공",
-                    content = {@Content(schema = @Schema(implementation = Project.class))}),
-            @ApiResponse(responseCode = "500", description = "서버 에러",
-                    content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
-    })
-    @PostMapping("/create")
-    public ResponseEntity<?> createProject(@RequestHeader("Authorization") String token, @RequestBody CreateProjectDto createProjectDto) throws Exception {
-        User user = jwtTokenProvider.validateToken(token);
-        Project project = projectService.createProject(user.getId(), createProjectDto);
-        return ResponseEntity.ok(project);
-    }
-
     @Operation(summary = "프로젝트 디테일 조회")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공",
@@ -73,5 +60,33 @@ public class ProjectController {
     public ResponseEntity<?> getProjectList(@PathVariable(name = "userId") String userId) {
         List<Project> findProjects = projectService.getProjectList(userId);
         return ResponseEntity.ok(findProjects);
+    }
+
+    @Operation(summary = "프로젝트 생성")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공",
+                    content = {@Content(schema = @Schema(implementation = Project.class))}),
+            @ApiResponse(responseCode = "500", description = "서버 에러",
+                    content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
+    })
+    @PostMapping("/create")
+    public ResponseEntity<?> createProject(@RequestHeader("Authorization") String token, @RequestBody CreateProjectDto createProjectDto) throws Exception {
+        User user = jwtTokenProvider.validateToken(token);
+        Project project = projectService.createProject(user.getId(), createProjectDto);
+        return ResponseEntity.ok(project);
+    }
+
+    @Operation(summary = "프로젝트 수정")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공",
+                    content = {@Content(schema = @Schema(implementation = Project.class))}),
+            @ApiResponse(responseCode = "500", description = "서버 에러",
+                    content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
+    })
+    @PutMapping("/update")
+    public ResponseEntity<?> updateProject(@RequestHeader("Authorization") String token, @RequestBody UpdateProjectDto updateProjectDto) throws Exception {
+        jwtTokenProvider.validateToken(token);
+        Project project = projectService.updateProject(updateProjectDto);
+        return ResponseEntity.ok(project);
     }
 }

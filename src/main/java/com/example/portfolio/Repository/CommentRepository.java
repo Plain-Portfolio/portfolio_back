@@ -24,4 +24,11 @@ public class CommentRepository {
                 .getResultList();
         return comments;
     }
+
+    public Comment findCommentByCommentId(Long commentId) {
+         Comment comment = em.createQuery("SELECT c FROM Comment c WHERE c.id = :commentId", Comment.class)
+                .setParameter("commentId", commentId)
+                .getSingleResult();
+         return comment;
+    }
 }
