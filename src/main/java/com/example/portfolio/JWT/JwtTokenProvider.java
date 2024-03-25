@@ -1,6 +1,8 @@
 package com.example.portfolio.JWT;
 
+import com.example.portfolio.Common.ErrorCode;
 import com.example.portfolio.Domain.User;
+import com.example.portfolio.Exception.Global.UserApplicationException;
 import com.example.portfolio.Repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;
@@ -45,7 +47,7 @@ public class JwtTokenProvider {
     }
 
     // JWT 토큰의 유효성 검사
-    public User validateToken(String token) throws Exception {
+    public User validateToken(String token) {
         try {
             token = token.replaceAll("^\"|\"$", "");
             jwtSecret = jwtSecret.replaceAll("^\"|\"$", "");
@@ -56,7 +58,7 @@ public class JwtTokenProvider {
             return user;
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            throw new Exception("JWT 인증에 실패하셨습니다");
+            throw new UserApplicationException(ErrorCode.TOKEN_AUTHENTICATION_ERROR);
         }
     }
 }

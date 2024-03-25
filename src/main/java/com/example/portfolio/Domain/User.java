@@ -29,7 +29,7 @@ public class User {
     private String nickname;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Project> projects = new ArrayList<>();
 
     @JsonIgnore

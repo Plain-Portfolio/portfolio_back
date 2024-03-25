@@ -1,4 +1,4 @@
-package com.example.portfolio.response;
+package com.example.portfolio.response.User;
 
 import com.example.portfolio.Domain.User;
 import lombok.AllArgsConstructor;

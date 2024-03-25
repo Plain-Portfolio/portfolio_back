@@ -1,14 +1,14 @@
 package com.example.portfolio.Controller;
 
-import com.example.portfolio.DTO.LoginDto;
-import com.example.portfolio.DTO.SignUpDto;
+import com.example.portfolio.Dto.User.LoginDto;
+import com.example.portfolio.Dto.User.SignUpDto;
 import com.example.portfolio.Domain.User;
 import com.example.portfolio.Exception.Global.HTTP_INTERNAL_SERVER_ERROR;
 import com.example.portfolio.Exception.User.EMAIL_IS_DUPLICATED;
 import com.example.portfolio.Exception.User.EMAIL_IS_VALID;
 import com.example.portfolio.Repository.UserRepository;
 import com.example.portfolio.Service.UserService;
-import com.example.portfolio.response.LoginResponse;
+import com.example.portfolio.response.User.LoginResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -19,8 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @Controller
 @Tag(name = "유저 API", description = "유저 API입니다")

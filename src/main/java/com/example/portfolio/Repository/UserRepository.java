@@ -1,7 +1,8 @@
 package com.example.portfolio.Repository;
 
 import com.example.portfolio.Common.ErrorCode;
-import com.example.portfolio.DTO.SignUpDto;
+import com.example.portfolio.Domain.Project;
+import com.example.portfolio.Dto.User.SignUpDto;
 import com.example.portfolio.Domain.User;
 import com.example.portfolio.Exception.Global.UserApplicationException;
 import jakarta.persistence.EntityManager;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -72,11 +74,15 @@ public class UserRepository {
 
     }
 
-    public User findById (Long id) {
-        User user = em.createQuery("SELECT u FROM User u WHERE u.id = :id", User.class)
-                .setParameter("id", id)
-                .getSingleResult();
-        return user;
+    public User findUserById (Long id) throws Exception {
+        try {
+            User user = em.createQuery("SELECT u FROM User u WHERE u.id = :id", User.class)
+                    .setParameter("id", id)
+                    .getSingleResult();
+            return user;
+        } catch (Exception ex) {
+            throw new Exception("dasdassad");
+        }
     }
 
     public User findByEmail (String email) {

@@ -1,21 +1,19 @@
 package com.example.portfolio.Service;
 
 import com.example.portfolio.Common.ErrorCode;
-import com.example.portfolio.DTO.LoginDto;
-import com.example.portfolio.DTO.SignUpDto;
+import com.example.portfolio.Dto.User.LoginDto;
+import com.example.portfolio.Dto.User.SignUpDto;
 import com.example.portfolio.Domain.User;
 import com.example.portfolio.Exception.Global.UserApplicationException;
 import com.example.portfolio.JWT.JwtTokenProvider;
 import com.example.portfolio.Repository.UserRepository;
-import com.example.portfolio.response.LoginResponse;
+import com.example.portfolio.response.User.LoginResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 @Service

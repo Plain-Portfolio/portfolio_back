@@ -1,9 +1,13 @@
 package com.example.portfolio.Domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "projectimgs")
+@Getter @Setter
 public class ProjectImg {
 
     @Id
@@ -11,5 +15,6 @@ public class ProjectImg {
     private Long id;
 
     @ManyToOne
+    @JsonIgnore
     private Project project;
 }
