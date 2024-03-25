@@ -67,7 +67,7 @@ public class ProjectController {
             @ApiResponse(responseCode = "200", description = "성공",
                     content = {@Content(schema = @Schema(implementation = GetProjectListRequest.class))}),
             @ApiResponse(responseCode = "500", description = "서버 에러",
-                    content = {@Contegnt(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
+                    content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
     })
     @GetMapping("/{userId}/projects")
     public ResponseEntity<?> getProjectList(@PathVariable(name = "userId") String userId) {
