@@ -4,6 +4,7 @@ import com.example.portfolio.Domain.Comment;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -29,5 +30,12 @@ public class CommentRepository {
                 .setParameter("commentId", commentId)
                 .getSingleResult();
          return comment;
+    }
+
+    @Transactional
+    public void deleteCommentByCommentId (Long commentId) {
+        em.createQuery("DELETE FROM Comment c WHERE c.id = :commentId")
+                .setParameter("commentId", commentId)
+                .executeUpdate();
     }
 }

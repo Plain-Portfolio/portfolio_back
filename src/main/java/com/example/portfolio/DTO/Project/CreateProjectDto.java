@@ -1,4 +1,4 @@
-package com.example.portfolio.DTO.Project;
+package com.example.portfolio.Dto.Project;
 
 import com.example.portfolio.Domain.ProjectCategory;
 import com.example.portfolio.Domain.ProjectImg;

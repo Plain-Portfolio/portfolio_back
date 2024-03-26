@@ -10,9 +10,14 @@ import lombok.Setter;
 @Getter @Setter
 public class ProjectImg {
 
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(unique = true)
+    private String src;
 
     @ManyToOne
     @JsonIgnore

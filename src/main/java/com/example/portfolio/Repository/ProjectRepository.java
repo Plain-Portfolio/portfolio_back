@@ -4,6 +4,7 @@ import com.example.portfolio.Domain.Project;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -25,6 +26,13 @@ public class ProjectRepository {
                 .setParameter("id", projectId)
                 .getSingleResult();
         return project;
+    }
+
+    @Transactional
+    public void deleleProjectByProjectId (Long projectId) {
+        em.createQuery("DELETE FROM Project p WHERE p.id = :productId")
+                .setParameter("productId", projectId)
+                .executeUpdate();
     }
 
     public void save (Project project) {

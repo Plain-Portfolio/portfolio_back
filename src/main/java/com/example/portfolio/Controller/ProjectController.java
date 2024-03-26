@@ -1,10 +1,12 @@
 package com.example.portfolio.Controller;
 
-import com.example.portfolio.DTO.Project.CreateProjectDto;
-import com.example.portfolio.DTO.Project.UpdateProjectDto;
 import com.example.portfolio.Domain.Comment;
 import com.example.portfolio.Domain.Project;
 import com.example.portfolio.Domain.User;
+import com.example.portfolio.Dto.Like.CancelLikeDto;
+import com.example.portfolio.Dto.Project.CreateProjectDto;
+import com.example.portfolio.Dto.Project.DeleteProjectDto;
+import com.example.portfolio.Dto.Project.UpdateProjectDto;
 import com.example.portfolio.Exception.Global.HTTP_INTERNAL_SERVER_ERROR;
 import com.example.portfolio.Exception.User.EMAIL_IS_DUPLICATED;
 import com.example.portfolio.Exception.User.EMAIL_IS_VALID;
@@ -88,5 +90,18 @@ public class ProjectController {
         jwtTokenProvider.validateToken(token);
         Project project = projectService.updateProject(updateProjectDto);
         return ResponseEntity.ok(project);
+    }
+
+    @Operation(summary = "프로젝트 삭제")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "500", description = "서버 에러",
+                    content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
+    })
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> deleteProject (@RequestHeader("Authorization") String token, @RequestBody DeleteProjectDto deleteProjectDto)  {
+        User user = jwtTokenProvider.validateToken(token);
+        projectService.deleteProject(user.getId(), deleteProjectDto);
+        return ResponseEntity.ok("success");
     }
 }

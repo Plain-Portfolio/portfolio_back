@@ -19,12 +19,14 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     @Schema(description = "사용자 email", example = "eos0103@naver.com")
     private String email;
 
     @Schema(description = "사용자 password", example = "aos4050123!@#")
     private String password;
 
+    @Column(unique = true)
     @Schema(description = "사용자 password", example = "김기범")
     private String nickname;
 

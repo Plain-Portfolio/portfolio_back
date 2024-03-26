@@ -1,10 +1,11 @@
 package com.example.portfolio.Controller;
 
-import com.example.portfolio.DTO.Comment.CreateCommentDto;
-import com.example.portfolio.DTO.Comment.UpdateCommentDto;
 import com.example.portfolio.Domain.Comment;
 import com.example.portfolio.Domain.Project;
 import com.example.portfolio.Domain.User;
+import com.example.portfolio.Dto.Comment.CreateCommentDto;
+import com.example.portfolio.Dto.Comment.DeleteCommentDto;
+import com.example.portfolio.Dto.Comment.UpdateCommentDto;
 import com.example.portfolio.Exception.Global.HTTP_INTERNAL_SERVER_ERROR;
 import com.example.portfolio.JWT.JwtTokenProvider;
 import com.example.portfolio.Service.CommentService;
@@ -58,4 +59,19 @@ public class CommentController {
         Comment comment = commentService.updateComment(user, updateCommentDto);
         return ResponseEntity.ok(comment);
     }
+
+    @Operation(summary = "댓글 삭제")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "500", description = "서버 에러",
+                    content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
+    })
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> deleteComment (@RequestHeader("Authorization") String token, @RequestBody DeleteCommentDto deleteCommentDto) {
+        User user = jwtTokenProvider.validateToken(token);
+        commentService.deleteComment(deleteCommentDto);
+        return ResponseEntity.ok("success");
+    }
+
+
 }

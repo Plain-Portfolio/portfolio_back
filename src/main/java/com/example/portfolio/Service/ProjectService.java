@@ -1,11 +1,12 @@
 package com.example.portfolio.Service;
 
 import com.example.portfolio.Common.ErrorCode;
-import com.example.portfolio.DTO.Project.CreateProjectDto;
-import com.example.portfolio.DTO.Project.UpdateProjectDto;
 import com.example.portfolio.Domain.Comment;
 import com.example.portfolio.Domain.Project;
 import com.example.portfolio.Domain.User;
+import com.example.portfolio.Dto.Project.CreateProjectDto;
+import com.example.portfolio.Dto.Project.DeleteProjectDto;
+import com.example.portfolio.Dto.Project.UpdateProjectDto;
 import com.example.portfolio.Exception.Global.UserApplicationException;
 import com.example.portfolio.Repository.CommentRepository;
 import com.example.portfolio.Repository.ProjectRepository;
@@ -95,5 +96,9 @@ public class ProjectService {
         findProject.setGithubLink(updateProjectDto.getGithubLink());
         findProject.setIsTeamProject(updateProjectDto.getIsTeamProject());
         return findProject;
+    }
+
+    public void deleteProject (Long projectId, DeleteProjectDto deleteProjectDto) {
+        projectRepository.deleleProjectByProjectId(deleteProjectDto.getProjectId());
     }
 }
