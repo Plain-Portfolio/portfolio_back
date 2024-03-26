@@ -42,11 +42,11 @@ public class ProjectRepository {
         em.persist(project);
     }
 
-    public List<Project> projectsSearchByCategories (List<Category> categories) {
+    public List<Project> projectsSearchByCategories (List<String> categories) {
         List<String> sqlFilterList = new ArrayList<>();
 
-        List<Project> projects = em.createQuery("SELECT p FROM Project p JOIN p.categories c WHERE c.categoryName IN (:categoryNames)")
-                .setParameter("categoryNames", Arrays.asList(categories))
+        List<Project> projects = em.createQuery("SELECT p FROM Project p JOIN p.projectCategories pc WHERE pc.category.name IN (:categoryNames)", Project.class)
+                .setParameter("categoryNames", categories)
                 .getResultList();
         return projects;
     }

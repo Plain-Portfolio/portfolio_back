@@ -109,14 +109,12 @@ public class ProjectController {
     @Operation(summary = "카테고리로 프로젝트 조회")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공",
-                    content = {@Content(schema = @Schema(implementation = GetProjectListRequest.class))}),
+                    content = {@Content(schema = @Schema(implementation = CategorySearchDto.class))}),
             @ApiResponse(responseCode = "500", description = "서버 에러",
                     content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
     })
-
-
-    @GetMapping("/categorySearch")
-    public ResponseEntity<List<Project>> categorySearch(CategorySearchDto categorySearchDto) {
+    @PostMapping("/categorySearch")
+    public ResponseEntity<List<Project>> categorySearch(@RequestBody CategorySearchDto categorySearchDto) {
 
         List<Project> projects = projectService.categorySearch(categorySearchDto);
 

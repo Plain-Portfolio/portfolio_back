@@ -104,6 +104,7 @@ public class ProjectService {
     }
 
     public List<Project> categorySearch (CategorySearchDto categorySearchDto) {
-        projectRepository.projectsSearchByCategories(categorySearchDto.getCategoryNames());
+        List<Project> projects = projectRepository.projectsSearchByCategories(categorySearchDto.getCategoryNames());
+        return projects;
     }
 }
