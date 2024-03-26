@@ -1,11 +1,14 @@
 package com.example.portfolio.Repository;
 
+import com.example.portfolio.Domain.Category;
 import com.example.portfolio.Domain.Project;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Repository
@@ -37,5 +40,14 @@ public class ProjectRepository {
 
     public void save (Project project) {
         em.persist(project);
+    }
+
+    public List<Project> projectsSearchByCategories (List<Category> categories) {
+        List<String> sqlFilterList = new ArrayList<>();
+
+        List<Project> projects = em.createQuery("SELECT p FROM Project p JOIN p.categories c WHERE c.categoryName IN (:categoryNames)")
+                .setParameter("categoryNames", Arrays.asList(categories))
+                .getResultList();
+        return projects;
     }
 }

@@ -4,6 +4,7 @@ import com.example.portfolio.Common.ErrorCode;
 import com.example.portfolio.Domain.Comment;
 import com.example.portfolio.Domain.Project;
 import com.example.portfolio.Domain.User;
+import com.example.portfolio.Dto.Project.CategorySearchDto;
 import com.example.portfolio.Dto.Project.CreateProjectDto;
 import com.example.portfolio.Dto.Project.DeleteProjectDto;
 import com.example.portfolio.Dto.Project.UpdateProjectDto;
@@ -100,5 +101,9 @@ public class ProjectService {
 
     public void deleteProject (Long projectId, DeleteProjectDto deleteProjectDto) {
         projectRepository.deleleProjectByProjectId(deleteProjectDto.getProjectId());
+    }
+
+    public List<Project> categorySearch (CategorySearchDto categorySearchDto) {
+        projectRepository.projectsSearchByCategories(categorySearchDto.getCategoryNames());
     }
 }

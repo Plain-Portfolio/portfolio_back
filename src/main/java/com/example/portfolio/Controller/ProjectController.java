@@ -4,6 +4,7 @@ import com.example.portfolio.Domain.Comment;
 import com.example.portfolio.Domain.Project;
 import com.example.portfolio.Domain.User;
 import com.example.portfolio.Dto.Like.CancelLikeDto;
+import com.example.portfolio.Dto.Project.CategorySearchDto;
 import com.example.portfolio.Dto.Project.CreateProjectDto;
 import com.example.portfolio.Dto.Project.DeleteProjectDto;
 import com.example.portfolio.Dto.Project.UpdateProjectDto;
@@ -103,5 +104,22 @@ public class ProjectController {
         User user = jwtTokenProvider.validateToken(token);
         projectService.deleteProject(user.getId(), deleteProjectDto);
         return ResponseEntity.ok("success");
+    }
+
+    @Operation(summary = "카테고리로 프로젝트 조회")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공",
+                    content = {@Content(schema = @Schema(implementation = GetProjectListRequest.class))}),
+            @ApiResponse(responseCode = "500", description = "서버 에러",
+                    content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
+    })
+
+
+    @GetMapping("/categorySearch")
+    public ResponseEntity<List<Project>> categorySearch(CategorySearchDto categorySearchDto) {
+
+        List<Project> projects = projectService.categorySearch(categorySearchDto);
+
+        return ResponseEntity.ok(projects);
     }
 }
