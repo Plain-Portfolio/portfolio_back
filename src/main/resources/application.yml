@@ -4,13 +4,6 @@ spring:
     username: root
     password: Lee2030123!@#
     driver-class-name: com.mysql.cj.jdbc.Driver
-#  autoconfigure:
-#    exclude=org:
-#      springframework:
-#        boot:
-#          autoconfigure:
-#            security:
-#              servlet: SecurityAutoConfiguration
   jpa:
     open-in-view: true
     hibernate:
