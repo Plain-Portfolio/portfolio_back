@@ -4,6 +4,9 @@ spring:
     username: root
     password: Lee2030123!@#
     driver-class-name: com.mysql.cj.jdbc.Driver
+  redis:
+    host: 127.0.0.1
+    port: 6379
   jpa:
     open-in-view: true
     hibernate:
