@@ -103,8 +103,8 @@ public class ProjectService {
         projectRepository.deleleProjectByProjectId(deleteProjectDto.getProjectId());
     }
 
-    public List<Project> categorySearch (CategorySearchDto categorySearchDto) {
-        List<Project> projects = projectRepository.projectsSearchByCategories(categorySearchDto.getCategoryNames());
+    public List<Project> categorySearch (List<String> categoryNames) {
+        List<Project> projects = projectRepository.projectsSearchByCategories(categoryNames);
         return projects;
     }
 }

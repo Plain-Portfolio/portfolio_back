@@ -30,7 +30,14 @@ public enum ErrorCode {
     GITHUB_LINK_CANNOT_BE_NULL(1014, 400,"깃허브 링크는 빈 값이 허용되지 않습니다"),
     IS_TEAM_PROJECT_CANNOT_BE_NULL(1015, 400,"팀프로젝트여부는 빈 값이 허용되지 않습니다"),
     OWNNER_ID_CANNOT_BE_NULL(1016, 400,"소유자ID는 빈 값이 허용되지 않습니다"),
-    IS_NOT_SAME_OWNERIDS(1017, 401, "토큰으로 확인된 소유자ID와 input으로 넘어온 소유자ID가 일치하지 않습니다");
+    IS_NOT_SAME_OWNERIDS(1017, 401, "토큰으로 확인된 소유자ID와 input으로 넘어온 소유자ID가 일치하지 않습니다"),
+    PROJECT_IS_NOT_FOUND(1018, 401, "해당 ID를 가진 프로젝트가 존재하지 않습니다"),
+    ALREADY_LIKED(1019, 402, "이미 좋아요한 유저입니다"),
+    PROJECT_NOT_YEY_LIKED(1020, 400, "좋아요한 프로젝트가 아닙니다"),
+
+    //Category
+    CATEGORY_IS_ALREADY_CREATED(1021, 400, "이미 해당 이름을 가진 카테고리가 존재합니다"),
+    NO_MATCHING_CATEGORY_WITH_ID(1022, 401, "해당 ID를 가진 카테고리가 존재하지 않습니다");
 
     private int code;
     private int status;

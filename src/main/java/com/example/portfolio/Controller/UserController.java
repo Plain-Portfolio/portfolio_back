@@ -7,6 +7,7 @@ import com.example.portfolio.Exception.Global.HTTP_INTERNAL_SERVER_ERROR;
 import com.example.portfolio.Exception.User.EMAIL_IS_DUPLICATED;
 import com.example.portfolio.Exception.User.EMAIL_IS_VALID;
 import com.example.portfolio.Repository.UserRepository;
+import com.example.portfolio.Service.RedisService;
 import com.example.portfolio.Service.UserService;
 import com.example.portfolio.response.User.LoginResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,6 +32,8 @@ public class UserController {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    RedisService redisService;;
 
     @Operation(summary = "회원가입")
     @ApiResponses(value = {
@@ -68,5 +71,4 @@ public class UserController {
         LoginResponse loginResponse = userService.login(loginDto);
         return ResponseEntity.ok(loginResponse);
     }
-
 }

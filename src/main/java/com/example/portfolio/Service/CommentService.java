@@ -27,6 +27,10 @@ public class CommentService {
         Comment comment = new Comment();
         comment.setContext(createCommentDto.getContext());
         comment.setUser(user);
+        comment.setParentCommentOrderId(createCommentDto.getParentCommentOrderId());
+        comment.setCommentOrder(createCommentDto.getCommentOrder());
+        comment.setChildCommentCount(createCommentDto.getChildCommentCount());
+        comment.setIsDeleted(createCommentDto.getIsDeleted());
         Project findProject = projectRepository.findProjectById(createCommentDto.getProjectId());
         comment.setProject(findProject);
         commentRepository.save(comment);

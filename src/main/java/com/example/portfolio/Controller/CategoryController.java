@@ -6,7 +6,10 @@ import com.example.portfolio.Domain.User;
 import com.example.portfolio.Dto.Category.CreateCategoryDto;
 import com.example.portfolio.Dto.Category.DeleteCategoryDto;
 import com.example.portfolio.Dto.Category.UpdateCategoryDto;
+import com.example.portfolio.Exception.Category.CATEGORY_IS_ALREADY_CREATED;
+import com.example.portfolio.Exception.Category.NO_MATCHING_CATEGORY_WITH_ID;
 import com.example.portfolio.Exception.Global.HTTP_INTERNAL_SERVER_ERROR;
+import com.example.portfolio.Exception.Like.ALREADY_LIKED;
 import com.example.portfolio.JWT.JwtTokenProvider;
 import com.example.portfolio.Service.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,6 +38,8 @@ public class CategoryController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공",
                     content = {@Content(schema = @Schema(implementation = Category.class))}),
+            @ApiResponse(responseCode = "400", description = "해당 이름으로 이미 만들어진 카테고리가 존재하는 경우",
+                    content = {@Content(schema = @Schema(implementation = CATEGORY_IS_ALREADY_CREATED.class))}),
             @ApiResponse(responseCode = "500", description = "서버 에러",
                     content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
     })
@@ -49,6 +54,10 @@ public class CategoryController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공",
                     content = {@Content(schema = @Schema(implementation = Category.class))}),
+            @ApiResponse(responseCode = "400", description = "해당 이름으로 이미 만들어진 카테고리가 존재하는 경우",
+                    content = {@Content(schema = @Schema(implementation = CATEGORY_IS_ALREADY_CREATED.class))}),
+            @ApiResponse(responseCode = "401", description = "해당 ID를 가진 카테고리가 존재하지 않는 경우",
+                    content = {@Content(schema = @Schema(implementation = NO_MATCHING_CATEGORY_WITH_ID.class))}),
             @ApiResponse(responseCode = "500", description = "서버 에러",
                     content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
     })
