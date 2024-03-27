@@ -16,16 +16,19 @@ import com.example.portfolio.Request.GetProjectListRequest;
 import com.example.portfolio.Service.ProjectService;
 import com.example.portfolio.response.Project.GetProjectDetailResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -113,10 +116,11 @@ public class ProjectController {
             @ApiResponse(responseCode = "500", description = "서버 에러",
                     content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
     })
-    @PostMapping("/categorySearch")
-    public ResponseEntity<List<Project>> categorySearch(@RequestBody CategorySearchDto categorySearchDto) {
-
-        List<Project> projects = projectService.categorySearch(categorySearchDto);
+    @GetMapping("/categorySearch")
+    public ResponseEntity<List<Project>> categorySearch(
+            @Parameter(description = "조회할 카테고리 이름", schema = @Schema(type = "name", example = "spring"))
+            @RequestParam(name = "name", value = "name") List<String> names) {
+        List<Project> projects = projectService.categorySearch(names);
 
         return ResponseEntity.ok(projects);
     }
