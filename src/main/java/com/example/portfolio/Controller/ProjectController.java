@@ -124,7 +124,7 @@ public class ProjectController {
 
 
     @PostMapping("/upload")
-    public ResponseEntity<?> uploadImage(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<?> uploadImage(@RequestBody MultipartFile file) {
         System.out.println(file);
 
         return ResponseEntity.ok(file);
