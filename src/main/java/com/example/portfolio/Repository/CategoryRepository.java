@@ -1,6 +1,8 @@
 package com.example.portfolio.Repository;
 
+import com.example.portfolio.Common.ErrorCode;
 import com.example.portfolio.Domain.Category;
+import com.example.portfolio.Exception.Global.UserApplicationException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
@@ -17,10 +19,15 @@ public class CategoryRepository {
     }
 
     public Category findCategoryByCategoryId (Long categoryId) {
-        Category category = em.createQuery("SELECT c FROM Category c WHERE c.id = :categoryId", Category.class)
-                .setParameter("categoryId", categoryId)
-                .getSingleResult();
-        return category;
+        try {
+            Category category = em.createQuery("SELECT c FROM Category c WHERE c.id = :categoryId", Category.class)
+                    .setParameter("categoryId", categoryId)
+                    .getSingleResult();
+            return category;
+        } catch (Exception ex) {
+            throw new UserApplicationException(ErrorCode.NO_MATCHING_CATEGORY_WITH_ID);
+        }
+
     }
 
     public void deleteCategoryByCategoryId (Long categoryId) {
@@ -35,4 +42,11 @@ public class CategoryRepository {
                 .setParameter("likeId", likeId)
                 .executeUpdate();
     }
+
+    public Long countCategoryByName (String name) {
+            return em.createQuery("SELECT COUNT(c) FROM Category c WHERE c.name = :categoryName", Long.class)
+                .setParameter("categoryName", name)
+                .getSingleResult();
+    }
+
 }

@@ -1,7 +1,9 @@
 package com.example.portfolio.Repository;
 
+import com.example.portfolio.Common.ErrorCode;
 import com.example.portfolio.Domain.Category;
 import com.example.portfolio.Domain.Project;
+import com.example.portfolio.Exception.Global.UserApplicationException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
@@ -25,10 +27,14 @@ public class ProjectRepository {
     }
 
     public Project findProjectById (Long projectId) {
-        Project project = em.createQuery("SELECT p FROM Project p WHERE p.id = :id", Project.class)
-                .setParameter("id", projectId)
-                .getSingleResult();
-        return project;
+        try {
+            Project project = em.createQuery("SELECT p FROM Project p WHERE p.id = :id", Project.class)
+                    .setParameter("id", projectId)
+                    .getSingleResult();
+            return project;
+        } catch (Exception exception) {
+            throw new UserApplicationException(ErrorCode.PROJECT_IS_NOT_FOUND);
+        }
     }
 
     @Transactional

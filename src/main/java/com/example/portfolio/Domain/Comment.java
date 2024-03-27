@@ -24,4 +24,11 @@ public class Comment {
     @ManyToOne
     private Project project;
 
+    private Long parentCommentOrderId;
+
+    private Long commentOrder; // 순서
+
+    private Integer childCommentCount; // 자식 댓글의 개수
+
+    private Boolean isDeleted; // 댓글 삭제 여부
 }

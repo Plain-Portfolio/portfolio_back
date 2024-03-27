@@ -8,8 +8,11 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -118,4 +121,6 @@ public class UserRepository {
             throw new UserApplicationException(ErrorCode.NICKNAME_IS_VALID);
         }
     }
+
+
 }
