@@ -6,10 +6,12 @@ import com.example.portfolio.Dto.User.SignUpDto;
 import com.example.portfolio.Exception.Global.HTTP_INTERNAL_SERVER_ERROR;
 import com.example.portfolio.Exception.User.EMAIL_IS_DUPLICATED;
 import com.example.portfolio.Exception.User.EMAIL_IS_VALID;
+import com.example.portfolio.JWT.JwtTokenProvider;
 import com.example.portfolio.Repository.UserRepository;
 import com.example.portfolio.Service.RedisService;
 import com.example.portfolio.Service.UserService;
 import com.example.portfolio.response.User.LoginResponse;
+import com.example.portfolio.response.User.FindUserListResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -34,6 +36,9 @@ public class UserController {
 
     @Autowired
     RedisService redisService;;
+
+    @Autowired
+    JwtTokenProvider jwtTokenProvider;
 
     @Operation(summary = "회원가입")
     @ApiResponses(value = {
@@ -70,5 +75,20 @@ public class UserController {
     public ResponseEntity<LoginResponse> login (@RequestBody LoginDto loginDto) throws Exception {
         LoginResponse loginResponse = userService.login(loginDto);
         return ResponseEntity.ok(loginResponse);
+    }
+
+    @Operation(summary = "유저 모두 조회")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공",
+                    content = {@Content(schema = @Schema(implementation = FindUserListResponse.class))}),
+            @ApiResponse(responseCode = "500", description = "서버 에러",
+                    content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
+    })
+    @GetMapping("/list")
+    public ResponseEntity<FindUserListResponse> findUserList (@RequestHeader("Authorization") String token) {
+        jwtTokenProvider.validateToken(token);
+        FindUserListResponse response = new FindUserListResponse();
+        response.setUsers(userService.findUserList());
+        return ResponseEntity.ok(response);
     }
 }

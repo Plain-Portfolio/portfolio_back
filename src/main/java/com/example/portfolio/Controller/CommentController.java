@@ -1,7 +1,6 @@
 package com.example.portfolio.Controller;
 
 import com.example.portfolio.Domain.Comment;
-import com.example.portfolio.Domain.Project;
 import com.example.portfolio.Domain.User;
 import com.example.portfolio.Dto.Comment.CreateCommentDto;
 import com.example.portfolio.Dto.Comment.DeleteCommentDto;
@@ -9,17 +8,19 @@ import com.example.portfolio.Dto.Comment.UpdateCommentDto;
 import com.example.portfolio.Exception.Global.HTTP_INTERNAL_SERVER_ERROR;
 import com.example.portfolio.JWT.JwtTokenProvider;
 import com.example.portfolio.Service.CommentService;
+import com.example.portfolio.response.Comment.FindCommentList;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/comment")
@@ -73,5 +74,16 @@ public class CommentController {
         return ResponseEntity.ok("success");
     }
 
-
+    @Operation(summary = "댓글 모두 조회")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공",
+                    content = {@Content(schema = @Schema(implementation = FindCommentList.class))}),
+            @ApiResponse(responseCode = "500", description = "서버 에러",
+                    content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
+    })
+    @GetMapping("/list")
+    public ResponseEntity<?> findCommentList () {
+        List<Comment> comments = commentService.findCommentList();
+        return ResponseEntity.ok(comments);
+    }
 }

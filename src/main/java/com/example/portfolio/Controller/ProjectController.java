@@ -43,6 +43,22 @@ public class ProjectController {
     @Autowired
     JwtTokenProvider jwtTokenProvider;
 
+    @Operation(summary = "카테고리로 프로젝트 조회")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공",
+                    content = {@Content(schema = @Schema(implementation = Project.class))}),
+            @ApiResponse(responseCode = "500", description = "서버 에러",
+                    content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
+    })
+    @GetMapping("/categorySearch")
+    public ResponseEntity<List<Project>> categorySearch(
+            @Parameter(description = "조회할 카테고리 이름", schema = @Schema(type = "name", example = "spring"))
+            @RequestParam(name = "name", value = "name") List<String> names) {
+        List<Project> projects = projectService.categorySearch(names);
+
+        return ResponseEntity.ok(projects);
+    }
+
     @Operation(summary = "프로젝트 디테일 조회")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공",
@@ -108,22 +124,6 @@ public class ProjectController {
         User user = jwtTokenProvider.validateToken(token);
         projectService.deleteProject(user.getId(), deleteProjectDto);
         return ResponseEntity.ok("success");
-    }
-
-    @Operation(summary = "카테고리로 프로젝트 조회")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "성공",
-                    content = {@Content(schema = @Schema(implementation = Project.class))}),
-            @ApiResponse(responseCode = "500", description = "서버 에러",
-                    content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
-    })
-    @GetMapping("/categorySearch")
-    public ResponseEntity<List<Project>> categorySearch(
-            @Parameter(description = "조회할 카테고리 이름", schema = @Schema(type = "name", example = "spring"))
-            @RequestParam(name = "name", value = "name") List<String> names) {
-        List<Project> projects = projectService.categorySearch(names);
-
-        return ResponseEntity.ok(projects);
     }
 
 

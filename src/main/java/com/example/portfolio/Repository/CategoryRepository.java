@@ -8,6 +8,8 @@ import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Repository
 public class CategoryRepository {
 
@@ -49,4 +51,9 @@ public class CategoryRepository {
                 .getSingleResult();
     }
 
+    public List<Category> findAllCategory () {
+        List<Category> categories = em.createQuery("SELECT c FROM Category c", Category.class)
+                .getResultList();
+        return categories;
+    }
 }

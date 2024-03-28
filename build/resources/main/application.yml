@@ -19,14 +19,17 @@ spring:
       hibernate.format_sql: true
       dialect: org.hibernate.dialect.MySQL8InnoDBDialect
   springdoc:
-    packages-to-scan: com.colabear754.springdoc_example.controllers
-    default-consumes-media-type: application/json;charset=UTF-8
-    default-produces-media-type: application/json;charset=UTF-8
+    version: 2.0.2
+    api-docs:
+      path: /api-docs
+    default-consumes-media-type: application/json
+    default-produces-media-type: application/json
     swagger-ui:
-      path: /
-      disable-swagger-default-url: true
-      display-request-duration: true
       operations-sorter: alpha
+      tags-sorter: alpha
+      path: /swagger-ui.html
+      disable-swagger-default-url: true
+      display-query-params-without-oauth2: true
   profiles:
     include: secret
   jwt:

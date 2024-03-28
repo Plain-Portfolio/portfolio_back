@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class CategoryService {
 
@@ -46,5 +48,11 @@ public class CategoryService {
     public void deleteCategory (DeleteCategoryDto deleteCategoryDto) {
         categoryRepository.findCategoryByCategoryId(deleteCategoryDto.getCategoryId());
         categoryRepository.deleteCategoryByCategoryId(deleteCategoryDto.getCategoryId());
+    }
+
+    @Transactional
+    public List<Category> findAllCategoryList () {
+        List<Category> categories = categoryRepository.findAllCategory();
+        return categories;
     }
 }

@@ -38,4 +38,10 @@ public class CommentRepository {
                 .setParameter("commentId", commentId)
                 .executeUpdate();
     }
+
+    public List<Comment> findAllComment() {
+        List<Comment> comments = em.createQuery("SELECT c FROM Comment", Comment.class)
+                .getResultList();
+        return comments;
+    }
 }

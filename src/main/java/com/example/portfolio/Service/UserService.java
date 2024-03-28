@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.regex.Pattern;
 
 @Service
@@ -91,6 +92,12 @@ public class UserService {
         } catch (Exception e) {
             throw new UserApplicationException(ErrorCode.TOKEN_AUTHENTICATION_ERROR);
         }
+    }
+
+    @Transactional
+    public List<User> findUserList () {
+        List<User> users = userRepository.findAllUser();
+        return users;
     }
 
 }

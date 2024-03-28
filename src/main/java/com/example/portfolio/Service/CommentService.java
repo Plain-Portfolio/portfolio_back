@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class CommentService {
 
@@ -46,5 +48,10 @@ public class CommentService {
 
     public void deleteComment (DeleteCommentDto deleteCommentDto) {
         commentRepository.deleteCommentByCommentId(deleteCommentDto.getCommentId());
+    }
+
+    public List<Comment> findCommentList () {
+        List<Comment> comments = commentRepository.findAllComment();
+        return comments;
     }
 }

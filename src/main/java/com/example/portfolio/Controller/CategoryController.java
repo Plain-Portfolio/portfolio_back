@@ -12,6 +12,7 @@ import com.example.portfolio.Exception.Global.HTTP_INTERNAL_SERVER_ERROR;
 import com.example.portfolio.Exception.Like.ALREADY_LIKED;
 import com.example.portfolio.JWT.JwtTokenProvider;
 import com.example.portfolio.Service.CategoryService;
+import com.example.portfolio.response.Category.findAllCategoryListResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -23,6 +24,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @Tag(name = "카테고리 API", description = "카테고리 API입니다")
 @RequestMapping("/category")
@@ -33,6 +36,19 @@ public class CategoryController {
 
     @Autowired
     JwtTokenProvider jwtTokenProvider;
+
+    @Operation(summary = "카테고리 모두 조회")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공",
+                    content = {@Content(schema = @Schema(implementation = findAllCategoryListResponse.class))}),
+            @ApiResponse(responseCode = "500", description = "서버 에러",
+                    content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
+    })
+    @GetMapping("/list")
+    public ResponseEntity<?> findAllCategoryList () {
+        List<Category> categories = categoryService.findAllCategoryList();
+        return ResponseEntity.ok(categories);
+    }
 
     @Operation(summary = "카테고리 생성")
     @ApiResponses(value = {
@@ -80,4 +96,6 @@ public class CategoryController {
         categoryService.deleteCategory(deleteCategoryDto);
         return ResponseEntity.ok("success");
     }
+
+
 }
