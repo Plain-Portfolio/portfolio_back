@@ -16,7 +16,7 @@ public class GlobalExceptionHandler {
         int errorStatus = 500;
         int errorCode = 1000;
         String errorMessage = "BackendError - " + e.getMessage();
-
+        System.out.println(e.getMessage());
         CustomErrorResponse errorResponse = new CustomErrorResponse(errorStatus, errorCode, errorMessage);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }

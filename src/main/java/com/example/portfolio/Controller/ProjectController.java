@@ -1,7 +1,9 @@
 package com.example.portfolio.Controller;
 
+import com.example.portfolio.DTO.Image.UploadDto;
 import com.example.portfolio.Domain.Comment;
 import com.example.portfolio.Domain.Project;
+import com.example.portfolio.Domain.ProjectImg;
 import com.example.portfolio.Domain.User;
 import com.example.portfolio.Dto.Like.CancelLikeDto;
 import com.example.portfolio.Dto.Project.CategorySearchDto;
@@ -24,10 +26,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Arrays;
 import java.util.List;
@@ -124,13 +128,5 @@ public class ProjectController {
         User user = jwtTokenProvider.validateToken(token);
         projectService.deleteProject(user.getId(), deleteProjectDto);
         return ResponseEntity.ok("success");
-    }
-
-
-    @PostMapping("/upload")
-    public ResponseEntity<?> uploadImage(@RequestBody MultipartFile file) {
-        System.out.println(file);
-
-        return ResponseEntity.ok(file);
     }
 }

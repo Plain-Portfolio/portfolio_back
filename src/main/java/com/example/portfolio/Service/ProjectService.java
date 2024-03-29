@@ -81,6 +81,7 @@ public class ProjectService {
         Project project = projectRepository.findProjectById(parsedProjectId);
         List<Comment> comments = commentRepository.findCommentsByProjectId(projectId);
         GetProjectDetailResponse response = new GetProjectDetailResponse();
+        response.setProject(project);
         response.setComment(comments);
         return response;
     }
