@@ -28,11 +28,13 @@ public class ProjectRepository {
 
     public Project findProjectById (Long projectId) {
         try {
-            Project project = em.createQuery("SELECT p FROM Project p WHERE p.id = :id", Project.class)
+
+            Project project = em.createQuery("SELECT p FROM Project p JOIN FETCH p.projectCategories pc JOIN FETCH pc.category WHERE p.id = :id", Project.class)
                     .setParameter("id", projectId)
                     .getSingleResult();
             return project;
-        } catch (Exception exception) {
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
             throw new UserApplicationException(ErrorCode.PROJECT_IS_NOT_FOUND);
         }
     }

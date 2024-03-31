@@ -3,6 +3,7 @@ package com.example.portfolio.Service;
 import com.example.portfolio.Common.ErrorCode;
 import com.example.portfolio.Domain.Comment;
 import com.example.portfolio.Domain.Project;
+import com.example.portfolio.Domain.ProjectCategory;
 import com.example.portfolio.Domain.User;
 import com.example.portfolio.Dto.Project.CategorySearchDto;
 import com.example.portfolio.Dto.Project.CreateProjectDto;
@@ -10,6 +11,7 @@ import com.example.portfolio.Dto.Project.DeleteProjectDto;
 import com.example.portfolio.Dto.Project.UpdateProjectDto;
 import com.example.portfolio.Exception.Global.UserApplicationException;
 import com.example.portfolio.Repository.CommentRepository;
+import com.example.portfolio.Repository.ProjectCategoryRepository;
 import com.example.portfolio.Repository.ProjectRepository;
 import com.example.portfolio.Repository.UserRepository;
 import com.example.portfolio.response.Project.GetProjectDetailResponse;
@@ -27,6 +29,9 @@ public class ProjectService {
 
     @Autowired
     CommentRepository commentRepository;
+
+    @Autowired
+    ProjectCategoryRepository projectCategoryRepository;
 
     @Autowired
     UserRepository userRepository;
@@ -79,10 +84,12 @@ public class ProjectService {
     public GetProjectDetailResponse getProjectDetail (String projectId) {
         Long parsedProjectId = Long.parseLong(projectId);
         Project project = projectRepository.findProjectById(parsedProjectId);
-        List<Comment> comments = commentRepository.findCommentsByProjectId(projectId);
+//        List<Comment> comments = commentRepository.findCommentsByProjectId(projectId);
+//        List<ProjectCategory> projectCategory = projectCategoryRepository.findProjectCategoryByProjectId(project.getId());
         GetProjectDetailResponse response = new GetProjectDetailResponse();
         response.setProject(project);
-        response.setComment(comments);
+//        response.setComment(comments);
+//        response.setProjectCategory(projectCategory);
         return response;
     }
 

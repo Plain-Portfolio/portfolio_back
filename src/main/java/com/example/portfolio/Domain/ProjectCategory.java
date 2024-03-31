@@ -1,6 +1,6 @@
 package com.example.portfolio.Domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,11 +14,12 @@ public class ProjectCategory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JsonIgnore
-    @ManyToOne
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
     private Project project;
 
-    @JsonIgnore
-    @ManyToOne
+
+    @JsonManagedReference
+    @ManyToOne(fetch = FetchType.LAZY)
     private Category category;
 }

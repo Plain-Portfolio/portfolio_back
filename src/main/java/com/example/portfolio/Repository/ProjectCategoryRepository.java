@@ -5,6 +5,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class ProjectCategoryRepository {
 
@@ -13,5 +15,12 @@ public class ProjectCategoryRepository {
 
     public void save (ProjectCategory projectCategory) {
         em.persist(projectCategory);
+    }
+
+    public List<ProjectCategory> findProjectCategoryByProjectId (Long projectId) {
+        List<ProjectCategory> projectCategory = em.createQuery("SELECT pc FROM ProjectCategory pc JOIN FETCH pc.project JOIN FETCH pc.category WHERE pc.project.id = :id", ProjectCategory.class)
+                .setParameter("id", projectId)
+                .getResultList();
+        return projectCategory;
     }
 }

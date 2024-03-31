@@ -1,6 +1,9 @@
 package com.example.portfolio.Domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -30,23 +33,22 @@ public class Project {
     @ManyToOne
     private User owner;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+
+//    @JsonBackReference
+    @JsonManagedReference
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ProjectCategory> projectCategories = new ArrayList<>();
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ProjectImg> projectImgs = new ArrayList<>();
 
-    @JsonIgnore
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Like> likes = new ArrayList<>();
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+//
+    @JsonManagedReference
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<TeamProjectMember> teamProjectMembers = new ArrayList<>();
 }

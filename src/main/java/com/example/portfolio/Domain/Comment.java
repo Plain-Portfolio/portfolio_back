@@ -16,14 +16,6 @@ public class Comment {
 
     private String context;
 
-    @JsonIgnore
-    @ManyToOne
-    private User user;
-
-    @JsonIgnore
-    @ManyToOne
-    private Project project;
-
     private Long parentCommentOrderId;
 
     private Long commentOrder; // 순서
@@ -31,4 +23,11 @@ public class Comment {
     private Integer childCommentCount; // 자식 댓글의 개수
 
     private Boolean isDeleted; // 댓글 삭제 여부
+
+    @ManyToOne
+    private User user;
+
+    @JsonIgnore
+    @ManyToOne
+    private Project project;
 }

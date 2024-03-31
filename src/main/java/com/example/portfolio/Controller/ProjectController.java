@@ -66,7 +66,7 @@ public class ProjectController {
     @Operation(summary = "프로젝트 디테일 조회")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공",
-                    content = {@Content(schema = @Schema(implementation = GetProjectDetailResponse.class))}),
+                    content = {@Content(schema = @Schema(implementation = Project.class))}),
             @ApiResponse(responseCode = "500", description = "서버 에러",
                     content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
     })
