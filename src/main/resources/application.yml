@@ -45,10 +45,10 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
   cloud:
-    aws:
-      credentials:
-        accessKey:       # AWS IAM AccessKey 적기
-        secretKey:    # AWS IAM SecretKey 적기
+#    aws:
+#      credentials:
+#        accessKey:       # AWS IAM AccessKey 적기
+#        secretKey:    # AWS IAM SecretKey 적기
       s3:
         bucket: porfolioimage    # ex) marryting-gyunny
         dir: /portfolio # ex) /gyunny
