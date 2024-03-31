@@ -47,8 +47,8 @@ spring:
   cloud:
     aws:
       credentials:
-        accessKey: AKIAU6GD3E2ECWC2KPBU      # AWS IAM AccessKey 적기
-        secretKey: YR0OnKGzi2kOpBCzVQaRPqqA3if4qsw5iiQmlqcf   # AWS IAM SecretKey 적기
+        accessKey:       # AWS IAM AccessKey 적기
+        secretKey:    # AWS IAM SecretKey 적기
       s3:
         bucket: porfolioimage    # ex) marryting-gyunny
         dir: /portfolio # ex) /gyunny
