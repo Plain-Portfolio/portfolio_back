@@ -51,8 +51,6 @@ public class ProjectRepository {
     }
 
     public List<Project> projectsSearchByCategories (List<String> categories) {
-        List<String> sqlFilterList = new ArrayList<>();
-
         List<Project> projects = em.createQuery("SELECT p FROM Project p JOIN p.projectCategories pc WHERE pc.category.name IN (:categoryNames)", Project.class)
                 .setParameter("categoryNames", categories)
                 .getResultList();

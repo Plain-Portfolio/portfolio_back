@@ -15,6 +15,7 @@ import java.util.List;
 @Table(name = "users")
 @Getter @Setter
 public class User {
+
     @Schema(description = "사용자 ID", example = "1")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +32,7 @@ public class User {
     @Schema(description = "사용자 password", example = "김기범")
     private String nickname;
 
-    @JsonIgnore
+    @JsonBackReference
     @OneToMany(cascade = CascadeType.ALL)
     private List<Project> projects = new ArrayList<>();
 

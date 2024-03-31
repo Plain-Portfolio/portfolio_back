@@ -76,15 +76,12 @@ public class UserRepository {
 
     }
 
-    public User findUserById (Long id) throws Exception {
-        try {
-            User user = em.createQuery("SELECT u FROM User u WHERE u.id = :id", User.class)
-                    .setParameter("id", id)
-                    .getSingleResult();
-            return user;
-        } catch (Exception ex) {
-            throw new Exception("dasdassad");
-        }
+    public User findUserById (Long id) {
+        User user = em.createQuery("SELECT u FROM User u WHERE u.id = :id", User.class)
+                .setParameter("id", id)
+                .getSingleResult();
+        return user;
+
     }
 
     public User findByEmail (String email) {

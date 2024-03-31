@@ -1,12 +1,12 @@
 package com.example.portfolio.Service;
 
 import com.example.portfolio.Common.ErrorCode;
+import com.example.portfolio.DTO.Project.CreateProjectDto;
 import com.example.portfolio.Domain.Comment;
 import com.example.portfolio.Domain.Project;
 import com.example.portfolio.Domain.ProjectCategory;
 import com.example.portfolio.Domain.User;
 import com.example.portfolio.Dto.Project.CategorySearchDto;
-import com.example.portfolio.Dto.Project.CreateProjectDto;
 import com.example.portfolio.Dto.Project.DeleteProjectDto;
 import com.example.portfolio.Dto.Project.UpdateProjectDto;
 import com.example.portfolio.Exception.Global.UserApplicationException;
@@ -64,7 +64,8 @@ public class ProjectService {
 
 
     @Transactional
-    public Project createProject (Long ownerId, CreateProjectDto createProjectDto) throws Exception {
+    public Project createProject (Long ownerId, CreateProjectDto createProjectDto) {
+        System.out.println("????");
         ValidationCreateProjectDto(createProjectDto);
         IsSameOwnerIds(ownerId, createProjectDto.getOwnerId());
         User findUser = userRepository.findUserById(ownerId);

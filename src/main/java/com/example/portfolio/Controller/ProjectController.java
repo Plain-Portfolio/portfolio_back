@@ -1,19 +1,13 @@
 package com.example.portfolio.Controller;
 
-import com.example.portfolio.DTO.Image.UploadDto;
-import com.example.portfolio.Domain.Comment;
+import com.example.portfolio.DTO.Project.CreateProjectDto;
 import com.example.portfolio.Domain.Project;
-import com.example.portfolio.Domain.ProjectImg;
 import com.example.portfolio.Domain.User;
-import com.example.portfolio.Dto.Like.CancelLikeDto;
-import com.example.portfolio.Dto.Project.CategorySearchDto;
-import com.example.portfolio.Dto.Project.CreateProjectDto;
 import com.example.portfolio.Dto.Project.DeleteProjectDto;
 import com.example.portfolio.Dto.Project.UpdateProjectDto;
 import com.example.portfolio.Exception.Global.HTTP_INTERNAL_SERVER_ERROR;
-import com.example.portfolio.Exception.User.EMAIL_IS_DUPLICATED;
-import com.example.portfolio.Exception.User.EMAIL_IS_VALID;
 import com.example.portfolio.JWT.JwtTokenProvider;
+import com.example.portfolio.Repository.CategoryRepository;
 import com.example.portfolio.Request.GetProjectListRequest;
 import com.example.portfolio.Service.ProjectService;
 import com.example.portfolio.response.Project.GetProjectDetailResponse;
@@ -24,16 +18,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -63,6 +51,19 @@ public class ProjectController {
         return ResponseEntity.ok(projects);
     }
 
+
+//    @Autowired
+//    CategoryRepository categoryRepository;
+//
+//    @PostMapping("/test")
+//    public ResponseEntity<List<Project>> test(
+//            @Parameter(description = "조회할 카테고리 이름", schema = @Schema(type = "name", example = "spring"))
+//            @RequestParam(name = "name", value = "name") List<String> names) {
+//        List<Project> projects = categoryRepository.test(names);
+//
+//        return ResponseEntity.ok(projects);
+//    }
+
     @Operation(summary = "프로젝트 디테일 조회")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공",
@@ -76,7 +77,7 @@ public class ProjectController {
         return ResponseEntity.ok(response);
     }
 
-    @Operation(summary = "소유자 프로젝트 리스트 조회")
+    @Operation(summary = "유저별 프로젝트 리스트 조회")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공",
                     content = {@Content(schema = @Schema(implementation = GetProjectListRequest.class))}),
@@ -97,7 +98,7 @@ public class ProjectController {
                     content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
     })
     @PostMapping("/create")
-    public ResponseEntity<?> createProject(@RequestHeader("Authorization") String token, @RequestBody CreateProjectDto createProjectDto) throws Exception {
+    public ResponseEntity<?> createProject(@RequestHeader("Authorization") String token, @RequestBody CreateProjectDto createProjectDto) {
         User user = jwtTokenProvider.validateToken(token);
         Project project = projectService.createProject(user.getId(), createProjectDto);
         return ResponseEntity.ok(project);
