@@ -1,4 +1,4 @@
-package com.example.portfolio.Dto.Like;
+package com.example.portfolio.DTO.Like;
 
 import lombok.Data;
 

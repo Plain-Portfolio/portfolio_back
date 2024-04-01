@@ -11,17 +11,14 @@ import lombok.Setter;
 @Getter @Setter
 public class ProjectCategory {
 
-    @Schema(description = "ID", example = "1")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(description = "프로젝트카테고리 ID", example = "1")
     private Long id;
 
-    @JsonBackReference
     @ManyToOne()
-//    @Schema(description = "프로젝트", example = "null")
     private Project project;
 
-//    @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)
     private Category category;
 }

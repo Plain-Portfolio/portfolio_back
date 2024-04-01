@@ -1,4 +1,4 @@
-package com.example.portfolio.Dto.Category;
+package com.example.portfolio.DTO.Category;
 
 import lombok.Data;
 

@@ -1,4 +1,4 @@
-package com.example.portfolio.Dto.Comment;
+package com.example.portfolio.DTO.Comment;
 
 import lombok.Data;
 

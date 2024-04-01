@@ -44,7 +44,22 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+<<<<<<< HEAD
 
+=======
+  cloud:
+    aws:
+      credentials:
+        accessKey:       # AWS IAM AccessKey 적기
+        secretKey:    # AWS IAM SecretKey 적기
+      s3:
+        bucket: porfolioimage    # ex) marryting-gyunny
+        dir: /portfolio # ex) /gyunny
+      region:
+        static: ap-northeast-2
+      stack:
+        auto: false
+>>>>>>> 9f47d3a504453b12b14e45776da46fcd86723255
 logging:
   level:
     org.hibernate.SQL: debug

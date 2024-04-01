@@ -23,4 +23,11 @@ public class ProjectCategoryRepository {
                 .getResultList();
         return projectCategory;
     }
+
+    public ProjectCategory findProjectCategoryByProjectCategoryId (Long projectCategoryId) {
+        ProjectCategory projectCategory = em.createQuery("SELECT pc FROM ProjectCategory pc WHERE pc.id = :id", ProjectCategory.class)
+                .setParameter("id", projectCategoryId)
+                .getSingleResult();
+        return projectCategory;
+    }
 }

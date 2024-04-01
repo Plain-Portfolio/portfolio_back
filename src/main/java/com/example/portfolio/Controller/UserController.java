@@ -1,8 +1,8 @@
 package com.example.portfolio.Controller;
 
+import com.example.portfolio.DTO.User.LoginDto;
+import com.example.portfolio.DTO.User.SignUpDto;
 import com.example.portfolio.Domain.User;
-import com.example.portfolio.Dto.User.LoginDto;
-import com.example.portfolio.Dto.User.SignUpDto;
 import com.example.portfolio.Exception.Global.HTTP_INTERNAL_SERVER_ERROR;
 import com.example.portfolio.Exception.User.EMAIL_IS_DUPLICATED;
 import com.example.portfolio.Exception.User.EMAIL_IS_VALID;

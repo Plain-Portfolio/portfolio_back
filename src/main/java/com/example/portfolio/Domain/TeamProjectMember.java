@@ -21,7 +21,6 @@ public class TeamProjectMember {
     private User user;
 
     @ManyToOne
-//    @Schema(description = "프로젝트", example = "null")
     @JsonBackReference
     private Project project;
 }

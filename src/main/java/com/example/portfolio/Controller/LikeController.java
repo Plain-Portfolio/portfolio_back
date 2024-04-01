@@ -1,9 +1,9 @@
 package com.example.portfolio.Controller;
 
+import com.example.portfolio.DTO.Like.AddLikeDto;
+import com.example.portfolio.DTO.Like.CancelLikeDto;
 import com.example.portfolio.Domain.Like;
 import com.example.portfolio.Domain.User;
-import com.example.portfolio.Dto.Like.AddLikeDto;
-import com.example.portfolio.Dto.Like.CancelLikeDto;
 import com.example.portfolio.Exception.Global.HTTP_INTERNAL_SERVER_ERROR;
 import com.example.portfolio.Exception.Like.ALREADY_LIKED;
 import com.example.portfolio.Exception.Like.PROJECT_IS_NOT_FOUND;

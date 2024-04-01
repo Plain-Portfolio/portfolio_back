@@ -1,8 +1,8 @@
 package com.example.portfolio.Repository;
 
 import com.example.portfolio.Common.ErrorCode;
+import com.example.portfolio.DTO.User.SignUpDto;
 import com.example.portfolio.Domain.User;
-import com.example.portfolio.Dto.User.SignUpDto;
 import com.example.portfolio.Exception.Global.UserApplicationException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;

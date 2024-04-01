@@ -1,8 +1,5 @@
 package com.example.portfolio.Domain;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -14,7 +11,6 @@ import java.util.List;
 @Entity
 @Table(name = "projects")
 @Getter @Setter
-@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
 public class Project {
 
     @Schema(description = "프로젝트 ID", example = "1")
@@ -39,13 +35,8 @@ public class Project {
     @Schema(description = "소유자")
     private User owner;
 
-//    @JsonManagedReference
-//    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private List<ProjectCategory> projectCategories = new ArrayList<>();
-    @JoinColumn(name = "category_id")
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Category> projectCategories = new ArrayList<>();
-
+    private List<ProjectCategory> projectCategories = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ProjectImg> projectImgs = new ArrayList<>();

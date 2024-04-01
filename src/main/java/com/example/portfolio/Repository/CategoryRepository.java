@@ -22,11 +22,13 @@ public class CategoryRepository {
 
     public Category findCategoryByCategoryId (Long categoryId) {
         try {
+            System.out.println(categoryId + "확인");
             Category category = em.createQuery("SELECT c FROM Category c WHERE c.id = :categoryId", Category.class)
                     .setParameter("categoryId", categoryId)
                     .getSingleResult();
             return category;
         } catch (Exception ex) {
+            System.out.println(ex.getMessage());
             throw new UserApplicationException(ErrorCode.NO_MATCHING_CATEGORY_WITH_ID);
         }
 

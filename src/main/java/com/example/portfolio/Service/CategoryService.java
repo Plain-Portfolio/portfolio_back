@@ -1,10 +1,8 @@
 package com.example.portfolio.Service;
 
 import com.example.portfolio.Common.ErrorCode;
+import com.example.portfolio.DTO.Category.*;
 import com.example.portfolio.Domain.Category;
-import com.example.portfolio.Dto.Category.CreateCategoryDto;
-import com.example.portfolio.Dto.Category.DeleteCategoryDto;
-import com.example.portfolio.Dto.Category.UpdateCategoryDto;
 import com.example.portfolio.Exception.Global.UserApplicationException;
 import com.example.portfolio.Repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
