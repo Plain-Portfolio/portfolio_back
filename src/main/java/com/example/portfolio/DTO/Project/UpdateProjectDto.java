@@ -23,29 +23,29 @@ public class UpdateProjectDto {
 //    private List<LikeDto> likes;
     private List<TeamProjectMemberDto> teamProjectMembers;
 
-    public UpdateProjectDto (Project project) {
-        this.projectId = project.getId();
-        this.title = project.getTitle();
-        this.description = project.getDescription();
-        this.githubLink = project.getGithubLink();
-        this.isTeamProject = project.getIsTeamProject();
-//        this.owner = new com.example.portfolio.response.Project.CreateProjectResponseDto.OwnerDto(project.getOwner());
-        this.projectCategories = project.getProjectCategories().stream()
-                .map(projectCategory -> new TestProjectCategoryDto(projectCategory))
-                .collect(Collectors.toList());
-        this.projectImgs = project.getProjectImgs().stream()
-                .map(projectImg -> new ProjectImgDto(projectImg))
-                .collect(Collectors.toList());
-//        this.comments = project.getComments().stream()
-//                .map(comment -> new CommentDto(comment))
+//    public UpdateProjectDto (Project project) {
+//        this.projectId = project.getId();
+//        this.title = project.getTitle();
+//        this.description = project.getDescription();
+//        this.githubLink = project.getGithubLink();
+//        this.isTeamProject = project.getIsTeamProject();
+////        this.owner = new com.example.portfolio.response.Project.CreateProjectResponseDto.OwnerDto(project.getOwner());
+//        this.projectCategories = project.getProjectCategories().stream()
+//                .map(projectCategory -> new TestProjectCategoryDt(projectCategory))
 //                .collect(Collectors.toList());
-//        this.likes = project.getLikes().stream()
-//                .map(like -> new LikeDto(like))
+//        this.projectImgs = project.getProjectImgs().stream()
+//                .map(projectImg -> new ProjectImgDto(projectImg))
 //                .collect(Collectors.toList());
-        this.teamProjectMembers = project.getTeamProjectMembers().stream()
-                .map(teamProjectMember -> new TeamProjectMemberDto(teamProjectMember))
-                .collect(Collectors.toList());
-    }
+////        this.comments = project.getComments().stream()
+////                .map(comment -> new CommentDto(comment))
+////                .collect(Collectors.toList());
+////        this.likes = project.getLikes().stream()
+////                .map(like -> new LikeDto(like))
+////                .collect(Collectors.toList());
+//        this.teamProjectMembers = project.getTeamProjectMembers().stream()
+//                .map(teamProjectMember -> new TeamProjectMemberDto(teamProjectMember))
+//                .collect(Collectors.toList());
+//    }
 
     @Getter
     @NoArgsConstructor

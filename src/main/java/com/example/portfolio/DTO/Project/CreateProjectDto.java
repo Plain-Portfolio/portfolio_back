@@ -1,8 +1,7 @@
 package com.example.portfolio.DTO.Project;
 
-import com.example.portfolio.DTO.Project.CreateProjectDto;
 import com.example.portfolio.Domain.*;
-        import lombok.Getter;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
@@ -19,10 +18,10 @@ public class CreateProjectDto {
     private Boolean isTeamProject;
 //    private CreateProjectResponseDto.OwnerDto owner;
     private List<TestProjectCategoryDto> projectCategories;
-    private List<ProjectImgDto> projectImgs;
+    private List<TestProjectImgDto> projectImgs;
 //    private List<CommentDto> comments;
 //    private List<LikeDto> likes;
-    private List<TeamProjectMemberDto> teamProjectMembers;
+    private List<TestTeamProjectMemberDto> teamProjectMembers;
 
     public CreateProjectDto (Project project) {
         this.title = project.getTitle();
@@ -34,7 +33,7 @@ public class CreateProjectDto {
                 .map(projectCategory -> new TestProjectCategoryDto(projectCategory))
                 .collect(Collectors.toList());
         this.projectImgs = project.getProjectImgs().stream()
-                .map(projectImg -> new ProjectImgDto(projectImg))
+                .map(projectImg -> new TestProjectImgDto(projectImg))
                 .collect(Collectors.toList());
 //        this.comments = project.getComments().stream()
 //                .map(comment -> new CommentDto(comment))
@@ -43,7 +42,7 @@ public class CreateProjectDto {
 //                .map(like -> new LikeDto(like))
 //                .collect(Collectors.toList());
         this.teamProjectMembers = project.getTeamProjectMembers().stream()
-                .map(teamProjectMember -> new TeamProjectMemberDto(teamProjectMember))
+                .map(teamProjectMember -> new TestTeamProjectMemberDto(teamProjectMember))
                 .collect(Collectors.toList());
     }
 
@@ -52,11 +51,11 @@ public class CreateProjectDto {
     public static class TestProjectCategoryDto {
 
         private Long categoryId;
-        private String CategoryName;
+//        private String CategoryName;
 
         public TestProjectCategoryDto(ProjectCategory projectCategory) {
             this.categoryId = projectCategory.getId();
-            this.CategoryName = projectCategory.getCategory().getName();
+//            this.CategoryName = projectCategory.getCategory().getName();
         }
     }
 
@@ -71,13 +70,13 @@ public class CreateProjectDto {
 //    }
     @Getter
     @NoArgsConstructor
-    public static class ProjectImgDto {
+    public static class TestProjectImgDto {
         private Long id;
-        private String src;
+//        private String src;
 
-        public ProjectImgDto(ProjectImg projectImg) {
+        public TestProjectImgDto(ProjectImg projectImg) {
             this.id = projectImg.getId();
-            this.src = projectImg.getSrc();
+//            this.src = projectImg.getSrc();
         }
     }
     @Getter
@@ -101,13 +100,13 @@ public class CreateProjectDto {
     }
     @Getter
     @NoArgsConstructor
-    public static class TeamProjectMemberDto {
+    public static class TestTeamProjectMemberDto {
         private Long userId;
-        private String nickname;
+//        private String nickname;
 
-        public TeamProjectMemberDto(TeamProjectMember teamProjectMember) {
+        public TestTeamProjectMemberDto(TeamProjectMember teamProjectMember) {
             this.userId = teamProjectMember.getId();
-            this.nickname = teamProjectMember.getUser().getNickname();
+//            this.nickname = teamProjectMember.getUser().getNickname();
         }
     }
 }

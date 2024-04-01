@@ -95,7 +95,7 @@ public class ProjectService {
 
         List<ProjectImg> projectImgList = new ArrayList<>();
         if (createProjectDto.getProjectImgs() != null) {
-            for (CreateProjectDto.ProjectImgDto projectImgDto : createProjectDto.getProjectImgs()) {
+            for (CreateProjectDto.TestProjectImgDto projectImgDto : createProjectDto.getProjectImgs()) {
                 ProjectImg findProjectImg = projectImgRepository.findProjectImgByProjectImgId(projectImgDto.getId());
                 findProjectImg.setProject(project);
                 projectImgList.add(findProjectImg);
@@ -105,7 +105,7 @@ public class ProjectService {
 
         List<TeamProjectMember> teamProjectMemberList = new ArrayList<>();
         if (createProjectDto.getTeamProjectMembers() != null) {
-            for (CreateProjectDto.TeamProjectMemberDto teamProjectMemberDto : createProjectDto.getTeamProjectMembers()) {
+            for (CreateProjectDto.TestTeamProjectMemberDto teamProjectMemberDto : createProjectDto.getTeamProjectMembers()) {
                 TeamProjectMember teamProjectMember = new TeamProjectMember();
                 teamProjectMember.setProject(project);
                 User findUser = userRepository.findUserById(teamProjectMemberDto.getUserId());
@@ -128,11 +128,7 @@ public class ProjectService {
     public CreateProjectResponseDto getProjectDetail (String projectId) {
         Long parsedProjectId = Long.parseLong(projectId);
         Project project = projectRepository.findProjectById(parsedProjectId);
-//        List<Comment> comments = commentRepository.findCommentsByProjectId(projectId);
-//        List<ProjectCategory> projectCategory = projectCategoryRepository.findProjectCategoryByProjectId(project.getId());
-        CreateProjectResponseDto response = new CreateProjectResponseDto(project);
-//        response.setComment(comments);
-//        response.setProjectCategory(projectCategory);
+       CreateProjectResponseDto response = new CreateProjectResponseDto(project);
         return response;
     }
 
@@ -148,16 +144,16 @@ public class ProjectService {
         findProject.setGithubLink(updateProjectDto.getGithubLink());
         findProject.setIsTeamProject(updateProjectDto.getIsTeamProject());
 
-        if (updateProjectDto.getProjectCategories() != null) {
-            for (UpdateProjectDto.UpdateProjectCategoryDto updateProjectCategoryDto : updateProjectDto.getProjectCategories()) {
-                ProjectCategory projectCategory = new ProjectCategory();
-                Category findCategory = categoryRepository.findCategoryByCategoryId(projectCategoryDto.getCategoryId());
-                projectCategory.setCategory(findCategory);
-                projectCategory.setProject(project);
-                projectCategoryRepository.save(projectCategory);
-                projectCategoryList.add(projectCategory);
-            }
-        }
+//        if (updateProjectDto.getProjectCategories() != null) {
+//            for (UpdateProjectDto.UpdateProjectCategoryDto updateProjectCategoryDto : updateProjectDto.getProjectCategories()) {
+//                ProjectCategory projectCategory = new ProjectCategory();
+//                Category findCategory = categoryRepository.findCategoryByCategoryId(projectCategoryDto.getCategoryId());
+//                projectCategory.setCategory(findCategory);
+//                projectCategory.setProject(project);
+//                projectCategoryRepository.save(projectCategory);
+//                projectCategoryList.add(projectCategory);
+//            }
+//        }
 
         CreateProjectResponseDto response = new CreateProjectResponseDto(findProject);
 

@@ -32,19 +32,15 @@ public class User {
     @Schema(description = "사용자 password", example = "김기범")
     private String nickname;
 
-    @JsonBackReference
     @OneToMany(cascade = CascadeType.ALL)
     private List<Project> projects = new ArrayList<>();
 
-    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
-    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<TeamProjectMember> teamProjectMembers = new ArrayList<>();
 
-    @JsonBackReference
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Like> likes = new ArrayList<>();
 

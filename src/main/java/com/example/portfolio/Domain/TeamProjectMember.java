@@ -21,6 +21,5 @@ public class TeamProjectMember {
     private User user;
 
     @ManyToOne
-    @JsonBackReference
     private Project project;
 }

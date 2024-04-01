@@ -27,7 +27,6 @@ public class Comment {
     @ManyToOne
     private User user;
 
-    @JsonIgnore
     @ManyToOne
     private Project project;
 }

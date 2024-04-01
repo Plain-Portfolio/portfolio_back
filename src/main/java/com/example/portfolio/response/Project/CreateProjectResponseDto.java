@@ -87,21 +87,23 @@ public class CreateProjectResponseDto {
     }
     @Getter
     public class LikeDto {
-        private Long id;
+        private Long likeId;
+        private Long userId;
 
         public LikeDto(Like like) {
-            this.id = like.getId();
+            this.likeId = like.getId();
+            this.userId = like.getUser().getId();
         }
     }
     @Getter
     @NoArgsConstructor
     public class TeamProjectMemberDto {
         private Long userId;
-        private String nickname;
+//        private String nickname;
 
         public TeamProjectMemberDto(TeamProjectMember teamProjectMember) {
             this.userId = teamProjectMember.getId();
-            this.nickname = teamProjectMember.getUser().getNickname();
+//            this.nickname = teamProjectMember.getUser().getNickname();
         }
     }
 }
