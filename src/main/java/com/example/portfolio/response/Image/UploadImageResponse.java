@@ -6,5 +6,6 @@ import lombok.Data;
 public class UploadImageResponse {
 
     Long id;
+    String alt;
     String src;
 }

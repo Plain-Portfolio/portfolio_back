@@ -37,6 +37,7 @@ public class UploadService {
         String src = amazonS3.getUrl(bucket, s3FileName).toString();
         ProjectImg projectImg = new ProjectImg();
         projectImg.setSrc(src);
+        projectImg.setAlt(s3FileName);
         projectImgRepository.save(projectImg);
         return projectImg;
     }

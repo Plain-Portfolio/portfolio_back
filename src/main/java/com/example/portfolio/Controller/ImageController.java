@@ -40,6 +40,7 @@ public class ImageController {
     public ResponseEntity<?> uploadImage(@RequestParam("images") MultipartFile multipartFile) throws IOException {
         ProjectImg projectImg = uploadService.upload(multipartFile);
         UploadImageResponse uploadImageResponse = new UploadImageResponse();
+        uploadImageResponse.setAlt(projectImg.getAlt());
         uploadImageResponse.setId(projectImg.getId());
         uploadImageResponse.setSrc(projectImg.getSrc());
         return ResponseEntity.ok(uploadImageResponse);
