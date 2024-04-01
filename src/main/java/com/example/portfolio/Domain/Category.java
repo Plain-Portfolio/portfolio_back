@@ -12,7 +12,6 @@ import java.util.List;
 @Entity
 @Table(name = "categories")
 @Getter @Setter
-@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
 public class Category {
 
     @Id
@@ -25,10 +24,10 @@ public class Category {
     private String name;
 
 //    @JsonBackReference
-//    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private List<ProjectCategory> projectCategories = new ArrayList<>();
-
-    @JoinColumn(name = "project_id")
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Project> projectCategories = new ArrayList<>();
+    private List<ProjectCategory> projectCategories = new ArrayList<>();
+
+//    @JoinColumn(name = "project_id")
+//    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private List<Project> projectCategories = new ArrayList<>();
 }

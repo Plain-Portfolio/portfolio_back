@@ -1,9 +1,6 @@
 package com.example.portfolio.Repository;
 
-import com.example.portfolio.Common.ErrorCode;
 import com.example.portfolio.Domain.Like;
-import com.example.portfolio.Dto.Like.CancelLikeDto;
-import com.example.portfolio.Exception.Global.UserApplicationException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;

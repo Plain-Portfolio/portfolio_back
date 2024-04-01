@@ -1,36 +1,114 @@
 package com.example.portfolio.DTO.Project;
 
-import com.example.portfolio.Domain.ProjectCategory;
-import com.example.portfolio.Domain.ProjectImg;
-import com.example.portfolio.Domain.TeamProjectMember;
-import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-import lombok.Getter;
+import com.example.portfolio.DTO.Project.CreateProjectDto;
+import com.example.portfolio.Domain.*;
+        import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 public class CreateProjectDto {
-
-    @Schema(description = "프로젝트 제목", example = "온라인 쇼핑몰 구현")
     private String title;
-
-    @Schema(description = "프로젝트 설명", example = "React를 이용한 알림, 대댓글, 결제가 구현된 쇼핑몰 서비스")
     private String description;
-
-    @Schema(description = "프로젝트 깃허브", example = "https://github.com/tempTeam1213/portfolio_front")
     private String githubLink;
-
-    @Schema(description = "팀프로젝트가 맞는지 판별", example = "false")
     private Boolean isTeamProject;
+//    private CreateProjectResponseDto.OwnerDto owner;
+    private List<TestProjectCategoryDto> projectCategories;
+    private List<ProjectImgDto> projectImgs;
+//    private List<CommentDto> comments;
+//    private List<LikeDto> likes;
+    private List<TeamProjectMemberDto> teamProjectMembers;
 
-    private Long ownerId;
+    public CreateProjectDto (Project project) {
+        this.title = project.getTitle();
+        this.description = project.getDescription();
+        this.githubLink = project.getGithubLink();
+        this.isTeamProject = project.getIsTeamProject();
+//        this.owner = new com.example.portfolio.response.Project.CreateProjectResponseDto.OwnerDto(project.getOwner());
+        this.projectCategories = project.getProjectCategories().stream()
+                .map(projectCategory -> new TestProjectCategoryDto(projectCategory))
+                .collect(Collectors.toList());
+        this.projectImgs = project.getProjectImgs().stream()
+                .map(projectImg -> new ProjectImgDto(projectImg))
+                .collect(Collectors.toList());
+//        this.comments = project.getComments().stream()
+//                .map(comment -> new CommentDto(comment))
+//                .collect(Collectors.toList());
+//        this.likes = project.getLikes().stream()
+//                .map(like -> new LikeDto(like))
+//                .collect(Collectors.toList());
+        this.teamProjectMembers = project.getTeamProjectMembers().stream()
+                .map(teamProjectMember -> new TeamProjectMemberDto(teamProjectMember))
+                .collect(Collectors.toList());
+    }
 
-    private List<ProjectCategory> projectCategories;
+    @Getter
+    @NoArgsConstructor
+    public static class TestProjectCategoryDto {
 
-    private List<ProjectImg> projectImgs;
+        private Long categoryId;
+        private String CategoryName;
 
-    private List<TeamProjectMember> teamProjectMembers;
+        public TestProjectCategoryDto(ProjectCategory projectCategory) {
+            this.categoryId = projectCategory.getId();
+            this.CategoryName = projectCategory.getCategory().getName();
+        }
+    }
+
+//    @Getter
+//    @NoArgsConstructor
+//    public static class OwnerDto {
+//        private Long id;
+//
+//        public OwnerDto(User entity) {
+//            this.id = entity.getId();
+//        }
+//    }
+    @Getter
+    @NoArgsConstructor
+    public static class ProjectImgDto {
+        private Long id;
+        private String src;
+
+        public ProjectImgDto(ProjectImg projectImg) {
+            this.id = projectImg.getId();
+            this.src = projectImg.getSrc();
+        }
+    }
+    @Getter
+    @NoArgsConstructor
+    public static class CommentDto {
+        private Long id;
+        private String context;
+
+        public CommentDto(Comment comment) {
+            this.id = comment.getId();
+            this.context = comment.getContext();
+        }
+    }
+    @Getter
+    public class LikeDto {
+        private Long id;
+
+        public LikeDto(Like like) {
+            this.id = like.getId();
+        }
+    }
+    @Getter
+    @NoArgsConstructor
+    public static class TeamProjectMemberDto {
+        private Long userId;
+        private String nickname;
+
+        public TeamProjectMemberDto(TeamProjectMember teamProjectMember) {
+            this.userId = teamProjectMember.getId();
+            this.nickname = teamProjectMember.getUser().getNickname();
+        }
+    }
 }
 

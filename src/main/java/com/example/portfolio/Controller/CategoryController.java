@@ -1,11 +1,10 @@
 package com.example.portfolio.Controller;
 
+import com.example.portfolio.DTO.Category.CreateCategoryDto;
+import com.example.portfolio.DTO.Category.DeleteCategoryDto;
+import com.example.portfolio.DTO.Category.UpdateCategoryDto;
 import com.example.portfolio.Domain.Category;
-import com.example.portfolio.Domain.Comment;
 import com.example.portfolio.Domain.User;
-import com.example.portfolio.Dto.Category.CreateCategoryDto;
-import com.example.portfolio.Dto.Category.DeleteCategoryDto;
-import com.example.portfolio.Dto.Category.UpdateCategoryDto;
 import com.example.portfolio.Exception.Category.CATEGORY_IS_ALREADY_CREATED;
 import com.example.portfolio.Exception.Category.NO_MATCHING_CATEGORY_WITH_ID;
 import com.example.portfolio.Exception.Global.HTTP_INTERNAL_SERVER_ERROR;

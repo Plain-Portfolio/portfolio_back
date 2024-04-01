@@ -2,23 +2,19 @@ package com.example.portfolio.Service;
 
 import com.example.portfolio.Common.ErrorCode;
 import com.example.portfolio.DTO.Project.CreateProjectDto;
-import com.example.portfolio.Domain.Comment;
-import com.example.portfolio.Domain.Project;
-import com.example.portfolio.Domain.ProjectCategory;
-import com.example.portfolio.Domain.User;
-import com.example.portfolio.Dto.Project.CategorySearchDto;
-import com.example.portfolio.Dto.Project.DeleteProjectDto;
-import com.example.portfolio.Dto.Project.UpdateProjectDto;
+import com.example.portfolio.DTO.Project.DeleteProjectDto;
+import com.example.portfolio.DTO.Project.UpdateProjectDto;
+import com.example.portfolio.Domain.*;
 import com.example.portfolio.Exception.Global.UserApplicationException;
-import com.example.portfolio.Repository.CommentRepository;
-import com.example.portfolio.Repository.ProjectCategoryRepository;
-import com.example.portfolio.Repository.ProjectRepository;
-import com.example.portfolio.Repository.UserRepository;
+import com.example.portfolio.Repository.*;
+//import com.example.portfolio.response.Project.CreateProjectResponseDto;
+import com.example.portfolio.response.Project.CreateProjectResponseDto;
 import com.example.portfolio.response.Project.GetProjectDetailResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -36,6 +32,15 @@ public class ProjectService {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    ProjectImgRepository projectImgRepository;
+
+    @Autowired
+    TeamProjectMemberRepository teamProjectMemberRepository;
+
+    @Autowired
+    CategoryRepository categoryRepository;
+
     public void ValidationCreateProjectDto (CreateProjectDto createProjectDto) {
         if (createProjectDto.getTitle() == null) {
             throw new UserApplicationException(ErrorCode.TITLE_CANNOT_BE_NULL);
@@ -49,9 +54,9 @@ public class ProjectService {
         if (createProjectDto.getIsTeamProject() == null) {
             throw new UserApplicationException(ErrorCode.IS_TEAM_PROJECT_CANNOT_BE_NULL);
         }
-        if (createProjectDto.getOwnerId() == null) {
-            throw new UserApplicationException(ErrorCode.OWNNER_ID_CANNOT_BE_NULL);
-        }
+//        if (createProjectDto.getOwnerId() == null) {
+//            throw new UserApplicationException(ErrorCode.OWNNER_ID_CANNOT_BE_NULL);
+//        }
 
     }
 
@@ -64,31 +69,68 @@ public class ProjectService {
 
 
     @Transactional
-    public Project createProject (Long ownerId, CreateProjectDto createProjectDto) {
+    public CreateProjectResponseDto createProject (User owner, CreateProjectDto createProjectDto) {
         System.out.println("????");
         ValidationCreateProjectDto(createProjectDto);
-        IsSameOwnerIds(ownerId, createProjectDto.getOwnerId());
-        User findUser = userRepository.findUserById(ownerId);
-        System.out.println(findUser + "이거 없는건가?");
         Project project = new Project();
         project.setTitle(createProjectDto.getTitle());
         project.setDescription(createProjectDto.getDescription());
         project.setGithubLink(createProjectDto.getGithubLink());
         project.setIsTeamProject(createProjectDto.getIsTeamProject());
-        project.setOwner(findUser);
+        project.setOwner(owner);
         projectRepository.save(project);
 
-        return project;
+        List<ProjectCategory> projectCategoryList = new ArrayList<>();
+        if (createProjectDto.getProjectCategories() != null) {
+            for (CreateProjectDto.TestProjectCategoryDto projectCategoryDto : createProjectDto.getProjectCategories()) {
+                ProjectCategory projectCategory = new ProjectCategory();
+                Category findCategory = categoryRepository.findCategoryByCategoryId(projectCategoryDto.getCategoryId());
+                projectCategory.setCategory(findCategory);
+                projectCategory.setProject(project);
+                projectCategoryRepository.save(projectCategory);
+                projectCategoryList.add(projectCategory);
+            }
+        }
+        project.setProjectCategories(projectCategoryList);
+
+        List<ProjectImg> projectImgList = new ArrayList<>();
+        if (createProjectDto.getProjectImgs() != null) {
+            for (CreateProjectDto.ProjectImgDto projectImgDto : createProjectDto.getProjectImgs()) {
+                ProjectImg findProjectImg = projectImgRepository.findProjectImgByProjectImgId(projectImgDto.getId());
+                findProjectImg.setProject(project);
+                projectImgList.add(findProjectImg);
+            }
+        }
+        project.setProjectImgs(projectImgList);
+
+        List<TeamProjectMember> teamProjectMemberList = new ArrayList<>();
+        if (createProjectDto.getTeamProjectMembers() != null) {
+            for (CreateProjectDto.TeamProjectMemberDto teamProjectMemberDto : createProjectDto.getTeamProjectMembers()) {
+                TeamProjectMember teamProjectMember = new TeamProjectMember();
+                teamProjectMember.setProject(project);
+                User findUser = userRepository.findUserById(teamProjectMemberDto.getUserId());
+                System.out.println(findUser);
+                System.out.println(findUser.getId());
+                System.out.println(findUser.getNickname());
+                teamProjectMember.setUser(findUser);
+                teamProjectMemberList.add(teamProjectMember);
+                teamProjectMemberRepository.save(teamProjectMember);
+            }
+        }
+        project.setTeamProjectMembers(teamProjectMemberList);
+
+        CreateProjectResponseDto response = new CreateProjectResponseDto(project);
+        projectRepository.save(project);
+        return response;
     }
 
 
-    public GetProjectDetailResponse getProjectDetail (String projectId) {
+    public CreateProjectResponseDto getProjectDetail (String projectId) {
         Long parsedProjectId = Long.parseLong(projectId);
         Project project = projectRepository.findProjectById(parsedProjectId);
 //        List<Comment> comments = commentRepository.findCommentsByProjectId(projectId);
 //        List<ProjectCategory> projectCategory = projectCategoryRepository.findProjectCategoryByProjectId(project.getId());
-        GetProjectDetailResponse response = new GetProjectDetailResponse();
-        response.setProject(project);
+        CreateProjectResponseDto response = new CreateProjectResponseDto(project);
 //        response.setComment(comments);
 //        response.setProjectCategory(projectCategory);
         return response;
@@ -99,13 +141,27 @@ public class ProjectService {
         return projects;
     }
 
-    public Project updateProject (UpdateProjectDto updateProjectDto) {
-        Project findProject = projectRepository.findProjectById(updateProjectDto.getId());
+    public CreateProjectResponseDto updateProject (UpdateProjectDto updateProjectDto) {
+        Project findProject = projectRepository.findProjectById(updateProjectDto.getProjectId());
         findProject.setTitle(updateProjectDto.getTitle());
         findProject.setDescription(updateProjectDto.getDescription());
         findProject.setGithubLink(updateProjectDto.getGithubLink());
         findProject.setIsTeamProject(updateProjectDto.getIsTeamProject());
-        return findProject;
+
+        if (updateProjectDto.getProjectCategories() != null) {
+            for (UpdateProjectDto.UpdateProjectCategoryDto updateProjectCategoryDto : updateProjectDto.getProjectCategories()) {
+                ProjectCategory projectCategory = new ProjectCategory();
+                Category findCategory = categoryRepository.findCategoryByCategoryId(projectCategoryDto.getCategoryId());
+                projectCategory.setCategory(findCategory);
+                projectCategory.setProject(project);
+                projectCategoryRepository.save(projectCategory);
+                projectCategoryList.add(projectCategory);
+            }
+        }
+
+        CreateProjectResponseDto response = new CreateProjectResponseDto(findProject);
+
+        return response;
     }
 
     public void deleteProject (Long projectId, DeleteProjectDto deleteProjectDto) {
