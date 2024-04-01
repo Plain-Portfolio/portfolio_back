@@ -10,6 +10,7 @@ import com.example.portfolio.Repository.*;
 //import com.example.portfolio.response.Project.CreateProjectResponseDto;
 import com.example.portfolio.response.Project.CreateProjectResponseDto;
 import com.example.portfolio.response.Project.GetProjectDetailResponse;
+import com.example.portfolio.response.Project.GetProjectListResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -132,9 +133,14 @@ public class ProjectService {
         return response;
     }
 
-    public List<Project> getProjectList (String userId) {
-        List<Project> projects = projectRepository.findProjectByUserId(userId);
-        return projects;
+    public List<CreateProjectResponseDto> getProjectList (String userId) {
+        List<Project> projects = projectRepository.findProjectsByUserId(userId);
+        List<CreateProjectResponseDto> projectResponseDtoList = new ArrayList<>();
+        for (Project project : projects) {
+            CreateProjectResponseDto response = new CreateProjectResponseDto(project);
+            projectResponseDtoList.add(response);
+        }
+        return projectResponseDtoList;
     }
 
     public CreateProjectResponseDto updateProject (UpdateProjectDto updateProjectDto) {
@@ -164,8 +170,15 @@ public class ProjectService {
         projectRepository.deleleProjectByProjectId(deleteProjectDto.getProjectId());
     }
 
-    public List<Project> categorySearch (List<String> categoryNames) {
+    public List<CreateProjectResponseDto> categorySearch (List<String> categoryNames) {
         List<Project> projects = projectRepository.projectsSearchByCategories(categoryNames);
-        return projects;
+        System.out.println(projects + "확인");
+        List<CreateProjectResponseDto> projectResponseDtoList = new ArrayList<>();
+        for (Project project : projects) {
+            CreateProjectResponseDto response = new CreateProjectResponseDto(project);
+            projectResponseDtoList.add(response);
+        }
+        System.out.println("????");
+        return projectResponseDtoList;
     }
 }

@@ -19,7 +19,7 @@ public class ProjectRepository {
     @PersistenceContext
     EntityManager em;
 
-    public List<Project> findProjectByUserId (String userId) {
+    public List<Project> findProjectsByUserId (String userId) {
         List<Project> projects = em.createQuery("SELECT p FROM Project p WHERE p.owner.id = :userId", Project.class)
                 .setParameter("userId", userId)
                 .getResultList();

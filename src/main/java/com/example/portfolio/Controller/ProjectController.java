@@ -13,6 +13,7 @@ import com.example.portfolio.Service.ProjectService;
 //import com.example.portfolio.response.Project.CreateProjectResponseDto;
 import com.example.portfolio.response.Project.CreateProjectResponseDto;
 import com.example.portfolio.response.Project.GetProjectDetailResponse;
+import com.example.portfolio.response.Project.GetProjectListResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -40,15 +41,15 @@ public class ProjectController {
     @Operation(summary = "카테고리로 프로젝트 조회")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공",
-                    content = {@Content(schema = @Schema(implementation = Project.class))}),
+                    content = {@Content(schema = @Schema(implementation = GetProjectListResponse.class))}),
             @ApiResponse(responseCode = "500", description = "서버 에러",
                     content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
     })
     @GetMapping("/categorySearch")
-    public ResponseEntity<List<Project>> categorySearch(
+    public ResponseEntity<List<CreateProjectResponseDto>> categorySearch(
             @Parameter(description = "조회할 카테고리 이름", schema = @Schema(type = "name", example = "spring"))
             @RequestParam(name = "name", value = "name") List<String> names) {
-        List<Project> projects = projectService.categorySearch(names);
+        List<CreateProjectResponseDto> projects = projectService.categorySearch(names);
 
         return ResponseEntity.ok(projects);
     }
@@ -69,13 +70,13 @@ public class ProjectController {
     @Operation(summary = "유저별 프로젝트 리스트 조회")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공",
-                    content = {@Content(schema = @Schema(implementation = GetProjectListRequest.class))}),
+                    content = {@Content(schema = @Schema(implementation = GetProjectListResponse.class))}),
             @ApiResponse(responseCode = "500", description = "서버 에러",
                     content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
     })
     @GetMapping("/{userId}/projects")
     public ResponseEntity<?> getProjectList(@PathVariable(name = "userId") String userId) {
-        List<Project> findProjects = projectService.getProjectList(userId);
+        List<CreateProjectResponseDto> findProjects = projectService.getProjectList(userId);
         return ResponseEntity.ok(findProjects);
     }
 
