@@ -97,6 +97,7 @@ public class UserService {
     @Transactional
     public List<User> findUserList () {
         List<User> users = userRepository.findAllUser();
+
         return users;
     }
 

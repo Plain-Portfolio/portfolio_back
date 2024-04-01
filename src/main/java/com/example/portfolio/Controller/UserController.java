@@ -1,5 +1,6 @@
 package com.example.portfolio.Controller;
 
+import com.example.portfolio.DTO.User.FindUserList;
 import com.example.portfolio.DTO.User.LoginDto;
 import com.example.portfolio.DTO.User.SignUpDto;
 import com.example.portfolio.Domain.User;
@@ -22,6 +23,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @Tag(name = "유저 API", description = "유저 API입니다")
@@ -80,15 +84,25 @@ public class UserController {
     @Operation(summary = "유저 모두 조회")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공",
-                    content = {@Content(schema = @Schema(implementation = FindUserListResponse.class))}),
+                    content = {@Content(schema = @Schema(implementation = FindUserList.class))}),
             @ApiResponse(responseCode = "500", description = "서버 에러",
                     content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
     })
     @GetMapping("/list")
-    public ResponseEntity<FindUserListResponse> findUserList (@RequestHeader("Authorization") String token) {
+    public ResponseEntity<FindUserList> findUserList (@RequestHeader("Authorization") String token) {
         jwtTokenProvider.validateToken(token);
-        FindUserListResponse response = new FindUserListResponse();
-        response.setUsers(userService.findUserList());
-        return ResponseEntity.ok(response);
+        List<User> users = userService.findUserList();
+
+        FindUserList findUserList = new FindUserList();
+        List<FindUserList.FindUserListUserDto> userList = new ArrayList<>();
+
+        for (User user : users) {
+            FindUserList.FindUserListUserDto userDto = new FindUserList.FindUserListUserDto(user);
+            userList.add(userDto);
+        }
+
+        findUserList.setUserList(userList);
+
+        return ResponseEntity.ok(findUserList);
     }
 }
