@@ -52,17 +52,24 @@ public class CreateProjectResponseDto {
     @Getter
     public static class ProjectCategoryDto {
         private String name;
+        private Long id;
 
         public ProjectCategoryDto(ProjectCategory projectCategory) {
+            this.id = projectCategory.getId();
             this.name = projectCategory.getCategory().getName();
         }
     }
     @Getter
     public static class OwnerDto {
         private Long id;
+        private String nickname;
+        private String email;
 
         public OwnerDto(User entity) {
+
             this.id = entity.getId();
+            this.nickname = entity.getNickname();
+            this.email = entity.getEmail();
         }
     }
     @Getter
@@ -99,11 +106,11 @@ public class CreateProjectResponseDto {
     @NoArgsConstructor
     public class TeamProjectMemberDto {
         private Long userId;
-//        private String nickname;
+        private String nickname;
 
         public TeamProjectMemberDto(TeamProjectMember teamProjectMember) {
             this.userId = teamProjectMember.getId();
-//            this.nickname = teamProjectMember.getUser().getNickname();
+            this.nickname = teamProjectMember.getUser().getNickname();
         }
     }
 }
