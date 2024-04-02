@@ -28,6 +28,9 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "좋아요 API", description = "좋아요 API입니다")
 public class LikeController {
 
+
+    SuccessResponse successResponse = new SuccessResponse();
+
     @Autowired
     LikeService likeService;
 
@@ -49,7 +52,6 @@ public class LikeController {
     public ResponseEntity<SuccessResponse> addLike (@RequestHeader("Authorization") String token, @RequestBody AddLikeDto addLikeDto) {
         User user = jwtTokenProvider.validateToken(token);
         Like like = likeService.addLike(user, addLikeDto);
-        SuccessResponse successResponse = new SuccessResponse();
         return ResponseEntity.ok(successResponse);
     }
 
@@ -66,6 +68,6 @@ public class LikeController {
     public ResponseEntity<?> cancelLike (@RequestHeader("Authorization") String token, @RequestBody CancelLikeDto cancelLikeDto)  {
         User user = jwtTokenProvider.validateToken(token);
         likeService.cancelLike(user.getId(), cancelLikeDto);
-        return ResponseEntity.ok("success");
+        return ResponseEntity.ok(successResponse);
     }
 }

@@ -23,11 +23,7 @@ public class Category {
     @Schema(description = "카테고리 이름", example = "Spring")
     private String name;
 
-//    @JsonBackReference
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProjectCategory> projectCategories = new ArrayList<>();
 
-//    @JoinColumn(name = "project_id")
-//    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private List<Project> projectCategories = new ArrayList<>();
 }

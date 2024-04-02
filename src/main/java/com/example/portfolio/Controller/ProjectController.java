@@ -14,6 +14,7 @@ import com.example.portfolio.Service.ProjectService;
 import com.example.portfolio.response.Project.CreateProjectResponseDto;
 import com.example.portfolio.response.Project.GetProjectDetailResponse;
 import com.example.portfolio.response.Project.GetProjectListResponse;
+import com.example.portfolio.response.SuccessResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -22,6 +23,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +33,9 @@ import java.util.List;
 @RequestMapping("/project")
 @Tag(name = "프로젝트 API", description = "프로젝트 API입니다")
 public class ProjectController {
+
+    SuccessResponse successResponse = new SuccessResponse();
+
 
     @Autowired
     ProjectService projectService;
@@ -110,7 +115,8 @@ public class ProjectController {
 
     @Operation(summary = "프로젝트 삭제")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "200", description = "성공",
+                    content = {@Content(schema = @Schema(implementation = SuccessResponse.class))}),
             @ApiResponse(responseCode = "500", description = "서버 에러",
                     content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
     })
@@ -118,6 +124,6 @@ public class ProjectController {
     public ResponseEntity<?> deleteProject (@RequestHeader("Authorization") String token, @RequestBody DeleteProjectDto deleteProjectDto)  {
         User user = jwtTokenProvider.validateToken(token);
         projectService.deleteProject(user.getId(), deleteProjectDto);
-        return ResponseEntity.ok("success");
+        return ResponseEntity.ok(successResponse);
     }
 }

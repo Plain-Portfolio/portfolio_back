@@ -5,6 +5,7 @@ import com.example.portfolio.Domain.ProjectImg;
 import com.example.portfolio.Exception.Global.HTTP_INTERNAL_SERVER_ERROR;
 import com.example.portfolio.Service.UploadService;
 import com.example.portfolio.response.Image.UploadImageResponse;
+import com.example.portfolio.response.SuccessResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -25,6 +26,9 @@ import java.io.IOException;
 @RequestMapping("/image")
 @Tag(name = "이미지 API", description = "이미지 업로드 API입니다")
 public class ImageController {
+
+
+    SuccessResponse successResponse = new SuccessResponse();
 
     @Autowired
     UploadService uploadService;

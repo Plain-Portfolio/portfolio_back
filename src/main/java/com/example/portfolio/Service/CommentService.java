@@ -39,9 +39,13 @@ public class CommentService {
         return comment;
     }
 
+    @Transactional
     public Comment updateComment (User user, UpdateCommentDto updateCommentDto) {
         Comment comment = commentRepository.findCommentByCommentId(updateCommentDto.getCommentId());
         comment.setContext(updateCommentDto.getContext());
+        comment.setCommentOrder(updateCommentDto.getCommentOrder());
+        comment.setParentCommentOrderId(updateCommentDto.getParentCommentOrderId());
+        comment.setChildCommentCount(updateCommentDto.getChildCommentCount());
         commentRepository.save(comment);
         return comment;
     }

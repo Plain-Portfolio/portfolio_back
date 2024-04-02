@@ -34,7 +34,11 @@ public class CategoryRepository {
 
     }
 
+    @Transactional
     public void deleteCategoryByCategoryId (Long categoryId) {
+        em.createQuery("DELETE FROM ProjectCategory pc WHERE pc.category.id = :categoryId")
+                .setParameter("categoryId", categoryId)
+                .executeUpdate();
         em.createQuery("DELETE FROM Category c WHERE c.id = :categoryId")
                 .setParameter("categoryId", categoryId)
                 .executeUpdate();

@@ -5,7 +5,9 @@ import lombok.Data;
 @Data
 public class UpdateCommentDto {
 
-    private long commentId;
-
+    private Long commentId;
     private String context;
+    private Long parentCommentOrderId;
+    private Long commentOrder;
+    private Integer childCommentCount;
 }

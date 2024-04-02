@@ -40,8 +40,9 @@ public class CommentRepository {
     }
 
     public List<Comment> findAllComment() {
-        List<Comment> comments = em.createQuery("SELECT c FROM Comment", Comment.class)
+        List<Comment> comments = em.createQuery("SELECT c FROM Comment c", Comment.class)
                 .getResultList();
+
         return comments;
     }
 }

@@ -11,6 +11,7 @@ import com.example.portfolio.JWT.JwtTokenProvider;
 import com.example.portfolio.Repository.UserRepository;
 import com.example.portfolio.Service.RedisService;
 import com.example.portfolio.Service.UserService;
+import com.example.portfolio.response.SuccessResponse;
 import com.example.portfolio.response.User.LoginResponse;
 import com.example.portfolio.response.User.FindUserListResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,6 +32,8 @@ import java.util.List;
 @Tag(name = "유저 API", description = "유저 API입니다")
 @RequestMapping("/user")
 public class UserController {
+
+    SuccessResponse successResponse = new SuccessResponse();
 
     @Autowired
     UserService userService;

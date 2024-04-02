@@ -19,9 +19,9 @@ public class LikeRepository {
     }
 
     @Transactional
-    public void deleteLikeById (Long likeId) {
-        em.createQuery("DELETE FROM Like l WHERE l.id = :likeId")
-                .setParameter("likeId", likeId)
+    public void deleteLikeById (Long projectId) {
+        em.createQuery("DELETE FROM Like l WHERE l.project.id = :projectId")
+                .setParameter("projectId", projectId)
                 .executeUpdate();
     }
 
