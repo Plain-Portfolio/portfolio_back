@@ -16,7 +16,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class ProjectService {
@@ -42,7 +44,7 @@ public class ProjectService {
     @Autowired
     CategoryRepository categoryRepository;
 
-    public void ValidationCreateProjectDto (CreateProjectDto createProjectDto) {
+    public void ValidationCreateProjectDto (User owner, CreateProjectDto createProjectDto) {
         if (createProjectDto.getTitle() == null) {
             throw new UserApplicationException(ErrorCode.TITLE_CANNOT_BE_NULL);
         }
@@ -55,10 +57,9 @@ public class ProjectService {
         if (createProjectDto.getIsTeamProject() == null) {
             throw new UserApplicationException(ErrorCode.IS_TEAM_PROJECT_CANNOT_BE_NULL);
         }
-//        if (createProjectDto.getOwnerId() == null) {
-//            throw new UserApplicationException(ErrorCode.OWNNER_ID_CANNOT_BE_NULL);
-//        }
-
+        if (owner.getId() == null) {
+            throw new UserApplicationException(ErrorCode.OWNNER_ID_CANNOT_BE_NULL);
+        }
     }
 
     public void IsSameOwnerIds (Long tokenOwnerId, Long inputOwnerId) {
@@ -67,12 +68,21 @@ public class ProjectService {
             throw new UserApplicationException(ErrorCode.IS_NOT_SAME_OWNERIDS);
         }
     }
-
+    public void DuplicateTitleCheck (String title) {
+        Long countProjectByTitle = projectRepository.countProjectByTitle(title);
+        if (countProjectByTitle != 0) {
+            throw new UserApplicationException(ErrorCode.TITLE_IS_DUPLICATED);
+        }
+    }
 
     @Transactional
     public CreateProjectResponseDto createProject (User owner, CreateProjectDto createProjectDto) {
-        System.out.println("????");
-        ValidationCreateProjectDto(createProjectDto);
+        // 유효성 검사(nullCheck)
+        ValidationCreateProjectDto(owner, createProjectDto);
+        // 제목 중복 검사
+        DuplicateTitleCheck(createProjectDto.getTitle());
+
+
         Project project = new Project();
         project.setTitle(createProjectDto.getTitle());
         project.setDescription(createProjectDto.getDescription());
@@ -85,6 +95,11 @@ public class ProjectService {
         if (createProjectDto.getProjectCategories() != null) {
             for (CreateProjectDto.TestProjectCategoryDto projectCategoryDto : createProjectDto.getProjectCategories()) {
                 ProjectCategory projectCategory = new ProjectCategory();
+                Long count = projectCategoryRepository.countProjectCAtegoryByProjectIdAndCategoryId(project.getId(), projectCategoryDto.getCategoryId());
+                if (count > 0) {
+                    throw new UserApplicationException(ErrorCode.DUPLICATE_CATEGORY_EXISTS);
+                }
+
                 Category findCategory = categoryRepository.findCategoryByCategoryId(projectCategoryDto.getCategoryId());
                 projectCategory.setCategory(findCategory);
                 projectCategory.setProject(project);
@@ -96,6 +111,18 @@ public class ProjectService {
 
         List<ProjectImg> projectImgList = new ArrayList<>();
         if (createProjectDto.getProjectImgs() != null) {
+
+
+            // 인풋 이미지 id 중복 검사
+            Set<Long> imgIds = new HashSet<>();
+            for (CreateProjectDto.TestProjectImgDto imgDto : createProjectDto.getProjectImgs()) {
+                imgIds.add(imgDto.getId());
+            }
+            if (imgIds.size() != createProjectDto.getProjectImgs().size()) {
+                throw new UserApplicationException(ErrorCode.DUPLICATE_IMAGE_EXISTS);
+            }
+
+
             for (CreateProjectDto.TestProjectImgDto projectImgDto : createProjectDto.getProjectImgs()) {
                 ProjectImg findProjectImg = projectImgRepository.findProjectImgByProjectImgId(projectImgDto.getId());
                 findProjectImg.setProject(project);
@@ -106,6 +133,18 @@ public class ProjectService {
 
         List<TeamProjectMember> teamProjectMemberList = new ArrayList<>();
         if (createProjectDto.getTeamProjectMembers() != null) {
+
+            // 인풋 이미지 id 중복 검사
+            Set<Long> userIds = new HashSet<>();
+            for (CreateProjectDto.TestTeamProjectMemberDto teamProjectMemberDto : createProjectDto.getTeamProjectMembers()) {
+                userIds.add(teamProjectMemberDto.getUserId());
+            }
+//            System.out.println(userIds.size() + "비111" + createProjectDto.getProjectImgs().size());
+            if (userIds.size() != createProjectDto.getTeamProjectMembers().size()) {
+                throw new UserApplicationException(ErrorCode.DUPLICATE_DUPLICATE_TEAMPROJECTMEMBER_EXISTS_EXIST);
+            }
+
+
             for (CreateProjectDto.TestTeamProjectMemberDto teamProjectMemberDto : createProjectDto.getTeamProjectMembers()) {
                 TeamProjectMember teamProjectMember = new TeamProjectMember();
                 teamProjectMember.setProject(project);
@@ -135,6 +174,11 @@ public class ProjectService {
 
     public List<CreateProjectResponseDto> getProjectList (String userId) {
         List<Project> projects = projectRepository.findProjectsByUserId(userId);
+        // 길이 체크
+        if (projects.size() == 0) {
+            throw new UserApplicationException(ErrorCode.USER_DOES_NOT_HAVE_ANY_EXISTING_PROJECTS);
+        }
+
         List<CreateProjectResponseDto> projectResponseDtoList = new ArrayList<>();
         for (Project project : projects) {
             CreateProjectResponseDto response = new CreateProjectResponseDto(project);
@@ -166,7 +210,9 @@ public class ProjectService {
         return response;
     }
 
-    public void deleteProject (Long projectId, DeleteProjectDto deleteProjectDto) {
+    public void deleteProject (Long userId, DeleteProjectDto deleteProjectDto) {
+        Project findProject = projectRepository.findProjectById(deleteProjectDto.getProjectId());
+        projectRepository.deleteEntityAndRelatedData(deleteProjectDto.getProjectId());
         projectRepository.deleleProjectByProjectId(deleteProjectDto.getProjectId());
     }
 

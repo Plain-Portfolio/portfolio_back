@@ -14,6 +14,7 @@ import com.example.portfolio.Service.UserService;
 import com.example.portfolio.response.SuccessResponse;
 import com.example.portfolio.response.User.LoginResponse;
 import com.example.portfolio.response.User.FindUserListResponse;
+import com.example.portfolio.response.User.UserResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -50,7 +51,7 @@ public class UserController {
     @Operation(summary = "회원가입")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공",
-                    content = {@Content(schema = @Schema(implementation = User.class))}),
+                    content = {@Content(schema = @Schema(implementation = UserResponseDto.class))}),
             @ApiResponse(responseCode = "401", description = "[[닉네임 || 이메일]]이 중복되었습니다",
                     content = {@Content(schema = @Schema(implementation = EMAIL_IS_DUPLICATED.class))}),
 
@@ -60,10 +61,11 @@ public class UserController {
                     content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
     })
     @PostMapping("/signup")
-    public ResponseEntity<?> signup (@RequestBody SignUpDto signUpDto) {
+    public ResponseEntity<UserResponseDto> signup (@RequestBody SignUpDto signUpDto) {
         System.out.println(signUpDto);
         User user = userService.signUp(signUpDto);
-        return ResponseEntity.ok(user);
+        UserResponseDto userResponseDto = new UserResponseDto(user);
+        return ResponseEntity.ok(userResponseDto);
     }
 
     @Operation(summary = "로그인")
