@@ -19,12 +19,14 @@ public class ProjectImgRepository {
     }
 
     public ProjectImg findProjectImgByProjectImgId (Long projectImgId) {
+        System.out.println("???");
         try {
             ProjectImg projectImg = em.createQuery("SELECT pi FROM ProjectImg pi WHERE pi.id = :projectImgId", ProjectImg.class)
                     .setParameter("projectImgId", projectImgId)
                     .getSingleResult();
             return projectImg;
         } catch (Exception ex) {
+            System.out.println(ex.getMessage());
             throw new UserApplicationException(ErrorCode.NO_MATCHING_PROJECTIMG_WITH_PROJECT_IMG_ID);
         }
     }

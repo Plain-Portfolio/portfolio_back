@@ -125,6 +125,7 @@ public class ProjectService {
 
             for (CreateProjectDto.TestProjectImgDto projectImgDto : createProjectDto.getProjectImgs()) {
                 ProjectImg findProjectImg = projectImgRepository.findProjectImgByProjectImgId(projectImgDto.getId());
+                System.out.println(findProjectImg + "확인3333");
                 findProjectImg.setProject(project);
                 projectImgList.add(findProjectImg);
             }

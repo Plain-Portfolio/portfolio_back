@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 public class CreateProjectResponseDto {
+    private Long projectId;
     private String title;
     private String description;
     private String githubLink;
@@ -24,6 +25,7 @@ public class CreateProjectResponseDto {
     private List<TeamProjectMemberDto> teamProjectMembers;
 
     public CreateProjectResponseDto (Project project) {
+        this.projectId = project.getId();
         this.title = project.getTitle();
         this.description = project.getDescription();
         this.githubLink = project.getGithubLink();
