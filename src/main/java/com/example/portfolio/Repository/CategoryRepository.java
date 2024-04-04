@@ -22,7 +22,7 @@ public class CategoryRepository {
 
     public Category findCategoryByCategoryId (Long categoryId) {
         try {
-            System.out.println(categoryId + "확인");
+            System.out.println(categoryId + "확인5555555");
             Category category = em.createQuery("SELECT c FROM Category c WHERE c.id = :categoryId", Category.class)
                     .setParameter("categoryId", categoryId)
                     .getSingleResult();

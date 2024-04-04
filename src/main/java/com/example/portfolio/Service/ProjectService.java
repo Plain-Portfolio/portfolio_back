@@ -99,7 +99,7 @@ public class ProjectService {
                 if (count > 0) {
                     throw new UserApplicationException(ErrorCode.DUPLICATE_CATEGORY_EXISTS);
                 }
-
+                System.out.println(projectCategoryDto);
                 Category findCategory = categoryRepository.findCategoryByCategoryId(projectCategoryDto.getCategoryId());
                 projectCategory.setCategory(findCategory);
                 projectCategory.setProject(project);
