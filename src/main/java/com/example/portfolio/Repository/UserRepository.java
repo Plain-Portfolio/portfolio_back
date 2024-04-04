@@ -77,10 +77,15 @@ public class UserRepository {
     }
 
     public User findUserById (Long id) {
-        User user = em.createQuery("SELECT u FROM User u WHERE u.id = :id", User.class)
-                .setParameter("id", id)
-                .getSingleResult();
-        return user;
+        try {
+            System.out.println(id + "이게id야?");
+            User user = em.createQuery("SELECT u FROM User u WHERE u.id = :id", User.class)
+                    .setParameter("id", id)
+                    .getSingleResult();
+            return user;
+        } catch (Exception ex) {
+            throw new UserApplicationException(ErrorCode.NO_MATCHING_USER_FOUND_WITH_USERID);
+        }
 
     }
 
@@ -116,6 +121,9 @@ public class UserRepository {
 
         if (signUpDto.getNickname().length() <= 0) {
             throw new UserApplicationException(ErrorCode.NICKNAME_IS_VALID);
+        }
+        if (signUpDto.getIntroduction() != null && signUpDto.getNickname().length() >= 300) {
+            throw new UserApplicationException(ErrorCode.INTRODUCTION_IS_VALID);
         }
     }
 

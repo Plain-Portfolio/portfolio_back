@@ -57,13 +57,12 @@ public class ProjectRepository {
 
     public Project findProjectById (Long projectId) {
         try {
-
             Project project = em.createQuery("SELECT p FROM Project p WHERE p.id = :id", Project.class)
                     .setParameter("id", projectId)
                     .getSingleResult();
             return project;
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+            System.out.println(ex.getMessage() + "여기에러인가?");
             throw new UserApplicationException(ErrorCode.PROJECT_IS_NOT_FOUND);
         }
     }

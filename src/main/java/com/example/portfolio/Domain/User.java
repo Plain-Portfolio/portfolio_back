@@ -32,6 +32,9 @@ public class User {
     @Schema(description = "사용자 password", example = "김기범")
     private String nickname;
 
+    @Schema(description = "사용자 본인 소개", example = "저는 2년차 프론트앤드 개발자 김기범입니다. React를 주로 다뤄왔습니다")
+    private String Introduction;
+
     @OneToMany(cascade = CascadeType.ALL)
     private List<Project> projects = new ArrayList<>();
 
