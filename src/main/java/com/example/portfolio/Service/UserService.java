@@ -45,6 +45,10 @@ public class UserService {
         System.out.println("여기까지 오나?2");
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(signUpDto.getPassword());
+        if(signUpDto.getIntroduction() != null) {
+            user.setIntroduction(signUpDto.getIntroduction());
+        }
+
         System.out.println("여기까지 오나?3");
         user.setPassword(encodedPassword);
         userRepository.save(user);

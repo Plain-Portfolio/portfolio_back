@@ -17,4 +17,7 @@ public class SignUpDto {
 
     @Schema(description = "사용자 nickname", example = "김기범")
     private String nickname;
+
+    @Schema(description = "사용자 소개", example = "안녕하세요 저는 React 개발자입니다")
+    private String introduction;
 }

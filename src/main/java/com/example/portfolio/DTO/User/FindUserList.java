@@ -23,12 +23,14 @@ public class FindUserList {
         private String email;
         private String password;
         private String nickname;
+        private String Introduction;
 
         public FindUserListUserDto(User user) {
             this.id = user.getId();
             this.email = user .getEmail();
             this.password = user.getPassword();
-            this.nickname = user .getNickname();
+            this.nickname = user.getNickname();
+            this.Introduction = user.getIntroduction();
         }
     }
 }

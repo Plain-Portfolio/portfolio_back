@@ -62,13 +62,13 @@ public class ProjectController {
     @Operation(summary = "프로젝트 디테일 조회")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공",
-                    content = {@Content(schema = @Schema(implementation = CreateProjectResponseDto.class))}),
+                    content = {@Content(schema = @Schema(implementation = GetProjectDetailResponse.class))}),
             @ApiResponse(responseCode = "500", description = "서버 에러",
                     content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
     })
     @GetMapping("/{projectId}")
-    public ResponseEntity<CreateProjectResponseDto> getProjectDetails(@PathVariable(name = "projectId") String projectId) {
-        CreateProjectResponseDto response = projectService.getProjectDetail(projectId);
+    public ResponseEntity<GetProjectDetailResponse> getProjectDetails(@PathVariable(name = "projectId") String projectId) {
+        GetProjectDetailResponse response = projectService.getProjectDetail(projectId);
         return ResponseEntity.ok(response);
     }
 

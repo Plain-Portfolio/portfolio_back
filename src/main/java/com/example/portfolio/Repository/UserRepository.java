@@ -122,6 +122,9 @@ public class UserRepository {
         if (signUpDto.getNickname().length() <= 0) {
             throw new UserApplicationException(ErrorCode.NICKNAME_IS_VALID);
         }
+        if (signUpDto.getIntroduction() != null && signUpDto.getNickname().length() >= 300) {
+            throw new UserApplicationException(ErrorCode.INTRODUCTION_IS_VALID);
+        }
     }
 
     public List<User> findAllUser () {

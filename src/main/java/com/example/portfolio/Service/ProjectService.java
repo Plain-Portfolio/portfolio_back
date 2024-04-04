@@ -7,10 +7,8 @@ import com.example.portfolio.DTO.Project.UpdateProjectDto;
 import com.example.portfolio.Domain.*;
 import com.example.portfolio.Exception.Global.UserApplicationException;
 import com.example.portfolio.Repository.*;
-//import com.example.portfolio.response.Project.CreateProjectResponseDto;
 import com.example.portfolio.response.Project.CreateProjectResponseDto;
 import com.example.portfolio.response.Project.GetProjectDetailResponse;
-import com.example.portfolio.response.Project.GetProjectListResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -166,10 +164,10 @@ public class ProjectService {
     }
 
 
-    public CreateProjectResponseDto getProjectDetail (String projectId) {
+    public GetProjectDetailResponse getProjectDetail (String projectId) {
         Long parsedProjectId = Long.parseLong(projectId);
         Project project = projectRepository.findProjectById(parsedProjectId);
-       CreateProjectResponseDto response = new CreateProjectResponseDto(project);
+        GetProjectDetailResponse response = new GetProjectDetailResponse(project);
         return response;
     }
 
