@@ -109,6 +109,7 @@ public class ProjectController {
     @PutMapping("/update")
     public ResponseEntity<?> updateProject(@RequestHeader("Authorization") String token, @RequestBody UpdateProjectDto updateProjectDto) {
         jwtTokenProvider.validateToken(token);
+        System.out.println("뭐지 여기까지도 안오나?");
         CreateProjectResponseDto project = projectService.updateProject(updateProjectDto);
         return ResponseEntity.ok(project);
     }

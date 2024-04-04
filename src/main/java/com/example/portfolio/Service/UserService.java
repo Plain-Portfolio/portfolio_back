@@ -8,6 +8,7 @@ import com.example.portfolio.Exception.Global.UserApplicationException;
 import com.example.portfolio.JWT.JwtTokenProvider;
 import com.example.portfolio.Repository.UserRepository;
 import com.example.portfolio.response.User.LoginResponse;
+import com.example.portfolio.response.User.UserResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -66,12 +67,10 @@ public class UserService {
 
     @Transactional
     public LoginResponse login (LoginDto loginDto) {
-//        Map<String, Object> response = new HashMap<>();
-        LoginResponse loginResponse = new LoginResponse();
 
         try {
+            System.out.println("?????");
             validateLoginDto(loginDto);
-            System.out.println("여기까지도옴11111");
             User user = userRepository.findByEmail(loginDto.getEmail());
             if (user == null) {
                 throw new UserApplicationException(ErrorCode.NO_MATCHING_USER_FOUND_WITH_EMAIL);
@@ -81,14 +80,10 @@ public class UserService {
             if (userRepository.isSamePassword(user.getPassword(), loginDto.getPassword())) {
                 throw new UserApplicationException(ErrorCode.NO_MATCHING_USER_FOUND_WITH_PASSWORD);
             }
-            System.out.println("여기까지도옴33333");
-            System.out.println("여기까지도옴44444");
             String token = jwtTokenProvider.generateToken(user.getEmail());
-            System.out.println("여기까지도옴55555");
-            loginResponse.setToken(token);
-            loginResponse.setUser(user);
-            System.out.println(loginResponse);
-            return loginResponse;
+            LoginResponse response = new LoginResponse(user);
+            response.setToken(token);
+            return response;
         } catch (Exception e) {
             throw new UserApplicationException(ErrorCode.TOKEN_AUTHENTICATION_ERROR);
         }

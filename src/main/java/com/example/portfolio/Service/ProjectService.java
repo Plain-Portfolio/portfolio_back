@@ -188,24 +188,78 @@ public class ProjectService {
         return projectResponseDtoList;
     }
 
+    @Transactional
     public CreateProjectResponseDto updateProject (UpdateProjectDto updateProjectDto) {
         Project findProject = projectRepository.findProjectById(updateProjectDto.getProjectId());
         findProject.setTitle(updateProjectDto.getTitle());
         findProject.setDescription(updateProjectDto.getDescription());
         findProject.setGithubLink(updateProjectDto.getGithubLink());
         findProject.setIsTeamProject(updateProjectDto.getIsTeamProject());
+        System.out.println("?????????123");
+        List<ProjectCategory> projectCategoryList = new ArrayList<>();
+        if (updateProjectDto.getProjectCategories() != null) {
+            for (UpdateProjectDto.UpdateProjectCategoryDto updateProjectCategoryDto : updateProjectDto.getProjectCategories()) {
+                ProjectCategory projectCategory = new ProjectCategory();
+                Category findCategory = categoryRepository.findCategoryByCategoryId(updateProjectCategoryDto.getCategoryId());
+                projectCategory.setCategory(findCategory);
+                projectCategory.setProject(findProject);
+                projectCategoryRepository.save(projectCategory);
+                projectCategoryList.add(projectCategory);
+            }
+        }
+        findProject.setProjectCategories(projectCategoryList);
 
-//        if (updateProjectDto.getProjectCategories() != null) {
-//            for (UpdateProjectDto.UpdateProjectCategoryDto updateProjectCategoryDto : updateProjectDto.getProjectCategories()) {
-//                ProjectCategory projectCategory = new ProjectCategory();
-//                Category findCategory = categoryRepository.findCategoryByCategoryId(projectCategoryDto.getCategoryId());
-//                projectCategory.setCategory(findCategory);
-//                projectCategory.setProject(project);
-//                projectCategoryRepository.save(projectCategory);
-//                projectCategoryList.add(projectCategory);
-//            }
-//        }
+        List<ProjectImg> projectImgList = new ArrayList<>();
+        if (updateProjectDto.getProjectImgs() != null) {
 
+            // 인풋 이미지 id 중복 검사
+            Set<Long> imgIds = new HashSet<>();
+            for (UpdateProjectDto.UpdateProjectImgDto imgDto : updateProjectDto.getProjectImgs()) {
+                imgIds.add(imgDto.getId());
+            }
+            if (imgIds.size() != updateProjectDto.getProjectImgs().size()) {
+                throw new UserApplicationException(ErrorCode.DUPLICATE_IMAGE_EXISTS);
+            }
+
+
+            for (UpdateProjectDto.UpdateProjectImgDto projectImgDto : updateProjectDto.getProjectImgs()) {
+                ProjectImg findProjectImg = projectImgRepository.findProjectImgByProjectImgId(projectImgDto.getId());
+                System.out.println(findProjectImg + "확인3333");
+                findProjectImg.setProject(findProject);
+                projectImgList.add(findProjectImg);
+            }
+        }
+        findProject.setProjectImgs(projectImgList);
+        System.out.println("?????312231");
+        List<TeamProjectMember> teamProjectMemberList = new ArrayList<>();
+        if (updateProjectDto.getTeamProjectMembers() != null) {
+
+            // 인풋 이미지 id 중복 검사
+            Set<Long> userIds = new HashSet<>();
+            for (UpdateProjectDto.UpdateProjectMemberDto teamProjectMemberDto :updateProjectDto.getTeamProjectMembers()) {
+                userIds.add(teamProjectMemberDto.getUserId());
+            }
+//            System.out.println(userIds.size() + "비111" + createProjectDto.getProjectImgs().size());
+            if (userIds.size() != updateProjectDto.getTeamProjectMembers().size()) {
+                throw new UserApplicationException(ErrorCode.DUPLICATE_DUPLICATE_TEAMPROJECTMEMBER_EXISTS_EXIST);
+            }
+
+
+            for (UpdateProjectDto.UpdateProjectMemberDto teamProjectMemberDto : updateProjectDto.getTeamProjectMembers()) {
+                TeamProjectMember teamProjectMember = new TeamProjectMember();
+                teamProjectMember.setProject(findProject);
+                User findUser = userRepository.findUserById(teamProjectMemberDto.getUserId());
+                System.out.println(findUser);
+                System.out.println(findUser.getId());
+                System.out.println(findUser.getNickname());
+                teamProjectMember.setUser(findUser);
+                teamProjectMemberList.add(teamProjectMember);
+                teamProjectMemberRepository.save(teamProjectMember);
+            }
+        }
+        findProject.setTeamProjectMembers(teamProjectMemberList);
+
+        projectRepository.save(findProject);
         CreateProjectResponseDto response = new CreateProjectResponseDto(findProject);
 
         return response;

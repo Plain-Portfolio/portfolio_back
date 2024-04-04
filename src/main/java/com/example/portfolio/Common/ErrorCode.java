@@ -20,6 +20,7 @@ public enum ErrorCode {
     EMAIL_CANNOT_BE_NULL(1006, 400, "이메일 필드는 빈 값이 허용되지 않습니다."),
     NO_MATCHING_USER_FOUND_WITH_EMAIL(1007, 402, "이메일과 매칭되는 유저가 존재하지 않습니다."),
     NO_MATCHING_USER_FOUND_WITH_PASSWORD(1008, 402, "비밀번호와 매칭되는 유저가 존재하지 않습니다."),
+    NO_MATCHING_USER_FOUND_WITH_USERID(1031, 402, "userId와 매칭되는 유저가 존재하지 않습니다."),
 
     //Token
     TOKEN_AUTHENTICATION_ERROR(1009, 402, "JwtError"),
