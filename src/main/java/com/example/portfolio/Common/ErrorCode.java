@@ -47,6 +47,9 @@ public enum ErrorCode {
     //ProjectImg
     NO_MATCHING_PROJECTIMG_WITH_PROJECT_IMG_ID(1026, 400, "해당 ID를 가진 프로젝트이미지가 존재하지 않습니다"),
 
+    //Comment
+    NO_MATCHING_COMMENT_FOUND_WITH_PROJECTID(1033, 402, "projectId와 매칭되는 댓글이 존재하지 않습니다."),
+
     //Category
     CATEGORY_IS_ALREADY_CREATED(1021, 400, "이미 해당 이름을 가진 카테고리가 존재합니다"),
     NO_MATCHING_CATEGORY_WITH_ID(1022, 401, "해당 ID를 가진 카테고리가 존재하지 않습니다"),

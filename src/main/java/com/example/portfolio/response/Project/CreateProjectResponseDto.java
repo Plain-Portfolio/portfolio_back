@@ -20,7 +20,7 @@ public class CreateProjectResponseDto {
     private OwnerDto owner;
     private List<ProjectCategoryDto> projectCategories;
     private List<ProjectImgDto> projectImgs;
-//    private List<CommentDto> comments;
+    private List<CommentDto> comments;
     private List<LikeDto> likes;
     private List<TeamProjectMemberDto> teamProjectMembers;
 

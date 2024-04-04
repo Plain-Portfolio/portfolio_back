@@ -1,6 +1,8 @@
 package com.example.portfolio.Repository;
 
+import com.example.portfolio.Common.ErrorCode;
 import com.example.portfolio.Domain.Comment;
+import com.example.portfolio.Exception.Global.UserApplicationException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
@@ -18,11 +20,15 @@ public class CommentRepository {
         em.persist(comment);
     }
 
-    public List<Comment> findCommentsByProjectId(String projectId) {
-        List<Comment> comments = em.createQuery("SELECT c FROM Comment c WHERE c.project.id = :projectId", Comment.class)
-                .setParameter("projectId", projectId)
-                .getResultList();
-        return comments;
+    public List<Comment> findCommentsByProjectId(Long projectId) {
+        try {
+            List<Comment> comments = em.createQuery("SELECT c FROM Comment c WHERE c.project.id = :projectId", Comment.class)
+                    .setParameter("projectId", projectId)
+                    .getResultList();
+            return comments;
+        } catch (Exception ex) {
+            throw new UserApplicationException(ErrorCode.NO_MATCHING_COMMENT_FOUND_WITH_PROJECTID);
+        }
     }
 
     public Comment findCommentByCommentId(Long commentId) {

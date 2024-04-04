@@ -20,7 +20,7 @@ public class GetProjectDetailResponse {
     private OwnerDto owner;
     private List<ProjectCategoryDto> projectCategories;
     private List<ProjectImgDto> projectImgs;
-    private List<CommentDto> comments;
+//    private List<CommentDto> comments;
     private List<LikeDto> likes;
     private List<TeamProjectMemberDto> teamProjectMembers;
 
@@ -40,9 +40,9 @@ public class GetProjectDetailResponse {
         this.projectCategories = project.getProjectCategories().stream()
                 .map(projectCategory -> new ProjectCategoryDto(projectCategory))
                 .collect(Collectors.toList());
-        this.comments = project.getComments().stream()
-                .map(comment -> new CommentDto(comment))
-                .collect(Collectors.toList());
+//        this.comments = project.getComments().stream()
+//                .map(comment -> new CommentDto(comment))
+//                .collect(Collectors.toList());
         this.likes = project.getLikes().stream()
                 .map(like -> new LikeDto(like))
                 .collect(Collectors.toList());

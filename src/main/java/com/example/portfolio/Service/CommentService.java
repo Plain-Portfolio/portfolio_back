@@ -8,6 +8,7 @@ import com.example.portfolio.Domain.Project;
 import com.example.portfolio.Domain.User;
 import com.example.portfolio.Repository.CommentRepository;
 import com.example.portfolio.Repository.ProjectRepository;
+import com.example.portfolio.response.Comment.CommentDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,12 @@ public class CommentService {
 
     @Autowired
     ProjectRepository projectRepository;
+
+    public List<Comment> searchComments (Long projectId) {
+        projectRepository.findProjectById(projectId);
+        List<Comment> comments = commentRepository.findCommentsByProjectId(projectId);
+        return comments;
+    }
 
     @Transactional
     public Comment createComment (User user, CreateCommentDto createCommentDto) {

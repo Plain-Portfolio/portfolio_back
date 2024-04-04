@@ -9,9 +9,7 @@ import com.example.portfolio.Domain.User;
 import com.example.portfolio.Exception.Global.HTTP_INTERNAL_SERVER_ERROR;
 import com.example.portfolio.JWT.JwtTokenProvider;
 import com.example.portfolio.Service.CommentService;
-import com.example.portfolio.response.Comment.CommentListResponseDto;
-import com.example.portfolio.response.Comment.CommentResponseDto;
-import com.example.portfolio.response.Comment.FindCommentList;
+import com.example.portfolio.response.Comment.*;
 import com.example.portfolio.response.SuccessResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -82,6 +80,31 @@ public class CommentController {
         User user = jwtTokenProvider.validateToken(token);
         commentService.deleteComment(deleteCommentDto);
         return ResponseEntity.ok(successResponse);
+    }
+
+    @Operation(summary = "프로젝트별 댓글 조회")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공",
+                    content = {@Content(schema = @Schema(implementation = CommentListResponseDto.class))}),
+            @ApiResponse(responseCode = "500", description = "서버 에러",
+                    content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
+    })
+    @GetMapping("/{projectId}/comments")
+    public ResponseEntity<CommentSearchListResDto> searchComment (@PathVariable(name = "projectId") String projectId) {
+        Long parsedProjectId = Long.parseLong(projectId);
+        List<Comment> comments = commentService.searchComments(parsedProjectId);
+        CommentSearchListResDto commentSearchListResDto = new CommentSearchListResDto();
+
+        commentSearchListResDto.setProjectId(parsedProjectId);
+        List<CommentDto> CommentSearchList = new ArrayList<>();
+
+        for (Comment comment : comments) {
+            CommentDto commentDto = new CommentDto(comment);
+            CommentSearchList.add(commentDto);
+        }
+        commentSearchListResDto.setComments(CommentSearchList);
+
+        return ResponseEntity.ok(commentSearchListResDto);
     }
 
     @Operation(summary = "댓글 모두 조회")
