@@ -1,7 +1,9 @@
 package com.example.portfolio.response.User;
 
 import com.example.portfolio.Domain.User;
+import com.example.portfolio.Domain.UserImg;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
@@ -13,6 +15,7 @@ public class UserResponseDto {
     private String password;
     private String nickname;
     private String introduction;
+    private UserImgDto userImg;
 
     public UserResponseDto (User user) {
         this.id = user.getId();
@@ -20,5 +23,17 @@ public class UserResponseDto {
         this.password = user.getPassword();
         this.nickname = user.getNickname();
         this.introduction = user.getIntroduction();
+        this.userImg = new UserImgDto(user.getUserImg());
+    }
+
+    @Getter
+    @NoArgsConstructor
+    public class UserImgDto {
+
+        String imgSrc;
+
+        public UserImgDto(UserImg userImg) {
+            this.imgSrc = userImg.getImgSrc();
+        }
     }
 }

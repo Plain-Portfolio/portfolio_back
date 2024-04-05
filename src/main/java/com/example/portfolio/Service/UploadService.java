@@ -3,7 +3,9 @@ package com.example.portfolio.Service;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.example.portfolio.Domain.ProjectImg;
+import com.example.portfolio.Domain.UserImg;
 import com.example.portfolio.Repository.ProjectImgRepository;
+import com.example.portfolio.Repository.UserImageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,8 +28,12 @@ public class UploadService {
     @Autowired
     ProjectImgRepository projectImgRepository;
 
+    @Autowired
+    UserImageRepository userImageRepository;
+
+
     @Transactional
-    public ProjectImg upload(MultipartFile multipartFile) throws IOException {
+    public ProjectImg projectUpload(MultipartFile multipartFile) throws IOException {
         String s3FileName = UUID.randomUUID() + "-" + multipartFile.getOriginalFilename();
 
         ObjectMetadata objMeta = new ObjectMetadata();
@@ -36,15 +42,26 @@ public class UploadService {
         amazonS3.putObject(bucket, s3FileName, multipartFile.getInputStream(), objMeta);
         String src = amazonS3.getUrl(bucket, s3FileName).toString();
         ProjectImg projectImg = new ProjectImg();
-        projectImg.setSrc(src);
+        projectImg.setImgSrc(src);
         projectImg.setAlt(s3FileName);
         projectImgRepository.save(projectImg);
         return projectImg;
     }
 
-    public String provideImage () {
-        return amazonS3.getUrl(bucket, "3553a902-66e2-4bd1-8de0-551b94981953-스크린샷 2024-02-18 132920.png").toString();
-    }
+    @Transactional
+    public UserImg userUpload(MultipartFile multipartFile) throws IOException {
+        String s3FileName = UUID.randomUUID() + "-" + multipartFile.getOriginalFilename();
 
+        ObjectMetadata objMeta = new ObjectMetadata();
+        objMeta.setContentLength(multipartFile.getInputStream().available());
+
+        amazonS3.putObject(bucket, s3FileName, multipartFile.getInputStream(), objMeta);
+        String src = amazonS3.getUrl(bucket, s3FileName).toString();
+        UserImg userImg = new UserImg();
+        userImg.setImgSrc(src);
+        userImg.setAlt(s3FileName);
+        userImageRepository.save(userImg);
+        return userImg;
+    }
 
 }

@@ -42,6 +42,7 @@ public class UserService {
         User user = new User();
         user.setNickname(signUpDto.getNickname());
         user.setEmail(signUpDto.getEmail());
+        user.setUserImg(signUpDto.getUserImg());
         System.out.println("여기까지 오나?2");
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(signUpDto.getPassword());

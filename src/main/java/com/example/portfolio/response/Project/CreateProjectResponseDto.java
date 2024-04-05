@@ -81,7 +81,7 @@ public class CreateProjectResponseDto {
 
         public ProjectImgDto(ProjectImg projectImg) {
             this.id = projectImg.getId();
-            this.src = projectImg.getSrc();
+            this.src = projectImg.getImgSrc();
         }
     }
     @Getter

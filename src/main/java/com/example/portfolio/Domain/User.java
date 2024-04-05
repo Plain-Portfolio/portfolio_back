@@ -47,4 +47,6 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Like> likes = new ArrayList<>();
 
+    @OneToOne()
+    private UserImg userImg;
 }

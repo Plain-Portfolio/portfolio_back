@@ -59,7 +59,7 @@ public class UpdateProjectDto {
 
         public UpdateProjectImgDto(ProjectImg projectImg) {
             this.id = projectImg.getId();
-            this.src = projectImg.getSrc();
+            this.src = projectImg.getImgSrc();
         }
     }
 

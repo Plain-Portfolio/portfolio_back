@@ -2,6 +2,7 @@ package com.example.portfolio.Controller;
 
 import com.example.portfolio.Domain.Project;
 import com.example.portfolio.Domain.ProjectImg;
+import com.example.portfolio.Domain.UserImg;
 import com.example.portfolio.Exception.Global.HTTP_INTERNAL_SERVER_ERROR;
 import com.example.portfolio.Service.UploadService;
 import com.example.portfolio.response.Image.UploadImageResponse;
@@ -33,26 +34,31 @@ public class ImageController {
     @Autowired
     UploadService uploadService;
 
-    @Operation(summary = "이미지 업로드")
+    @Operation(summary = "프로젝트 이미지 업로드")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공",
                     content = {@Content(schema = @Schema(implementation = UploadImageResponse.class))}),
             @ApiResponse(responseCode = "500", description = "서버 에러",
                     content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
     })
-    @PostMapping("/upload")
-    public ResponseEntity<?> uploadImage(@RequestParam("images") MultipartFile multipartFile) throws IOException {
-        ProjectImg projectImg = uploadService.upload(multipartFile);
-        UploadImageResponse uploadImageResponse = new UploadImageResponse();
-        uploadImageResponse.setAlt(projectImg.getAlt());
-        uploadImageResponse.setId(projectImg.getId());
-        uploadImageResponse.setSrc(projectImg.getSrc());
+    @PostMapping("/project/upload")
+    public ResponseEntity<?> uploadProjectImage(@RequestParam("images") MultipartFile multipartFile) throws IOException {
+        ProjectImg projectImg = uploadService.projectUpload(multipartFile);
+        UploadImageResponse uploadImageResponse = new UploadImageResponse(projectImg);
         return ResponseEntity.ok(uploadImageResponse);
     }
 
-//    @PostMapping("/provide")
-//    public ResponseEntity<?> provideImage() {
-//        String response = uploadService.provideImage();
-//        return ResponseEntity.ok(response);
-//    }
+    @Operation(summary = "유저 이미지 업로드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공",
+                    content = {@Content(schema = @Schema(implementation = UploadImageResponse.class))}),
+            @ApiResponse(responseCode = "500", description = "서버 에러",
+                    content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
+    })
+    @PostMapping("/user/upload")
+    public ResponseEntity<?> uploadUserImage(@RequestParam("images") MultipartFile multipartFile) throws IOException {
+        UserImg userImg = uploadService.userUpload(multipartFile);
+        UploadImageResponse uploadImageResponse = new UploadImageResponse(userImg);
+        return ResponseEntity.ok(uploadImageResponse);
+    }
 }
