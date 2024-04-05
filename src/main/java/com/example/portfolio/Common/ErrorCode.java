@@ -47,6 +47,9 @@ public enum ErrorCode {
     //ProjectImg
     NO_MATCHING_PROJECTIMG_WITH_PROJECT_IMG_ID(1026, 400, "해당 ID를 가진 프로젝트이미지가 존재하지 않습니다"),
 
+    //UserImg
+    NO_MATCHING_USERIMG_WITH_USER_IMG_ID(1033, 400, "해당 ID를 가진 유저이미지가 존재하지 않습니다"),
+
     //Comment
     NO_MATCHING_COMMENT_FOUND_WITH_PROJECTID(1033, 402, "projectId와 매칭되는 댓글이 존재하지 않습니다."),
 

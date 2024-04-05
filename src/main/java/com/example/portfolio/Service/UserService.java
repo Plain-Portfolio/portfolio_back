@@ -4,8 +4,10 @@ import com.example.portfolio.Common.ErrorCode;
 import com.example.portfolio.DTO.User.LoginDto;
 import com.example.portfolio.DTO.User.SignUpDto;
 import com.example.portfolio.Domain.User;
+import com.example.portfolio.Domain.UserImg;
 import com.example.portfolio.Exception.Global.UserApplicationException;
 import com.example.portfolio.JWT.JwtTokenProvider;
+import com.example.portfolio.Repository.UserImageRepository;
 import com.example.portfolio.Repository.UserRepository;
 import com.example.portfolio.response.User.LoginResponse;
 import com.example.portfolio.response.User.UserResponseDto;
@@ -15,7 +17,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 @Service
@@ -32,6 +37,9 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
+    UserImageRepository imageRepository;
+
+    @Autowired
     JwtTokenProvider jwtTokenProvider;
 
     @Transactional
@@ -42,7 +50,26 @@ public class UserService {
         User user = new User();
         user.setNickname(signUpDto.getNickname());
         user.setEmail(signUpDto.getEmail());
-        user.setUserImg(signUpDto.getUserImg());
+        if (signUpDto.getUserImgs() != null) {
+            Set<Long> userImgids = new HashSet<>();
+            for (SignUpDto.SignupUserImg userImg : signUpDto.getUserImgs()) {
+                 userImgids.add(userImg.getUserImgId());
+            }
+            if (userImgids.size() != signUpDto.getUserImgs().size()) {
+                throw new UserApplicationException(ErrorCode.DUPLICATE_IMAGE_EXISTS);
+            }
+
+            List<UserImg> userImgList = new ArrayList<>();
+            for (SignUpDto.SignupUserImg userImg : signUpDto.getUserImgs()) {
+
+                UserImg findUserImg = imageRepository.findUserImgByUserImgId(userImg.getUserImgId());
+                userImgList.add(findUserImg);
+
+            }
+
+            user.setUserImgs(userImgList);
+
+        }
         System.out.println("여기까지 오나?2");
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(signUpDto.getPassword());

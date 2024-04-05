@@ -47,6 +47,6 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Like> likes = new ArrayList<>();
 
-    @OneToOne()
-    private UserImg userImg;
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    private List<UserImg> userImgs = new ArrayList<>();
 }

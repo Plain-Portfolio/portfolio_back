@@ -22,9 +22,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,4 +112,29 @@ public class UserController {
 
         return ResponseEntity.ok(findUserList);
     }
+
+//    @GetMapping("/login/google")
+//    public String googleLogin() {
+//        @Value("${spring.google.client.id}")
+//        private String googleClientId;
+//
+//        @Value("${google.client.secret}")
+//        private String googleClientSecret;
+//
+//        @Value("${google.redirect.uri}")
+//        private String googleRedirectUri;
+//
+//        String authUrl = "https://accounts.google.com/o/oauth2/auth";
+//        String redirectUri = googleRedirectUri;
+//        String scope = "email profile";
+//        String state = "state";
+//
+//        String url = UriComponentsBuilder.fromHttpUrl(authUrl)
+//                .queryParam("client_id", googleClientId)
+//                .queryParam("redirect_uri", redirectUri)
+//                .queryParam("scope", scope)
+//                .queryParam("state", state)
+//                .queryParam("response_type", "code")
+//                .build().toUriString();
+//    }
 }
