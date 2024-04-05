@@ -12,10 +12,12 @@ import com.example.portfolio.Repository.UserRepository;
 import com.example.portfolio.response.User.LoginResponse;
 import com.example.portfolio.response.User.UserResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -41,6 +43,32 @@ public class UserService {
 
     @Autowired
     JwtTokenProvider jwtTokenProvider;
+
+    @Value("${spring.oauth2.google.client-id}")
+    private String googleClientId;
+
+    @Value("${spring.oauth2.google.client-secret}")
+    private String googleClientSecret;
+
+    @Value("${spring.oauth2.google.redirect-uri}")
+    private String googleRedirectUri;
+
+    public String googleLogin () {
+
+        String authUrl = "https://accounts.google.com/o/oauth2/auth";
+        String redirectUri = googleRedirectUri;
+        String scope = "email profile";
+        String state = "state";
+
+        String url = UriComponentsBuilder.fromHttpUrl(authUrl)
+                .queryParam("client_id", googleClientId)
+                .queryParam("redirect_uri", redirectUri)
+                .queryParam("scope", scope)
+                .queryParam("state", state)
+                .queryParam("response_type", "code")
+                .build().toUriString();
+        return url;
+    }
 
     @Transactional
     public User signUp (SignUpDto signUpDto) {

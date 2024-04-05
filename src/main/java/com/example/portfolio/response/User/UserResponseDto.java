@@ -30,7 +30,6 @@ public class UserResponseDto {
         this.userImgs = user.getUserImgs().stream()
                 .map(userImg -> new UserImgDto(userImg))
                 .collect(Collectors.toList());
-
     }
 
     @Getter

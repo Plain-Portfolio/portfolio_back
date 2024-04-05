@@ -30,6 +30,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @Tag(name = "유저 API", description = "유저 API입니다")
@@ -113,28 +114,16 @@ public class UserController {
         return ResponseEntity.ok(findUserList);
     }
 
-//    @GetMapping("/login/google")
-//    public String googleLogin() {
-//        @Value("${spring.google.client.id}")
-//        private String googleClientId;
-//
-//        @Value("${google.client.secret}")
-//        private String googleClientSecret;
-//
-//        @Value("${google.redirect.uri}")
-//        private String googleRedirectUri;
-//
-//        String authUrl = "https://accounts.google.com/o/oauth2/auth";
-//        String redirectUri = googleRedirectUri;
-//        String scope = "email profile";
-//        String state = "state";
-//
-//        String url = UriComponentsBuilder.fromHttpUrl(authUrl)
-//                .queryParam("client_id", googleClientId)
-//                .queryParam("redirect_uri", redirectUri)
-//                .queryParam("scope", scope)
-//                .queryParam("state", state)
-//                .queryParam("response_type", "code")
-//                .build().toUriString();
-//    }
+    @GetMapping("/login/google")
+    public ResponseEntity<?> googleLogin() {
+        String url = userService.googleLogin();
+        return ResponseEntity.ok(url);
+    }
+
+    @GetMapping("/login/google/callback")
+    @ResponseBody
+    public String googleLoginCallback(@RequestParam(name = "code")String code) {
+
+        return code;
+    }
 }
