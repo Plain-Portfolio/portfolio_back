@@ -89,6 +89,17 @@ public class UserRepository {
 
     }
 
+    public Long countUserByEmail (String email) {
+        try {
+            return em.createQuery("SELECT COUNT(u) FROM User u WHERE u.email = :email", Long.class)
+                    .setParameter("email", email)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            // 해당 이메일을 가진 사용자를 찾지 못한 경우
+            return null;
+        }
+    }
+
     public User findByEmail (String email) {
         try {
             return em.createQuery("SELECT u FROM User u WHERE u.email = :email", User.class)

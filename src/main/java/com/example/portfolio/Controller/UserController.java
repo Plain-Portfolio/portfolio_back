@@ -12,9 +12,7 @@ import com.example.portfolio.Repository.UserRepository;
 import com.example.portfolio.Service.RedisService;
 import com.example.portfolio.Service.UserService;
 import com.example.portfolio.response.SuccessResponse;
-import com.example.portfolio.response.User.LoginResponse;
-import com.example.portfolio.response.User.FindUserListResponse;
-import com.example.portfolio.response.User.UserResponseDto;
+import com.example.portfolio.response.User.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -22,15 +20,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @Tag(name = "유저 API", description = "유저 API입니다")
@@ -114,16 +109,32 @@ public class UserController {
         return ResponseEntity.ok(findUserList);
     }
 
+    @Operation(summary = "구글 소셜 로그인 url 받기")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공",
+                    content = {@Content(schema = @Schema(implementation = GoogleSocialRes.class))}),
+            @ApiResponse(responseCode = "500", description = "서버 에러",
+                    content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
+    })
     @GetMapping("/login/google")
-    public ResponseEntity<?> googleLogin() {
+    public ResponseEntity<GoogleSocialRes> googleLogin() {
         String url = userService.googleLogin();
-        return ResponseEntity.ok(url);
+        GoogleSocialRes response = new GoogleSocialRes();
+        response.setUrl(url);
+        return ResponseEntity.ok(response);
     }
 
+    @Operation(summary = "구글 소셜 로그인 callback")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공",
+                    content = {@Content(schema = @Schema(implementation = SocialLoginRes.class))}),
+            @ApiResponse(responseCode = "500", description = "서버 에러",
+                    content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
+    })
     @GetMapping("/login/google/callback")
     @ResponseBody
-    public String googleLoginCallback(@RequestParam(name = "code")String code) {
-
-        return code;
+    public ResponseEntity<?> googleLoginCallback(@RequestParam(name = "code")String code) throws Exception {
+        SocialLoginRes responseBody = userService.googleLoginCallBack(code);
+        return ResponseEntity.ok(responseBody);
     }
 }
