@@ -30,9 +30,11 @@ public class CommentDto {
     @Getter
     @NoArgsConstructor
     public class UserDto {
+        private Long userId;
         private String nickname;
 
         public UserDto (User user) {
+            this.userId = user.getId();
             this.nickname = user.getNickname();
         }
     }
