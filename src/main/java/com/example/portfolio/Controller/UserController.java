@@ -109,17 +109,46 @@ public class UserController {
         return ResponseEntity.ok(findUserList);
     }
 
+    @Operation(summary = "카카오 소셜 로그인 url 받기")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공",
+                    content = {@Content(schema = @Schema(implementation = SocialRes.class))}),
+            @ApiResponse(responseCode = "500", description = "서버 에러",
+                    content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
+    })
+    @GetMapping("/login/kakao")
+    public ResponseEntity<SocialRes> kakaoLogin() {
+        String url = userService.kakaoLogin();
+        SocialRes response = new SocialRes();
+        response.setUrl(url);
+        return ResponseEntity.ok(response);
+    }
+
+    @Operation(summary = "kakao 소셜 로그인 callback")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공",
+                    content = {@Content(schema = @Schema(implementation = SocialLoginRes.class))}),
+            @ApiResponse(responseCode = "500", description = "서버 에러",
+                    content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
+    })
+    @GetMapping("/login/kakao/callback")
+    @ResponseBody
+    public ResponseEntity<?> kakaoLoginCallback(@RequestParam(name = "code")String code) throws Exception {
+        SocialLoginRes responseBody = userService.kakaoLoginCallBack(code);
+        return ResponseEntity.ok(responseBody);
+    }
+
     @Operation(summary = "구글 소셜 로그인 url 받기")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공",
-                    content = {@Content(schema = @Schema(implementation = GoogleSocialRes.class))}),
+                    content = {@Content(schema = @Schema(implementation = SocialRes.class))}),
             @ApiResponse(responseCode = "500", description = "서버 에러",
                     content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
     })
     @GetMapping("/login/google")
-    public ResponseEntity<GoogleSocialRes> googleLogin() {
+    public ResponseEntity<SocialRes> googleLogin() {
         String url = userService.googleLogin();
-        GoogleSocialRes response = new GoogleSocialRes();
+        SocialRes response = new SocialRes();
         response.setUrl(url);
         return ResponseEntity.ok(response);
     }
