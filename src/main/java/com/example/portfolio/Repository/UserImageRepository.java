@@ -7,12 +7,14 @@ import com.example.portfolio.Exception.Global.UserApplicationException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class UserImageRepository {
 
     @PersistenceContext
     EntityManager em;
+
 
     public void save (UserImg userImg) {
         em.persist(userImg);

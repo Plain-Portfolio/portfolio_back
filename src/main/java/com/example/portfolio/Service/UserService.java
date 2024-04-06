@@ -205,6 +205,7 @@ public class UserService {
         User user = new User();
         user.setNickname(signUpDto.getNickname());
         user.setEmail(signUpDto.getEmail());
+        userRepository.save(user);
         if (signUpDto.getUserImgs() != null) {
             Set<Long> userImgids = new HashSet<>();
             for (SignUpDto.SignupUserImg userImg : signUpDto.getUserImgs()) {
@@ -218,7 +219,12 @@ public class UserService {
             for (SignUpDto.SignupUserImg userImg : signUpDto.getUserImgs()) {
 
                 UserImg findUserImg = imageRepository.findUserImgByUserImgId(userImg.getUserImgId());
+                if (findUserImg.getOwner() != null) {
+                    throw new UserApplicationException(ErrorCode.ALREADY_OWNER_IMAGE);
+                }
                 userImgList.add(findUserImg);
+                findUserImg.setOwner(user);
+                imageRepository.save(findUserImg);
 
             }
 
