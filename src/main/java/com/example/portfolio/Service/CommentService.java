@@ -71,8 +71,11 @@ public class CommentService {
         return comment;
     }
 
+    @Transactional
     public void deleteComment (DeleteCommentDto deleteCommentDto) {
-        commentRepository.deleteCommentByCommentId(deleteCommentDto.getCommentId());
+        Comment findComment = commentRepository.findCommentByCommentId(deleteCommentDto.getCommentId());
+        findComment.setIsDeleted(Boolean.TRUE);
+        commentRepository.save(findComment);
     }
 
     public List<Comment> findCommentList () {

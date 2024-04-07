@@ -9,6 +9,7 @@ import com.example.portfolio.Exception.Global.UserApplicationException;
 import com.example.portfolio.Repository.*;
 import com.example.portfolio.response.Project.CreateProjectResponseDto;
 import com.example.portfolio.response.Project.GetProjectDetailResponse;
+import com.example.portfolio.response.Project.GetProjectRes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -171,16 +172,16 @@ public class ProjectService {
         return response;
     }
 
-    public List<CreateProjectResponseDto> getProjectList (String userId) {
+    public List<GetProjectRes> getProjectList (String userId) {
         List<Project> projects = projectRepository.findProjectsByUserId(userId);
         // 길이 체크
         if (projects.size() == 0) {
             throw new UserApplicationException(ErrorCode.USER_DOES_NOT_HAVE_ANY_EXISTING_PROJECTS);
         }
 
-        List<CreateProjectResponseDto> projectResponseDtoList = new ArrayList<>();
+        List<GetProjectRes> projectResponseDtoList = new ArrayList<>();
         for (Project project : projects) {
-            CreateProjectResponseDto response = new CreateProjectResponseDto(project);
+            GetProjectRes response = new GetProjectRes(project);
             projectResponseDtoList.add(response);
         }
         return projectResponseDtoList;

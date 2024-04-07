@@ -43,10 +43,16 @@ public class CommentRepository {
     }
 
     public Comment findCommentByCommentId(Long commentId) {
-         Comment comment = em.createQuery("SELECT c FROM Comment c WHERE c.id = :commentId", Comment.class)
-                .setParameter("commentId", commentId)
-                .getSingleResult();
-         return comment;
+        try {
+            System.out.println(commentId + "??");
+            Comment comment = em.createQuery("SELECT c FROM Comment c WHERE c.id = :commentId", Comment.class)
+                    .setParameter("commentId", commentId)
+                    .getSingleResult();
+            return comment;
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            throw new UserApplicationException(ErrorCode.NO_MATCHING_COMMENT_FOUND_WITH_COMMENTID);
+        }
     }
 
     @Transactional
