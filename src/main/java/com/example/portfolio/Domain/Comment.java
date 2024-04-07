@@ -20,7 +20,7 @@ public class Comment {
 
     private Long commentOrder; // 순서
 
-    private Integer childCommentCount; // 자식 댓글의 개수
+    private Integer childCommentCount = 0; // 자식 댓글의 개수
 
     private Boolean isDeleted; // 댓글 삭제 여부
 

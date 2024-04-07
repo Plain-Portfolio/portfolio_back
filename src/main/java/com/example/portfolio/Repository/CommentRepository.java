@@ -20,6 +20,17 @@ public class CommentRepository {
         em.persist(comment);
     }
 
+    public Long countCommentsByCommentId(Long commentId) {
+        try {
+            Long countResult = em.createQuery("SELECT COUNT(c) FROM Comment c WHERE c.id = :commentId", Long.class)
+                    .setParameter("commentId", commentId)
+                    .getSingleResult();
+            return countResult;
+        } catch (Exception ex) {
+            throw new UserApplicationException(ErrorCode.NO_MATCHING_COMMENT_FOUND_WITH_COMMENTID);
+        }
+    }
+
     public List<Comment> findCommentsByProjectId(Long projectId) {
         try {
             List<Comment> comments = em.createQuery("SELECT c FROM Comment c WHERE c.project.id = :projectId", Comment.class)

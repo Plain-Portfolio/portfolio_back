@@ -53,7 +53,9 @@ public enum ErrorCode {
 
 
     //Comment
-    NO_MATCHING_COMMENT_FOUND_WITH_PROJECTID(1033, 402, "projectId와 매칭되는 댓글이 존재하지 않습니다."),
+    NO_MATCHING_COMMENT_FOUND_WITH_PROJECTID(1034, 402, "projectId와 매칭되는 댓글이 존재하지 않습니다."),
+    NO_MATCHING_COMMENT_FOUND_WITH_COMMENTID(1035, 402, "올바른 comment ID가 전달되지 않았습니다."),
+    NO_MATCHING_PARENTCOMMENT_FOUND_WITH_COMMENTID(1036, 402, "parentCommentOrderId와 매칭되는 댓글이 존재하지 않습니다."),
 
     //Category
     CATEGORY_IS_ALREADY_CREATED(1021, 400, "이미 해당 이름을 가진 카테고리가 존재합니다"),
