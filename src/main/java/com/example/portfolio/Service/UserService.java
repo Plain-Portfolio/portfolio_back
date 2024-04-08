@@ -270,7 +270,7 @@ public class UserService {
             }
             System.out.println("여기까지도옴222222");
             Long userId = user.getId();
-            if (userRepository.isSamePassword(user.getPassword(), loginDto.getPassword())) {
+            if (userRepository.isSamePassword(loginDto.getPassword(), user.getPassword()) == false) {
                 throw new UserApplicationException(ErrorCode.NO_MATCHING_USER_FOUND_WITH_PASSWORD);
             }
             String token = jwtTokenProvider.generateToken(user.getEmail());

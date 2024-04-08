@@ -253,12 +253,12 @@ public class ProjectService {
                 System.out.println(findUser.getNickname());
                 teamProjectMember.setUser(findUser);
                 teamProjectMemberList.add(teamProjectMember);
-                teamProjectMemberRepository.save(teamProjectMember);
+//                teamProjectMemberRepository.save(teamProjectMember);
             }
         }
         findProject.setTeamProjectMembers(teamProjectMemberList);
 
-        projectRepository.save(findProject);
+//        projectRepository.save(findProject);
         CreateProjectResponseDto response = new CreateProjectResponseDto(findProject);
 
         return response;

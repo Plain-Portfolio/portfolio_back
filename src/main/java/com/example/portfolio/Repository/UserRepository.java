@@ -122,13 +122,10 @@ public class UserRepository {
         }
     }
 
-    public Boolean isSamePassword (String inputPassword, String databasePassword) {
-        String encryptionPassword = passwordEncoder.encode(inputPassword);
-        if (encryptionPassword.equals(databasePassword)) {
-            return true;
-        } else {
-            return false;
-        }
+    public Boolean isSamePassword(String inputPassword, String databasePassword) {
+        System.out.println(inputPassword + "------" + databasePassword);
+
+        return passwordEncoder.matches(inputPassword, databasePassword);
     }
 
     public void validateCheck (SignUpDto signUpDto) {

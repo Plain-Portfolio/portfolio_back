@@ -67,7 +67,7 @@ public class CommentService {
         comment.setCommentOrder(updateCommentDto.getCommentOrder());
         comment.setParentCommentOrderId(updateCommentDto.getParentCommentOrderId());
         comment.setChildCommentCount(updateCommentDto.getChildCommentCount());
-        commentRepository.save(comment);
+//        commentRepository.save(comment);
         return comment;
     }
 
