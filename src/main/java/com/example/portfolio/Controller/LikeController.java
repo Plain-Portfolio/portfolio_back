@@ -11,6 +11,7 @@ import com.example.portfolio.Exception.Like.PROJECT_IS_NOT_FOUND;
 import com.example.portfolio.Exception.Like.PROJECT_NOT_YEY_LIKED;
 import com.example.portfolio.JWT.JwtTokenProvider;
 import com.example.portfolio.Service.LikeService;
+import com.example.portfolio.response.Like.LikeProjectDto;
 import com.example.portfolio.response.Like.LikeProjectListRes;
 import com.example.portfolio.response.SuccessResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -76,23 +77,25 @@ public class LikeController {
         return ResponseEntity.ok(successResponse);
     }
 
-//    @Operation(summary = "좋아요한 프로젝트 리스트 조회")
-//    @ApiResponses(value = {
-//            @ApiResponse(responseCode = "200", description = "성공",
-//                    content = {@Content(schema = @Schema(implementation = SuccessResponse.class))}),
-//            @ApiResponse(responseCode = "500", description = "서버 에러",
-//                    content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
-//    })
-//    @GetMapping("/my/projects")
-//    public ResponseEntity<?> likeProjectList (@RequestHeader("Authorization") String token) {
-//        User user = jwtTokenProvider.validateToken(token);
-//        List<Project> findProjects = likeService.likeProjectList(user);
-//        LikeProjectListRes response = new LikeProjectListRes();
-//        for (Project project: findProjects) {
-//
-//        }
-//
-//        response.setLikeProject(findProjects);
-//        return ResponseEntity.ok(findProjects);
-//    }
+    @Operation(summary = "좋아요한 프로젝트 리스트 조회")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공",
+                    content = {@Content(schema = @Schema(implementation = LikeProjectListRes.class))}),
+            @ApiResponse(responseCode = "500", description = "서버 에러",
+                    content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
+    })
+    @GetMapping("/my/projects")
+    public ResponseEntity<?> likeProjectList (@RequestHeader("Authorization") String token) {
+        User user = jwtTokenProvider.validateToken(token);
+        List<Project> findProjects = likeService.likeProjectList(user);
+        LikeProjectListRes response = new LikeProjectListRes();
+        List<LikeProjectDto> projectDtoList = new ArrayList<>();
+        for (Project project: findProjects) {
+            LikeProjectDto projectDto = new LikeProjectDto(project);
+            projectDtoList.add(projectDto);
+        }
+
+        response.setLikeProjects(projectDtoList);
+        return ResponseEntity.ok(response);
+    }
 }

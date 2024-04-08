@@ -26,7 +26,7 @@ public class LikeService {
     ProjectRepository projectRepository;
 
     public List<Project> likeProjectList (User user) {
-        List<Project> projects = projectRepository.findProjectsByUserId(user.getId().toString());
+        List<Project> projects = projectRepository.findProjectsByLikerId(user.getId().toString());
         return projects;
     }
 
