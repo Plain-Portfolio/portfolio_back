@@ -3,6 +3,7 @@ package com.example.portfolio.Controller;
 import com.example.portfolio.DTO.User.FindUserList;
 import com.example.portfolio.DTO.User.LoginDto;
 import com.example.portfolio.DTO.User.SignUpDto;
+import com.example.portfolio.DTO.User.SocialLoginCallBackDto;
 import com.example.portfolio.Domain.User;
 import com.example.portfolio.Exception.Global.HTTP_INTERNAL_SERVER_ERROR;
 import com.example.portfolio.Exception.User.EMAIL_IS_DUPLICATED;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @Tag(name = "유저 API", description = "유저 API입니다")
@@ -131,10 +133,10 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "서버 에러",
                     content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
     })
-    @GetMapping("/login/kakao/callback")
+    @PostMapping("/login/kakao/callback")
     @ResponseBody
-    public ResponseEntity<?> kakaoLoginCallback(@RequestParam(name = "code")String code) throws Exception {
-        SocialLoginRes responseBody = userService.kakaoLoginCallBack(code);
+    public ResponseEntity<?> kakaoLoginCallback(@RequestBody SocialLoginCallBackDto socialLoginCallBackDto) throws Exception {
+        SocialLoginRes responseBody = userService.kakaoLoginCallBack(socialLoginCallBackDto.getCode());
         return ResponseEntity.ok(responseBody);
     }
 
@@ -160,9 +162,10 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "서버 에러",
                     content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
     })
-    @GetMapping("/login/google/callback")
+    @PostMapping("/login/google/callback")
     @ResponseBody
-    public ResponseEntity<?> googleLoginCallback(@RequestParam(name = "code")String code) throws Exception {
+    public ResponseEntity<?> googleLoginCallback(@RequestBody SocialLoginCallBackDto socialLoginCallBackDto) throws Exception {
+        String code = socialLoginCallBackDto.getCode();
         SocialLoginRes responseBody = userService.googleLoginCallBack(code);
         return ResponseEntity.ok(responseBody);
     }
