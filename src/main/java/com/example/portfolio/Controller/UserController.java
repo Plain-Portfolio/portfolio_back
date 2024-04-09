@@ -107,6 +107,36 @@ public class UserController {
         return ResponseEntity.ok(findUserList);
     }
 
+    @Operation(summary = "네이버 소셜 로그인 url 받기")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공",
+                    content = {@Content(schema = @Schema(implementation = SocialRes.class))}),
+            @ApiResponse(responseCode = "500", description = "서버 에러",
+                    content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
+    })
+    @GetMapping("/login/naver")
+    public ResponseEntity<SocialRes> naverLogin() {
+        System.out.println("???");
+        String url = userService.naverLogin();
+        SocialRes response = new SocialRes();
+        response.setUrl(url);
+        return ResponseEntity.ok(response);
+    }
+
+    @Operation(summary = "naver 소셜 로그인 callback")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공",
+                    content = {@Content(schema = @Schema(implementation = SocialLoginRes.class))}),
+            @ApiResponse(responseCode = "500", description = "서버 에러",
+                    content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
+    })
+    @PostMapping("/login/naver/callback")
+    @ResponseBody
+    public ResponseEntity<?> naverLoginCallback(@RequestBody SocialLoginCallBackDto socialLoginCallBackDto) throws Exception {
+        SocialLoginRes responseBody = userService.naverLoginCallBack(socialLoginCallBackDto);
+        return ResponseEntity.ok(responseBody);
+    }
+
     @Operation(summary = "카카오 소셜 로그인 url 받기")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공",

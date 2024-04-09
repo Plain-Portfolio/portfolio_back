@@ -16,6 +16,7 @@ import com.example.portfolio.response.User.UserResponseDto;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.minidev.json.JSONObject;
+import net.minidev.json.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -28,10 +29,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Pattern;
 
 @Service
@@ -69,6 +67,27 @@ public class UserService {
     private String kakaoClientId;
 
 
+    //naver
+    @Value("${spring.oauth2.naver.client-id}")
+    private String naverClientId;
+
+    @Value("${spring.oauth2.naver.redirect-uri}")
+    private String naverRedirectUri;
+
+    @Value("${spring.oauth2.naver.client-secret}")
+    private String naverClientSecret;
+
+    public String naverLogin() {
+        String authUrl = "https://nid.naver.com/oauth2.0/authorize";
+        String url = UriComponentsBuilder.fromHttpUrl(authUrl)
+                .queryParam("client_id", naverClientId)
+                .queryParam("redirect_uri", naverRedirectUri)
+                .queryParam("response_type", "code")
+                .queryParam("state", "abcdef123456")
+                .build().toUriString();
+        return url;
+    }
+
     public String kakaoLogin() {
         String authUrl = "https://kauth.kakao.com/oauth/authorize";
         String url = UriComponentsBuilder.fromHttpUrl(authUrl)
@@ -77,6 +96,35 @@ public class UserService {
                 .queryParam("response_type", "code")
                 .build().toUriString();
         return url;
+    }
+
+    public MultiValueMap<String, String> accessTokenParams(String grantType,String clientSecret, String clientId,String code,String redirect_uri) {
+        MultiValueMap<String, String> accessTokenParams = new LinkedMultiValueMap<>();
+        accessTokenParams.add("grant_type", grantType);
+        accessTokenParams.add("client_id", clientId);
+        accessTokenParams.add("client_secret", clientSecret);
+        accessTokenParams.add("code", code); // 응답으로 받은 코드
+        accessTokenParams.add("redirect_uri", redirect_uri);
+        return accessTokenParams;
+    }
+
+    @Transactional
+    public SocialLoginRes naverLoginCallBack (SocialLoginCallBackDto socialLoginCallBackDto) throws Exception {
+        User user = new User();
+        if (socialLoginCallBackDto.getEmail() != null) {
+            user.setEmail(socialLoginCallBackDto.getEmail());
+        }
+        if (userRepository.countUserByNickname(socialLoginCallBackDto.getNickname()) != 0) {
+            User findUser = userRepository.findByNickname(socialLoginCallBackDto.getNickname());
+            SocialLoginRes res = new SocialLoginRes(findUser);
+            return res;
+        }
+
+        user.setNickname(socialLoginCallBackDto.getNickname());
+        userRepository.save(user);
+        SocialLoginRes res = new SocialLoginRes(user);
+
+        return res;
     }
 
     @Transactional
