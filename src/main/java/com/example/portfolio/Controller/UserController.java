@@ -94,8 +94,7 @@ public class UserController {
                     content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
     })
     @GetMapping("/list")
-    public ResponseEntity<FindUserList> findUserList (@RequestHeader("Authorization") String token) {
-        jwtTokenProvider.validateToken(token);
+    public ResponseEntity<FindUserList> findUserList () {
         List<User> users = userService.findUserList();
 
         FindUserList findUserList = new FindUserList();
@@ -136,7 +135,7 @@ public class UserController {
     @PostMapping("/login/kakao/callback")
     @ResponseBody
     public ResponseEntity<?> kakaoLoginCallback(@RequestBody SocialLoginCallBackDto socialLoginCallBackDto) throws Exception {
-        SocialLoginRes responseBody = userService.kakaoLoginCallBack(socialLoginCallBackDto.getCode());
+        SocialLoginRes responseBody = userService.kakaoLoginCallBack(socialLoginCallBackDto);
         return ResponseEntity.ok(responseBody);
     }
 
@@ -165,8 +164,7 @@ public class UserController {
     @PostMapping("/login/google/callback")
     @ResponseBody
     public ResponseEntity<?> googleLoginCallback(@RequestBody SocialLoginCallBackDto socialLoginCallBackDto) throws Exception {
-        String code = socialLoginCallBackDto.getCode();
-        SocialLoginRes responseBody = userService.googleLoginCallBack(code);
+        SocialLoginRes responseBody = userService.googleLoginCallBack(socialLoginCallBackDto);
         return ResponseEntity.ok(responseBody);
     }
 }

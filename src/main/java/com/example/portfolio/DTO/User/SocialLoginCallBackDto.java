@@ -5,5 +5,6 @@ import lombok.Data;
 @Data
 public class SocialLoginCallBackDto {
 
-    private String code;
+    private String nickname;
+    private String email;
 }
