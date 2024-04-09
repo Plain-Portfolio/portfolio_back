@@ -135,7 +135,7 @@ public class UserController {
     @PostMapping("/login/kakao/callback")
     @ResponseBody
     public ResponseEntity<?> kakaoLoginCallback(@RequestBody SocialLoginCallBackDto socialLoginCallBackDto) throws Exception {
-        SocialLoginRes responseBody = userService.kakaoLoginCallBack(socialLoginCallBackDto.getCode());
+        SocialLoginRes responseBody = userService.kakaoLoginCallBack(socialLoginCallBackDto);
         return ResponseEntity.ok(responseBody);
     }
 
@@ -161,11 +161,10 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "서버 에러",
                     content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
     })
-    @GetMapping("/login/google/callback")
+    @PostMapping("/login/google/callback")
     @ResponseBody
     public ResponseEntity<?> googleLoginCallback(@RequestBody SocialLoginCallBackDto socialLoginCallBackDto) throws Exception {
-        String code = socialLoginCallBackDto.getCode();
-        SocialLoginRes responseBody = userService.googleLoginCallBack(code);
+        SocialLoginRes responseBody = userService.googleLoginCallBack(socialLoginCallBackDto);
         return ResponseEntity.ok(responseBody);
     }
 }
