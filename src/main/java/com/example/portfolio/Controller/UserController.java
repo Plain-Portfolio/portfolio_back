@@ -161,7 +161,7 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "서버 에러",
                     content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
     })
-    @PostMapping("/login/google/callback")
+    @GetMapping("/login/google/callback")
     @ResponseBody
     public ResponseEntity<?> googleLoginCallback(@RequestBody SocialLoginCallBackDto socialLoginCallBackDto) throws Exception {
         String code = socialLoginCallBackDto.getCode();
