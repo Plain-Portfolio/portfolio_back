@@ -135,7 +135,7 @@ public class UserController {
     @PostMapping("/login/kakao/callback")
     @ResponseBody
     public ResponseEntity<?> kakaoLoginCallback(@RequestBody SocialLoginCallBackDto socialLoginCallBackDto) throws Exception {
-        SocialLoginRes responseBody = userService.kakaoLoginCallBack(socialLoginCallBackDto);
+        SocialLoginRes responseBody = userService.kakaoLoginCallBack(socialLoginCallBackDto.getCode());
         return ResponseEntity.ok(responseBody);
     }
 
@@ -164,7 +164,8 @@ public class UserController {
     @PostMapping("/login/google/callback")
     @ResponseBody
     public ResponseEntity<?> googleLoginCallback(@RequestBody SocialLoginCallBackDto socialLoginCallBackDto) throws Exception {
-        SocialLoginRes responseBody = userService.googleLoginCallBack(socialLoginCallBackDto);
+        String code = socialLoginCallBackDto.getCode();
+        SocialLoginRes responseBody = userService.googleLoginCallBack(code);
         return ResponseEntity.ok(responseBody);
     }
 }
