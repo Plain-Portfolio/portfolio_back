@@ -108,6 +108,67 @@ public class UserService {
         return accessTokenParams;
     }
 
+    public SocialLoginRes testNaverLoginCallBack (String code) throws Exception {
+
+        String tokenUrl = "https://nid.naver.com/oauth2.0/token";
+        String userInfoUrl = "https://openapi.naver.com/v1/nid/me";
+
+        // 토큰 요청 파라미터 설정
+        MultiValueMap<String, String> tokenParams = new LinkedMultiValueMap<>();
+        tokenParams.add("grant_type", "authorization_code");
+        tokenParams.add("client_id", naverClientId);
+        tokenParams.add("client_secret", naverClientSecret);
+        tokenParams.add("redirect_uri", naverRedirectUri);
+        tokenParams.add("code", code);
+
+        HttpHeaders tokenHeaders = new HttpHeaders();
+        tokenHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        HttpEntity<MultiValueMap<String, String>> tokenRequest = new HttpEntity<>(tokenParams, tokenHeaders);
+
+        // 토큰 요청
+        ResponseEntity<String> tokenResponse = new RestTemplate().postForEntity(tokenUrl, tokenRequest, String.class);
+        if (tokenResponse.getStatusCode() != HttpStatus.OK) {
+            throw new Exception("네이버 토큰 인증 실패");
+        }
+
+        // 토큰 응답에서 액세스 토큰 추출
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode tokenJson = objectMapper.readTree(tokenResponse.getBody());
+        String accessToken = tokenJson.get("access_token").asText();
+
+        // 사용자 정보 요청 헤더 설정
+        HttpHeaders userInfoHeaders = new HttpHeaders();
+        userInfoHeaders.set("Authorization", "Bearer " + accessToken);
+
+        // 사용자 정보 요청
+        HttpEntity<String> userInfoRequest = new HttpEntity<>(userInfoHeaders);
+        ResponseEntity<String> userInfoResponse = new RestTemplate().exchange(userInfoUrl, HttpMethod.GET, userInfoRequest, String.class);
+        if (userInfoResponse.getStatusCode() != HttpStatus.OK) {
+            throw new Exception("네이버 사용자 정보 요청 실패");
+        }
+
+        // 사용자 정보 추출
+        JsonNode userInfoJson = objectMapper.readTree(userInfoResponse.getBody());
+        String userEmail = userInfoJson.path("response").path("email").asText();
+        String userName = userInfoJson.path("response").path("nickname").asText();
+
+        // 사용자가 이미 등록되어 있는지 확인
+        if (userRepository.countUserByNickname(userName) != 0) {
+            User findUser = userRepository.findByNickname(userName);
+            SocialLoginRes res = new SocialLoginRes(findUser);
+            return res;
+        }
+
+        // 사용자 등록
+        User user = new User();
+        user.setEmail(userEmail);
+        user.setNickname(userName);
+        userRepository.save(user);
+        SocialLoginRes res = new SocialLoginRes(user);
+
+        return res;
+    }
+
     @Transactional
     public SocialLoginRes naverLoginCallBack (SocialLoginCallBackDto socialLoginCallBackDto) throws Exception {
         User user = new User();
@@ -117,12 +178,17 @@ public class UserService {
         if (userRepository.countUserByNickname(socialLoginCallBackDto.getNickname()) != 0) {
             User findUser = userRepository.findByNickname(socialLoginCallBackDto.getNickname());
             SocialLoginRes res = new SocialLoginRes(findUser);
+            String token = jwtTokenProvider.generateToken(socialLoginCallBackDto.getNickname());
+            res.setToken(token);
             return res;
         }
 
         user.setNickname(socialLoginCallBackDto.getNickname());
         userRepository.save(user);
+        String token = jwtTokenProvider.generateToken(socialLoginCallBackDto.getNickname());
         SocialLoginRes res = new SocialLoginRes(user);
+        System.out.println(token + "확인?????");
+        res.setToken(token);
 
         return res;
     }
@@ -136,12 +202,17 @@ public class UserService {
         if (userRepository.countUserByNickname(socialLoginCallBackDto.getNickname()) != 0) {
             User findUser = userRepository.findByNickname(socialLoginCallBackDto.getNickname());
             SocialLoginRes res = new SocialLoginRes(findUser);
+            String token = jwtTokenProvider.generateToken(socialLoginCallBackDto.getNickname());
+            res.setToken(token);
             return res;
         }
 
         user.setNickname(socialLoginCallBackDto.getNickname());
         userRepository.save(user);
+
+        String token = jwtTokenProvider.generateToken(socialLoginCallBackDto.getNickname());
         SocialLoginRes res = new SocialLoginRes(user);
+        res.setToken(token);
 
         return res;
 //        String tokenUrl = "https://kauth.kakao.com/oauth/token";
@@ -256,7 +327,9 @@ public class UserService {
         user.setEmail(userEmail);
         user.setNickname(userName);
         userRepository.save(user);
+        String token = jwtTokenProvider.generateToken(userName);
         SocialLoginRes res = new SocialLoginRes(user);
+        res.setToken(token);
 
         return res;
 
@@ -355,7 +428,7 @@ public class UserService {
             if (userRepository.isSamePassword(loginDto.getPassword(), user.getPassword()) == false) {
                 throw new UserApplicationException(ErrorCode.NO_MATCHING_USER_FOUND_WITH_PASSWORD);
             }
-            String token = jwtTokenProvider.generateToken(user.getEmail());
+            String token = jwtTokenProvider.generateToken(user.getNickname());
             LoginResponse response = new LoginResponse(user);
             response.setToken(token);
             return response;

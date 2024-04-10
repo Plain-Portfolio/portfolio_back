@@ -35,11 +35,11 @@ public class JwtTokenProvider {
     }
 
     // JWT 토큰 생성
-    public String generateToken(String email) {
+    public String generateToken(String nickname) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + EXPIRATION_TIME);
         return Jwts.builder()
-                .setSubject(email)
+                .setSubject(nickname)
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
                 .signWith(getJwtSecret())
@@ -53,8 +53,8 @@ public class JwtTokenProvider {
             jwtSecret = jwtSecret.replaceAll("^\"|\"$", "");
             this.parser = Jwts.parserBuilder().setSigningKey(jwtSecret.getBytes()).build();
             Claims claims = parser.parseClaimsJws(token).getBody();
-            String email = claims.getSubject(); // 토큰에서 이메일 추출
-            User user = userRepository.findByEmail(email);
+            String nickname = claims.getSubject(); // 토큰에서 이메일 추출
+            User user = userRepository.findByNickname(nickname);
             return user;
         } catch (Exception e) {
             System.out.println(e.getMessage());

@@ -9,6 +9,7 @@ public class SocialLoginRes {
     Long userId;
     String email;
     String nickname;
+    String token;
 
     public SocialLoginRes (User user) {
         this.userId = user.getId();

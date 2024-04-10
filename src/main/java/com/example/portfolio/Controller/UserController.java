@@ -133,9 +133,17 @@ public class UserController {
     @PostMapping("/login/naver/callback")
     @ResponseBody
     public ResponseEntity<?> naverLoginCallback(@RequestBody SocialLoginCallBackDto socialLoginCallBackDto) throws Exception {
+        System.out.println("시작");
         SocialLoginRes responseBody = userService.naverLoginCallBack(socialLoginCallBackDto);
         return ResponseEntity.ok(responseBody);
     }
+
+    @GetMapping("/login/naver/callback")
+    public ResponseEntity<?> testNaverCallback(@RequestParam(name = "code") String code) throws Exception {
+        SocialLoginRes responseBody = userService.testNaverLoginCallBack(code);
+        return ResponseEntity.ok(responseBody);
+    }
+
 
     @Operation(summary = "카카오 소셜 로그인 url 받기")
     @ApiResponses(value = {
