@@ -264,7 +264,11 @@ public class ProjectService {
     }
 
     public void deleteProject (Long userId, DeleteProjectDto deleteProjectDto) {
+
         Project findProject = projectRepository.findProjectById(deleteProjectDto.getProjectId());
+        if (findProject.getOwner().getId() != userId) {
+            throw new UserApplicationException(ErrorCode.IT_IS_NOT_MY_PROJECT);
+        }
         projectRepository.deleteEntityAndRelatedData(deleteProjectDto.getProjectId());
         projectRepository.deleleProjectByProjectId(deleteProjectDto.getProjectId());
     }
