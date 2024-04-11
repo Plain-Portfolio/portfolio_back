@@ -43,6 +43,7 @@ public enum ErrorCode {
     DUPLICATE_DUPLICATE_TEAMPROJECTMEMBER_EXISTS_EXIST(1028, 400, "같은 ID를 가진 팀프로젝트맴버의 userId가 여러 개 전달되었습니다."),
     INVALID_USERID_WAS_PROVIDED(1028, 402, "userId에 숫자 형식이 아닌 데이터가 전달되었습니다"),
     USER_DOES_NOT_HAVE_ANY_EXISTING_PROJECTS(1029, 400, "해당 유저가 가진 프로젝트가 존재하지 않습니다."),
+    IT_IS_NOT_MY_PROJECT(1037, 400, "해당 프로젝트의 소유자가 아닙니다."),
 
     //ProjectImg
     NO_MATCHING_PROJECTIMG_WITH_PROJECT_IMG_ID(1026, 400, "해당 ID를 가진 프로젝트이미지가 존재하지 않습니다"),
