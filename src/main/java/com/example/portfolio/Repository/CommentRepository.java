@@ -20,6 +20,17 @@ public class CommentRepository {
         em.persist(comment);
     }
 
+    public Long countCommentsByCommentId(Long commentId) {
+        try {
+            Long countResult = em.createQuery("SELECT COUNT(c) FROM Comment c WHERE c.id = :commentId", Long.class)
+                    .setParameter("commentId", commentId)
+                    .getSingleResult();
+            return countResult;
+        } catch (Exception ex) {
+            throw new UserApplicationException(ErrorCode.NO_MATCHING_COMMENT_FOUND_WITH_COMMENTID);
+        }
+    }
+
     public List<Comment> findCommentsByProjectId(Long projectId) {
         try {
             List<Comment> comments = em.createQuery("SELECT c FROM Comment c WHERE c.project.id = :projectId", Comment.class)
@@ -32,10 +43,16 @@ public class CommentRepository {
     }
 
     public Comment findCommentByCommentId(Long commentId) {
-         Comment comment = em.createQuery("SELECT c FROM Comment c WHERE c.id = :commentId", Comment.class)
-                .setParameter("commentId", commentId)
-                .getSingleResult();
-         return comment;
+        try {
+            System.out.println(commentId + "??");
+            Comment comment = em.createQuery("SELECT c FROM Comment c WHERE c.id = :commentId", Comment.class)
+                    .setParameter("commentId", commentId)
+                    .getSingleResult();
+            return comment;
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            throw new UserApplicationException(ErrorCode.NO_MATCHING_COMMENT_FOUND_WITH_COMMENTID);
+        }
     }
 
     @Transactional

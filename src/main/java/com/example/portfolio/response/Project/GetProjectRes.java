@@ -1,7 +1,6 @@
 package com.example.portfolio.response.Project;
 
 import com.example.portfolio.Domain.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,26 +10,26 @@ import java.util.stream.Collectors;
 
 @Getter
 @Setter
-public class GetProjectDetailResponse {
+public class GetProjectRes {
     private Long projectId;
     private String title;
     private String description;
     private String githubLink;
     private Boolean isTeamProject;
-    private OwnerDto owner;
+    private GetOwnerDto owner;
     private List<ProjectCategoryDto> projectCategories;
     private List<ProjectImgDto> projectImgs;
-//    private List<CommentDto> comments;
+    private List<CommentDto> comments;
     private List<LikeDto> likes;
     private List<TeamProjectMemberDto> teamProjectMembers;
 
-    public GetProjectDetailResponse (Project project) {
+    public GetProjectRes (Project project) {
         this.projectId = project.getId();
         this.title = project.getTitle();
         this.description = project.getDescription();
         this.githubLink = project.getGithubLink();
         this.isTeamProject = project.getIsTeamProject();
-        this.owner = new OwnerDto(project.getOwner());
+        this.owner = new GetOwnerDto(project.getOwner());
         this.projectCategories = project.getProjectCategories().stream()
                 .map(projectCategory -> new ProjectCategoryDto(projectCategory))
                 .collect(Collectors.toList());
@@ -39,6 +38,9 @@ public class GetProjectDetailResponse {
                 .collect(Collectors.toList());
         this.projectCategories = project.getProjectCategories().stream()
                 .map(projectCategory -> new ProjectCategoryDto(projectCategory))
+                .collect(Collectors.toList());
+        this.comments = project.getComments().stream()
+                .map(comment -> new CommentDto(comment))
                 .collect(Collectors.toList());
         this.likes = project.getLikes().stream()
                 .map(like -> new LikeDto(like))
@@ -59,16 +61,18 @@ public class GetProjectDetailResponse {
         }
     }
     @Getter
-    public static class OwnerDto {
+    public class GetOwnerDto {
         private Long id;
         private String nickname;
         private String email;
+        private String introduction;
 
-        public OwnerDto(User entity) {
-
+        public GetOwnerDto(User entity) {
             this.id = entity.getId();
             this.nickname = entity.getNickname();
+            this.introduction = entity.getIntroduction();
             this.email = entity.getEmail();
+
         }
     }
     @Getter
@@ -85,18 +89,10 @@ public class GetProjectDetailResponse {
     public class CommentDto {
         private Long id;
         private String context;
-        private Long parentCommentOrderId;
-        private Long commentOrder;
-        private Integer childCommentCount;
-        private Boolean isDeleted;
 
         public CommentDto(Comment comment) {
             this.id = comment.getId();
             this.context = comment.getContext();
-            this.parentCommentOrderId = comment.getParentCommentOrderId();
-            this.commentOrder = comment.getCommentOrder();
-            this.childCommentCount = comment.getChildCommentCount();
-            this.isDeleted = comment.getIsDeleted();
         }
     }
     @Getter

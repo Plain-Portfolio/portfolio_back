@@ -39,7 +39,7 @@ public class CategoryService {
             throw new UserApplicationException(ErrorCode.CATEGORY_IS_ALREADY_CREATED);
         }
         findCategory.setName(updateCategoryDto.getName());
-        categoryRepository.save(findCategory);
+//        categoryRepository.save(findCategory);
         return findCategory;
     }
 

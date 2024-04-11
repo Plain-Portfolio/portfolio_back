@@ -36,8 +36,8 @@ public class UserRepository {
     private static final Pattern passworPattern = Pattern.compile(PASSWORD_PATTERN);
     private static final Pattern emailPattern = Pattern.compile(EMAIL_PATTERN);
 
-    public User findByNikcname (String nickname) {
-        User user = em.createQuery("SELECT u FROM USER u WHERE u.nickname = :name", User.class)
+    public User findByNickname (String nickname) {
+        User user = em.createQuery("SELECT u FROM User u WHERE u.nickname = :name", User.class)
                 .setParameter("name", nickname)
                 .getSingleResult();
         return user;
@@ -89,6 +89,28 @@ public class UserRepository {
 
     }
 
+    public Long countUserByNickname (String nickname) {
+        try {
+            return em.createQuery("SELECT COUNT(u) FROM User u WHERE u.nickname = :nickname", Long.class)
+                    .setParameter("nickname", nickname)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            // 해당 이메일을 가진 사용자를 찾지 못한 경우
+            return null;
+        }
+    }
+
+    public Long countUserByEmail (String email) {
+        try {
+            return em.createQuery("SELECT COUNT(u) FROM User u WHERE u.email = :email", Long.class)
+                    .setParameter("email", email)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            // 해당 이메일을 가진 사용자를 찾지 못한 경우
+            return null;
+        }
+    }
+
     public User findByEmail (String email) {
         try {
             return em.createQuery("SELECT u FROM User u WHERE u.email = :email", User.class)
@@ -100,13 +122,10 @@ public class UserRepository {
         }
     }
 
-    public Boolean isSamePassword (String inputPassword, String databasePassword) {
-        String encryptionPassword = passwordEncoder.encode(inputPassword);
-        if (encryptionPassword.equals(databasePassword)) {
-            return true;
-        } else {
-            return false;
-        }
+    public Boolean isSamePassword(String inputPassword, String databasePassword) {
+        System.out.println(inputPassword + "------" + databasePassword);
+
+        return passwordEncoder.matches(inputPassword, databasePassword);
     }
 
     public void validateCheck (SignUpDto signUpDto) {

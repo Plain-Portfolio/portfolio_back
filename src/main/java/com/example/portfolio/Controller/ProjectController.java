@@ -14,6 +14,7 @@ import com.example.portfolio.Service.ProjectService;
 import com.example.portfolio.response.Project.CreateProjectResponseDto;
 import com.example.portfolio.response.Project.GetProjectDetailResponse;
 import com.example.portfolio.response.Project.GetProjectListResponse;
+import com.example.portfolio.response.Project.GetProjectRes;
 import com.example.portfolio.response.SuccessResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -81,7 +82,7 @@ public class ProjectController {
     })
     @GetMapping("/{userId}/projects")
     public ResponseEntity<?> getProjectList(@PathVariable(name = "userId") String userId) {
-        List<CreateProjectResponseDto> findProjects = projectService.getProjectList(userId);
+        List<GetProjectRes> findProjects = projectService.getProjectList(userId);
         return ResponseEntity.ok(findProjects);
     }
 

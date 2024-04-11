@@ -1,11 +1,13 @@
 package com.example.portfolio.Service;
 
+import com.example.portfolio.Common.ErrorCode;
 import com.example.portfolio.DTO.Comment.CreateCommentDto;
 import com.example.portfolio.DTO.Comment.DeleteCommentDto;
 import com.example.portfolio.DTO.Comment.UpdateCommentDto;
 import com.example.portfolio.Domain.Comment;
 import com.example.portfolio.Domain.Project;
 import com.example.portfolio.Domain.User;
+import com.example.portfolio.Exception.Global.UserApplicationException;
 import com.example.portfolio.Repository.CommentRepository;
 import com.example.portfolio.Repository.ProjectRepository;
 import com.example.portfolio.response.Comment.CommentDto;
@@ -36,6 +38,18 @@ public class CommentService {
         Comment comment = new Comment();
         comment.setContext(createCommentDto.getContext());
         comment.setUser(user);
+
+        if (createCommentDto.getParentCommentOrderId() != null) {
+            Long checkParentCommentCount = commentRepository.countCommentsByCommentId(createCommentDto.getParentCommentOrderId());
+
+            if (checkParentCommentCount != 1) {
+                throw new UserApplicationException(ErrorCode.NO_MATCHING_PARENTCOMMENT_FOUND_WITH_COMMENTID);
+            }
+            Comment parentComment = commentRepository.findCommentByCommentId(createCommentDto.getParentCommentOrderId());
+            parentComment.setChildCommentCount(parentComment.getChildCommentCount() + 1);
+            commentRepository.save(parentComment);
+        }
+
         comment.setParentCommentOrderId(createCommentDto.getParentCommentOrderId());
         comment.setCommentOrder(createCommentDto.getCommentOrder());
         comment.setChildCommentCount(createCommentDto.getChildCommentCount());
@@ -53,12 +67,15 @@ public class CommentService {
         comment.setCommentOrder(updateCommentDto.getCommentOrder());
         comment.setParentCommentOrderId(updateCommentDto.getParentCommentOrderId());
         comment.setChildCommentCount(updateCommentDto.getChildCommentCount());
-        commentRepository.save(comment);
+//        commentRepository.save(comment);
         return comment;
     }
 
+    @Transactional
     public void deleteComment (DeleteCommentDto deleteCommentDto) {
-        commentRepository.deleteCommentByCommentId(deleteCommentDto.getCommentId());
+        Comment findComment = commentRepository.findCommentByCommentId(deleteCommentDto.getCommentId());
+        findComment.setIsDeleted(Boolean.TRUE);
+        commentRepository.save(findComment);
     }
 
     public List<Comment> findCommentList () {

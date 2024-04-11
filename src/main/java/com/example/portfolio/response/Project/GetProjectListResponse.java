@@ -11,7 +11,7 @@ import java.util.List;
 public class GetProjectListResponse {
 
     @JsonProperty("projects")
-    private List<CreateProjectResponseDto> projects;
+    private List<GetProjectRes> projects;
 
 
 }

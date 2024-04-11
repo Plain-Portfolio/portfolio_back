@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 
+import java.util.List;
+
 @Service
 public class LikeService {
 
@@ -22,6 +24,11 @@ public class LikeService {
 
     @Autowired
     ProjectRepository projectRepository;
+
+    public List<Project> likeProjectList (User user) {
+        List<Project> projects = projectRepository.findProjectsByLikerId(user.getId().toString());
+        return projects;
+    }
 
     @Transactional
     public Like addLike (User liker, AddLikeDto addLikeDto) {

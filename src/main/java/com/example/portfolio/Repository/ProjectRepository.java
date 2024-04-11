@@ -44,6 +44,18 @@ public class ProjectRepository {
         return count;
     }
 
+    public List<Project> findProjectsByLikerId (String likerId) {
+        try {
+            List<Project> projects = em.createQuery("SELECT p FROM Project p JOIN p.likes l WHERE l.user.id = :likerId", Project.class)
+                    .setParameter("likerId", likerId)
+                    .getResultList();
+            return projects;
+        } catch (Exception ex) {
+            System.out.println("??" + ex.getMessage());
+            throw new UserApplicationException(ErrorCode.INVALID_USERID_WAS_PROVIDED);
+        }
+    }
+
     public List<Project> findProjectsByUserId (String userId) {
         try {
             List<Project> projects = em.createQuery("SELECT p FROM Project p WHERE p.owner.id = :userId", Project.class)

@@ -16,11 +16,11 @@ public class CreateCommentDto {
     private Long parentCommentOrderId;
 
     @Schema(description = "댓글 순서", example = "2")
-    private Long commentOrder;
+    private Long commentOrder = 0L;
 
     @Schema(description = "자식 댓글 갯수", example = "4")
-    private Integer childCommentCount;
+    private Integer childCommentCount = 0;
 
     @Schema(description = "삭제되었는지", example = "true")
-    private Boolean isDeleted;
+    private Boolean isDeleted = false;
 }

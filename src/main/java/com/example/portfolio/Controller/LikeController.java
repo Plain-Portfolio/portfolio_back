@@ -3,6 +3,7 @@ package com.example.portfolio.Controller;
 import com.example.portfolio.DTO.Like.AddLikeDto;
 import com.example.portfolio.DTO.Like.CancelLikeDto;
 import com.example.portfolio.Domain.Like;
+import com.example.portfolio.Domain.Project;
 import com.example.portfolio.Domain.User;
 import com.example.portfolio.Exception.Global.HTTP_INTERNAL_SERVER_ERROR;
 import com.example.portfolio.Exception.Like.ALREADY_LIKED;
@@ -10,6 +11,8 @@ import com.example.portfolio.Exception.Like.PROJECT_IS_NOT_FOUND;
 import com.example.portfolio.Exception.Like.PROJECT_NOT_YEY_LIKED;
 import com.example.portfolio.JWT.JwtTokenProvider;
 import com.example.portfolio.Service.LikeService;
+import com.example.portfolio.response.Like.LikeProjectDto;
+import com.example.portfolio.response.Like.LikeProjectListRes;
 import com.example.portfolio.response.SuccessResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -21,6 +24,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping("/like")
@@ -69,5 +75,27 @@ public class LikeController {
         User user = jwtTokenProvider.validateToken(token);
         likeService.cancelLike(user.getId(), cancelLikeDto);
         return ResponseEntity.ok(successResponse);
+    }
+
+    @Operation(summary = "좋아요한 프로젝트 리스트 조회")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공",
+                    content = {@Content(schema = @Schema(implementation = LikeProjectListRes.class))}),
+            @ApiResponse(responseCode = "500", description = "서버 에러",
+                    content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
+    })
+    @GetMapping("/my/projects")
+    public ResponseEntity<?> likeProjectList (@RequestHeader("Authorization") String token) {
+        User user = jwtTokenProvider.validateToken(token);
+        List<Project> findProjects = likeService.likeProjectList(user);
+        LikeProjectListRes response = new LikeProjectListRes();
+        List<LikeProjectDto> projectDtoList = new ArrayList<>();
+        for (Project project: findProjects) {
+            LikeProjectDto projectDto = new LikeProjectDto(project);
+            projectDtoList.add(projectDto);
+        }
+
+        response.setLikeProjects(projectDtoList);
+        return ResponseEntity.ok(response);
     }
 }

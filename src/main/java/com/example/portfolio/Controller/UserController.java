@@ -1,8 +1,6 @@
 package com.example.portfolio.Controller;
 
-import com.example.portfolio.DTO.User.FindUserList;
-import com.example.portfolio.DTO.User.LoginDto;
-import com.example.portfolio.DTO.User.SignUpDto;
+import com.example.portfolio.DTO.User.*;
 import com.example.portfolio.Domain.User;
 import com.example.portfolio.Exception.Global.HTTP_INTERNAL_SERVER_ERROR;
 import com.example.portfolio.Exception.User.EMAIL_IS_DUPLICATED;
@@ -12,9 +10,7 @@ import com.example.portfolio.Repository.UserRepository;
 import com.example.portfolio.Service.RedisService;
 import com.example.portfolio.Service.UserService;
 import com.example.portfolio.response.SuccessResponse;
-import com.example.portfolio.response.User.LoginResponse;
-import com.example.portfolio.response.User.FindUserListResponse;
-import com.example.portfolio.response.User.UserResponseDto;
+import com.example.portfolio.response.User.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -22,11 +18,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,8 +91,7 @@ public class UserController {
                     content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
     })
     @GetMapping("/list")
-    public ResponseEntity<FindUserList> findUserList (@RequestHeader("Authorization") String token) {
-        jwtTokenProvider.validateToken(token);
+    public ResponseEntity<FindUserList> findUserList () {
         List<User> users = userService.findUserList();
 
         FindUserList findUserList = new FindUserList();
@@ -114,16 +107,99 @@ public class UserController {
         return ResponseEntity.ok(findUserList);
     }
 
-    @GetMapping("/login/google")
-    public ResponseEntity<?> googleLogin() {
-        String url = userService.googleLogin();
-        return ResponseEntity.ok(url);
+    @Operation(summary = "네이버 소셜 로그인 url 받기")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공",
+                    content = {@Content(schema = @Schema(implementation = SocialRes.class))}),
+            @ApiResponse(responseCode = "500", description = "서버 에러",
+                    content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
+    })
+    @GetMapping("/login/naver")
+    public ResponseEntity<SocialRes> naverLogin() {
+        System.out.println("???");
+        String url = userService.naverLogin();
+        SocialRes response = new SocialRes();
+        response.setUrl(url);
+        return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/login/google/callback")
+    @Operation(summary = "naver 소셜 로그인 callback")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공",
+                    content = {@Content(schema = @Schema(implementation = SocialLoginRes.class))}),
+            @ApiResponse(responseCode = "500", description = "서버 에러",
+                    content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
+    })
+    @PostMapping("/login/naver/callback")
     @ResponseBody
-    public String googleLoginCallback(@RequestParam(name = "code")String code) {
+    public ResponseEntity<?> naverLoginCallback(@RequestBody SocialLoginCallBackDto socialLoginCallBackDto) throws Exception {
+        System.out.println("시작");
+        SocialLoginRes responseBody = userService.naverLoginCallBack(socialLoginCallBackDto);
+        return ResponseEntity.ok(responseBody);
+    }
 
-        return code;
+    @GetMapping("/login/naver/callback")
+    public ResponseEntity<?> testNaverCallback(@RequestParam(name = "code") String code) throws Exception {
+        SocialLoginRes responseBody = userService.testNaverLoginCallBack(code);
+        return ResponseEntity.ok(responseBody);
+    }
+
+
+    @Operation(summary = "카카오 소셜 로그인 url 받기")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공",
+                    content = {@Content(schema = @Schema(implementation = SocialRes.class))}),
+            @ApiResponse(responseCode = "500", description = "서버 에러",
+                    content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
+    })
+    @GetMapping("/login/kakao")
+    public ResponseEntity<SocialRes> kakaoLogin() {
+        String url = userService.kakaoLogin();
+        SocialRes response = new SocialRes();
+        response.setUrl(url);
+        return ResponseEntity.ok(response);
+    }
+
+    @Operation(summary = "kakao 소셜 로그인 callback")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공",
+                    content = {@Content(schema = @Schema(implementation = SocialLoginRes.class))}),
+            @ApiResponse(responseCode = "500", description = "서버 에러",
+                    content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
+    })
+    @PostMapping("/login/kakao/callback")
+    @ResponseBody
+    public ResponseEntity<?> kakaoLoginCallback(@RequestBody SocialLoginCallBackDto socialLoginCallBackDto) throws Exception {
+        SocialLoginRes responseBody = userService.kakaoLoginCallBack(socialLoginCallBackDto);
+        return ResponseEntity.ok(responseBody);
+    }
+
+    @Operation(summary = "구글 소셜 로그인 url 받기")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공",
+                    content = {@Content(schema = @Schema(implementation = SocialRes.class))}),
+            @ApiResponse(responseCode = "500", description = "서버 에러",
+                    content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
+    })
+    @GetMapping("/login/google")
+    public ResponseEntity<SocialRes> googleLogin() {
+        String url = userService.googleLogin();
+        SocialRes response = new SocialRes();
+        response.setUrl(url);
+        return ResponseEntity.ok(response);
+    }
+
+    @Operation(summary = "구글 소셜 로그인 callback")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공",
+                    content = {@Content(schema = @Schema(implementation = SocialLoginRes.class))}),
+            @ApiResponse(responseCode = "500", description = "서버 에러",
+                    content = {@Content(schema = @Schema(implementation = HTTP_INTERNAL_SERVER_ERROR.class))}),
+    })
+    @PostMapping("/login/google/callback")
+    @ResponseBody
+    public ResponseEntity<?> googleLoginCallback(@RequestBody SocialLoginGoogleDto socialLoginGoogleDto) throws Exception {
+        SocialLoginRes responseBody = userService.googleLoginCallBack(socialLoginGoogleDto.getCode());
+        return ResponseEntity.ok(responseBody);
     }
 }
